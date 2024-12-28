@@ -1,0 +1,60 @@
+{
+	"name": "keypress-notifications",
+	"displayName": "Keypress Notifications",
+	"description": "A simple extension to show notifications when a key is pressed.",
+	"version": "0.0.1",
+	"license": "MIT",
+	"publisher": "VijayGangatharan",
+	"icon": "logo.png",
+	"author": {
+		"name": "Vijay Gangatharan",
+		"email": "vijayanand431@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues"
+	},
+	"engines": {
+		"vscode": "^1.90.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onStartupFinished",
+		"onKeybinding:ctrl+c",
+		"onKeybinding:ctrl+v",
+		"onKeybinding:ctrl+x"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "keypress-notifications.activate",
+				"title": "Keypress Notifications: Activate"
+			},
+			{
+				"command": "keypress-notifications.deactivate",
+				"title": "Keypress Notifications: Deactivate"
+			}
+		]
+	},
+	"main": "./dist/extension.js",
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"lint": "eslint",
+		"watch": "tsc -watch -p ./"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.13.0",
+		"@stylistic/eslint-plugin": "^2.9.0",
+		"@types/fs-extra": "^11.0.4",
+		"@types/vscode": "^1.73.0",
+		"eslint": "^9.13.0",
+		"typescript": "^5.7.2",
+		"typescript-eslint": "^8.16.0"
+	}
+}
