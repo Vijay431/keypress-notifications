@@ -120,11 +120,13 @@
 		"test:manual": "pnpm compile && node ./scripts/manual-test.js",
 		"test:dev": "pnpm watch & pnpm test:manual",
 		"test:setup": "node ./scripts/setup-mock-workspace.js",
+		"test:ci": "pnpm compile-tests && node dist/test/test/e2e/runE2ETest.js",
+		"test:package": "pnpm check-types && pnpm lint && pnpm test",
 		"format": "prettier --write .",
 		"clean": "rimraf dist out",
 		"prebuild": "pnpm clean && pnpm lint",
 		"build": "pnpm compile",
-		"prepackage": "pnpm test",
+		"prepackage": "pnpm check-types && pnpm lint",
 		"check-types": "tsc --noEmit"
 	},
 	"devDependencies": {
