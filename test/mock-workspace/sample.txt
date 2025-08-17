@@ -1,0 +1,67 @@
+Sample Plain Text File for Keypress Notifications Testing
+
+This is a plain text file designed to test the copy, cut, and paste functionality of the Keypress Notifications extension.
+
+Basic Text Operations:
+- Try selecting this line and copying it with Ctrl+C
+- Select this line and cut it with Ctrl+X (it should disappear)
+- Position your cursor here and paste with Ctrl+V: 
+
+Multi-line Selection Testing:
+Line 1 of multi-line text
+Line 2 of multi-line text  
+Line 3 of multi-line text
+(Try selecting all three lines at once)
+
+Word Selection Testing:
+Select individual words: hello world testing extension
+Select phrases: "keypress notifications extension"
+Select with punctuation: Hello, world! How are you today?
+
+Number and Symbol Testing:
+Numbers: 123 456 789 0
+Symbols: !@#$%^&*()_+-=[]{}|;:'"<>?,.
+Mixed: Test123 with numbers and symbols! @#$
+
+Long Line Testing:
+This is a very long line that might wrap in the editor depending on your window size and settings. Try selecting parts of this line, the entire line, or text that spans across the line wrap to test different selection scenarios with the keypress notifications extension.
+
+Empty Lines for Testing:
+
+
+
+(Try copying the empty lines above)
+
+Special Cases:
+	Indented text with tab character
+    Indented text with spaces
+	Mixed	indentation	with	tabs
+
+File Paths and URLs (useful for testing):
+C:\Windows\System32\notepad.exe
+/home/user/documents/file.txt
+https://www.example.com/path/to/resource
+file:///C:/Users/User/Documents/file.txt
+
+Code-like Content (in plain text):
+function example() {
+    console.log("Hello World");
+    return true;
+}
+
+JSON-like Content:
+{
+    "name": "test",
+    "value": 123,
+    "active": true
+}
+
+Testing Instructions:
+1. Open this file in VS Code with the extension loaded
+2. Try selecting and copying different types of content
+3. Test cutting operations (text should disappear)
+4. Test pasting operations (clipboard content should appear)
+5. Verify that notifications appear for each operation
+6. Test with different selection sizes (word, line, paragraph, entire file)
+
+End of file - try selecting from here to the beginning!

@@ -1,9 +1,9 @@
 {
 	"name": "keypress-notifications",
 	"displayName": "Keypress Notifications",
-	"description": "A simple extension to show notifications when a key is pressed.",
-	"version": "0.0.1",
-	"license": "MIT",
+	"description": "Shows notifications for multi-key combinations and command executions in VS Code.",
+	"version": "0.1.0",
+	"license": "Proprietary",
 	"publisher": "VijayGangatharan",
 	"icon": "logo.png",
 	"author": {
@@ -18,43 +18,138 @@
 		"url": "https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues"
 	},
 	"engines": {
-		"vscode": "^1.90.0"
+		"vscode": "^1.90.0",
+		"node": ">=20.0.0"
 	},
 	"categories": [
 		"Other"
 	],
 	"activationEvents": [
-		"onStartupFinished",
-		"onKeybinding:ctrl+c",
-		"onKeybinding:ctrl+v",
-		"onKeybinding:ctrl+x"
+		"onStartupFinished"
 	],
 	"contributes": {
 		"commands": [
 			{
 				"command": "keypress-notifications.activate",
-				"title": "Keypress Notifications: Activate"
+				"title": "Keypress Notifications: Activate",
+				"category": "Keypress Notifications",
+				"icon": "$(check)"
 			},
 			{
 				"command": "keypress-notifications.deactivate",
-				"title": "Keypress Notifications: Deactivate"
+				"title": "Keypress Notifications: Deactivate",
+				"category": "Keypress Notifications",
+				"icon": "$(x)"
+			},
+			{
+				"command": "keypress-notifications.showOutputChannel",
+				"title": "Keypress Notifications: Show Output Channel",
+				"category": "Keypress Notifications",
+				"icon": "$(output)"
 			}
-		]
+		],
+		"configuration": {
+			"title": "Keypress Notifications",
+			"properties": {
+				"keypress-notifications.enabled": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable or disable keypress notifications"
+				},
+				"keypress-notifications.logLevel": {
+					"type": "string",
+					"enum": [
+						"error",
+						"warn",
+						"info",
+						"debug"
+					],
+					"default": "info",
+					"description": "Set the logging level for the extension"
+				},
+				"keypress-notifications.minimumKeys": {
+					"type": "number",
+					"default": 2,
+					"minimum": 1,
+					"maximum": 5,
+					"description": "Minimum number of keys in combination to show notification (e.g., 2 for Ctrl+C, 3 for Ctrl+Shift+P)"
+				},
+				"keypress-notifications.excludedCommands": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [
+						"editor.action.triggerSuggest",
+						"editor.action.triggerParameterHints",
+						"workbench.action.quickOpenNavigateNext"
+					],
+					"description": "List of command IDs to exclude from notifications. Supports wildcards (e.g., 'editor.action.*')"
+				},
+				"keypress-notifications.showCommandName": {
+					"type": "boolean",
+					"default": true,
+					"description": "Show the command name along with the key combination in notifications"
+				}
+			}
+		},
+		"menus": {
+			"editor/context": [
+				{
+					"when": "editorTextFocus && keypress-notifications.enabled",
+					"command": "keypress-notifications.activate",
+					"group": "1_modification@1"
+				}
+			]
+		}
 	},
 	"main": "./dist/extension.js",
 	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"lint": "eslint",
-		"watch": "tsc -watch -p ./"
+		"vscode:prepublish": "pnpm package",
+		"compile": "node esbuild.config.js",
+		"watch": "node esbuild.config.js --watch",
+		"package": "node esbuild.config.js --production",
+		"compile-tests": "tsc -p ./tsconfig.test.json --outDir dist/test",
+		"lint": "eslint src --ext ts",
+		"lint:fix": "eslint src --ext ts --fix",
+		"test": "pnpm test:e2e",
+		"test:e2e": "pnpm compile-tests && node dist/test/test/e2e/runE2ETest.js",
+		"test:watch": "pnpm compile-tests -- -w",
+		"test:quick": "pnpm compile && pnpm test:e2e",
+		"test:debug": "pnpm compile-tests && code --wait && pnpm test:e2e",
+		"test:manual": "pnpm compile && node ./scripts/manual-test.js",
+		"test:dev": "pnpm watch & pnpm test:manual",
+		"test:setup": "node ./scripts/setup-mock-workspace.js",
+		"format": "prettier --write .",
+		"clean": "rimraf dist out",
+		"prebuild": "pnpm clean && pnpm lint",
+		"build": "pnpm compile",
+		"prepackage": "pnpm test",
+		"check-types": "tsc --noEmit"
 	},
 	"devDependencies": {
-		"@eslint/js": "^9.13.0",
-		"@stylistic/eslint-plugin": "^2.9.0",
+		"@commitlint/cli": "^19.8.1",
+		"@commitlint/config-conventional": "^19.8.1",
+		"@eslint/js": "^10.0.0",
+		"@stylistic/eslint-plugin": "^5.2.3",
 		"@types/fs-extra": "^11.0.4",
-		"@types/vscode": "^1.73.0",
-		"eslint": "^9.13.0",
-		"typescript": "^5.7.2",
-		"typescript-eslint": "^8.16.0"
-	}
+		"@types/mocha": "^10.0.10",
+		"@types/node": "^20.18.3",
+		"@types/vscode": "^1.102.0",
+		"@vscode/test-cli": "^0.0.11",
+		"@vscode/test-electron": "^2.5.2",
+		"esbuild": "^0.25.9",
+		"eslint": "^9.33.0",
+		"fast-glob": "^3.3.3",
+		"fs-extra": "^11.3.1",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.1.5",
+		"mocha": "^11.7.1",
+		"picocolors": "^1.1.1",
+		"prettier": "^3.6.2",
+		"rimraf": "^6.0.1",
+		"typescript": "^5.9.2",
+		"typescript-eslint": "^8.39.1"
+	},
+	"dependencies": {}
 }
