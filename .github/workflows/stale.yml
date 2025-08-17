@@ -102,7 +102,6 @@ jobs:
                       🤖 *This PR was automatically closed by the stale workflow.*
 
                   # 🎯 Filtering & Targeting
-                  operations-per-run: 100
                   remove-stale-when-updated: true
                   remove-issue-stale-when-updated: true
                   remove-pr-stale-when-updated: true
