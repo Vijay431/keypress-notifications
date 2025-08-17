@@ -18,7 +18,7 @@ jobs:
             fail-fast: false
             matrix:
                 os: [ubuntu-latest, windows-latest, macos-latest]
-                node-version: ['16', '18', '20', '22', '24']
+                node-version: ['18', '20', '22', '24']
 
         steps:
             - name: 📥 Checkout code
