@@ -1,0 +1,51 @@
+# Build outputs & generated files
+dist/
+out/
+build/
+lib/
+*.d.ts
+*.js.map
+*.ts.map
+
+# Dependencies & package management
+node_modules/
+.pnpm/
+.yarn/
+pnpm-lock.yaml
+package-lock.json
+
+# Test infrastructure & fixtures
+.vscode-test/
+test/mock-workspace/
+test/fixtures/
+coverage/
+.nyc_output/
+
+# Cache & temporary files
+.cache/
+.parcel-cache/
+.rollup.cache/
+.turbo/
+tmp/
+temp/
+.tmp/
+*.tmp
+*.temp
+.eslintcache
+
+# Platform & IDE files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+
+# Package artifacts & logs
+*.vsix
+*.tgz
+*.log
+logs/
+
+# Git hooks (shell scripts don't need JS linting)
+.husky/

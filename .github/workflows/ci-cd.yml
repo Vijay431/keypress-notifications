@@ -1,0 +1,221 @@
+name: 🚀 CI/CD Pipeline
+
+on:
+    push:
+        branches: ['**']
+
+permissions:
+    contents: write
+    pull-requests: read
+    security-events: write
+
+jobs:
+    test:
+        name: 🔧 Test (Node ${{ matrix.node-version }} on ${{ matrix.os }})
+        runs-on: ${{ matrix.os }}
+
+        strategy:
+            fail-fast: false
+            matrix:
+                os: [ubuntu-latest, windows-latest, macos-latest]
+                node-version: ['18', '20', '22', '24']
+
+        steps:
+            - name: 📥 Checkout code
+              uses: actions/checkout@v4
+
+            - name: 📦 Setup pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: latest
+
+            - name: 🟢 Setup Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'pnpm'
+
+            - name: 📱 Setup VS Code Test Environment
+              run: |
+                  if [ "$RUNNER_OS" == "Linux" ]; then
+                    sudo apt-get update
+                    sudo apt-get install -y xvfb
+                  fi
+              shell: bash
+
+            - name: 📚 Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: 🏗️ Build project
+              run: pnpm run compile
+
+            - name: 🔍 Type check
+              run: pnpm run check-types
+
+            - name: 🕵️ Lint code
+              run: pnpm run lint
+
+            - name: 🎨 Check formatting
+              run: pnpm run format --check
+
+            - name: 🧪 Run tests
+              run: |
+                  if [ "$RUNNER_OS" == "Linux" ]; then
+                    xvfb-run -a pnpm test
+                  else
+                    pnpm test
+                  fi
+              shell: bash
+              env:
+                  NODE_ENV: test
+
+    security:
+        name: 🔒 Security Scan
+        needs: test
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+            security-events: write
+
+        steps:
+            - name: 📥 Checkout code
+              uses: actions/checkout@v4
+
+            - name: 📦 Setup pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: latest
+
+            - name: 🟢 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'pnpm'
+
+            - name: 📚 Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: 🔍 Run security audit
+              run: pnpm audit --prod
+              continue-on-error: true
+
+            - name: 🕵️ Run npm audit
+              run: npm audit --audit-level moderate
+              continue-on-error: true
+
+    compatibility:
+        name: 🔧 VS Code Compatibility
+        needs: test
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+
+        strategy:
+            matrix:
+                vscode-version: ['1.90.0', '1.95.0', 'stable', 'insiders']
+
+        steps:
+            - name: 📥 Checkout code
+              uses: actions/checkout@v4
+
+            - name: 📦 Setup pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: latest
+
+            - name: 🟢 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'pnpm'
+
+            - name: 📚 Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: 🏗️ Build for VS Code ${{ matrix.vscode-version }}
+              run: pnpm run compile
+
+            - name: 🧪 Test with VS Code ${{ matrix.vscode-version }}
+              run: |
+                  if [ "${{ matrix.vscode-version }}" != "stable" ] && [ "${{ matrix.vscode-version }}" != "insiders" ]; then
+                    export VSCODE_VERSION=${{ matrix.vscode-version }}
+                  fi
+                  xvfb-run -a pnpm test
+              env:
+                  VSCODE_VERSION: ${{ matrix.vscode-version }}
+
+    deploy:
+        name: 🚀 Deploy to Marketplace
+        needs: [security, compatibility]
+        if: github.ref == 'refs/heads/master'
+        runs-on: ubuntu-latest
+
+        environment: marketplace
+
+        permissions:
+            contents: read
+
+        steps:
+            - name: 📥 Checkout code
+              uses: actions/checkout@v4
+
+            - name: 📦 Setup pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: latest
+
+            - name: 🟢 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'pnpm'
+
+            - name: 📚 Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: 🏗️ Build for production
+              run: pnpm run package
+
+            - name: 📤 Package extension
+              run: |
+                  npx vsce package --no-dependencies
+                  ls -la *.vsix
+
+            - name: 🌐 Publish to VS Code Marketplace
+              uses: HaaLeo/publish-vscode-extension@v1
+              with:
+                  pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+                  registryUrl: https://marketplace.visualstudio.com
+
+    summary:
+        name: 📊 CI/CD Summary
+        if: always()
+        needs: [test, security, compatibility, deploy]
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+
+        steps:
+            - name: 📋 Check all jobs status
+              run: |
+                  echo "🧪 Test Results: ${{ needs.test.result }}"
+                  echo "🔒 Security Results: ${{ needs.security.result }}"
+                  echo "🔧 Compatibility Results: ${{ needs.compatibility.result }}"
+                  echo "🚀 Deploy Results: ${{ needs.deploy.result || 'skipped (not master branch)' }}"
+                  echo ""
+
+                  if [ "${{ needs.test.result }}" != "success" ]; then
+                    echo "❌ CI/CD Pipeline failed!"
+                    exit 1
+                  elif [ "${{ github.ref }}" == "refs/heads/master" ] && [ "${{ needs.deploy.result }}" != "success" ]; then
+                    echo "❌ Deployment failed!"
+                    exit 1
+                  else
+                    echo "✅ All checks passed! 🎉"
+                    if [ "${{ github.ref }}" == "refs/heads/master" ]; then
+                      echo "🚀 Successfully deployed to marketplace!"
+                    fi
+                  fi

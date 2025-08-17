@@ -13,6 +13,10 @@ export default tseslint.config(
 		ignores: [
 			'.vscode-test',
 			'out',
+			'test/mock-workspace/**',
+			'test/fixtures/**',
+			'*.d.ts',
+			'.husky/**',
 		]
 	},
 	js.configs.recommended,
