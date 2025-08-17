@@ -1,0 +1,261 @@
+name: 🐛 Bug Report
+description: Found a bug? Help us squash it! 🔨
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 🐛 Bug Report
+
+        Thanks for taking the time to report a bug! Your feedback helps make **Keypress Notifications** better for everyone. 🎯
+
+        **Before submitting:** Please search [existing issues](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues) to avoid duplicates.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 🔍 Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: |
+        Example: When I press Ctrl+C to copy text, no notification appears even though the extension is enabled.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 🔄 Steps to Reproduce
+      description: Tell us how to reproduce this bug step by step.
+      placeholder: |
+        1. Open VS Code with the extension enabled
+        2. Select some text in a file
+        3. Press Ctrl+C to copy
+        4. Expected notification doesn't appear
+      value: |
+        1. 
+        2. 
+        3. 
+        4.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: ✅ Expected Behavior
+      description: What should happen instead?
+      placeholder: |
+        Example: A notification should appear saying "Copy detected! 📄✨"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: ❌ Actual Behavior
+      description: What actually happens?
+      placeholder: |
+        Example: No notification appears, but the text is still copied to clipboard.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: vscode-version
+    attributes:
+      label: 💻 VS Code Version
+      description: What version of VS Code are you using?
+      options:
+        - VS Code Stable (latest)
+        - VS Code Insiders
+        - VS Code 1.95.x
+        - VS Code 1.94.x
+        - VS Code 1.93.x
+        - VS Code 1.92.x
+        - VS Code 1.91.x
+        - VS Code 1.90.x
+        - Other (please specify in additional context)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: 🖥️ Operating System
+      description: What operating system are you using?
+      options:
+        - Windows 11
+        - Windows 10
+        - macOS (latest)
+        - macOS (older version)
+        - Ubuntu Linux
+        - Other Linux Distribution
+        - Other (please specify)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: node-version
+    attributes:
+      label: 🟢 Node.js Version (if known)
+      description: What Node.js version are you using? (Check with `node --version`)
+      options:
+        - Node.js 22.x
+        - Node.js 20.x (LTS)
+        - Node.js 18.x
+        - Node.js 16.x
+        - Not sure / Don't know
+        - Other (please specify in additional context)
+    validations:
+      required: false
+
+  - type: input
+    id: extension-version
+    attributes:
+      label: 📦 Extension Version
+      description: What version of Keypress Notifications are you using?
+      placeholder: "e.g., 0.1.0 (you can find this in Extensions view)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: configuration
+    attributes:
+      label: ⚙️ Extension Configuration
+      description: Please share your relevant VS Code settings for this extension.
+      placeholder: |
+        Example:
+        ```json
+        {
+          "keypress-notifications.enabled": true,
+          "keypress-notifications.logLevel": "info",
+          "keypress-notifications.minimumKeys": 2,
+          "keypress-notifications.showCommandName": true,
+          "keypress-notifications.excludedCommands": []
+        }
+        ```
+      render: json
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📋 Extension Logs
+      description: |
+        If available, please include relevant logs from the extension.
+
+        **How to get logs:**
+        1. Open Command Palette (Ctrl+Shift+P)
+        2. Run "Keypress Notifications: Show Output Channel"
+        3. Copy relevant log entries
+      placeholder: |
+        Example:
+        [2024-01-15 10:30:45] INFO: Extension activated
+        [2024-01-15 10:30:46] ERROR: Failed to register command override
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: other-extensions
+    attributes:
+      label: 🔌 Other Extensions
+      description: List other extensions that might be related or conflicting.
+      placeholder: |
+        Example:
+        - Vim extension
+        - Clipboard Manager
+        - Custom keybinding extensions
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: troubleshooting
+    attributes:
+      label: 🔧 Troubleshooting Steps Tried
+      description: Please check all the troubleshooting steps you've already tried.
+      options:
+        - label: Restarted VS Code
+        - label: Disabled and re-enabled the extension
+        - label: Checked extension is enabled in settings
+        - label: Tried with no other extensions enabled
+        - label: Checked VS Code's Output panel for errors
+        - label: Updated VS Code to latest version
+        - label: Updated extension to latest version
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: 📊 Bug Frequency
+      description: How often does this bug occur?
+      options:
+        - Always (100% of the time)
+        - Often (75% of the time)
+        - Sometimes (50% of the time)
+        - Rarely (25% of the time)
+        - Only once
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: 🚨 Severity Level
+      description: How would you rate the impact of this bug?
+      options:
+        - 🔴 Critical - Extension completely broken
+        - 🟠 High - Major functionality not working
+        - 🟡 Medium - Some features not working as expected
+        - 🟢 Low - Minor annoyance or cosmetic issue
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📝 Additional Context
+      description: |
+        Add any other context about the problem here.
+
+        **Helpful information:**
+        - Screenshots or videos showing the issue
+        - Any workarounds you've found
+        - When the issue started happening
+        - Any recent changes to your setup
+      placeholder: |
+        Example:
+        - This started happening after updating VS Code to version 1.95.0
+        - The issue only occurs with TypeScript files
+        - Attached screenshot showing the expected vs actual behavior
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: ✅ Confirmation
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues to ensure this is not a duplicate
+          required: true
+        - label: I have provided all the requested information to the best of my ability
+          required: true
+        - label: I understand that incomplete bug reports may be closed without investigation
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        ## 🚀 What happens next?
+
+        1. **🏷️ Triage**: Our team will review and label your issue
+        2. **🔍 Investigation**: We'll investigate and may ask for more details
+        3. **🔧 Fix**: If confirmed, we'll work on a fix
+        4. **📦 Release**: The fix will be included in the next release
+
+        **Thank you for helping make Keypress Notifications better!** 🎯
+
+        💡 **Tip**: Give this repository a ⭐ if you find it useful!

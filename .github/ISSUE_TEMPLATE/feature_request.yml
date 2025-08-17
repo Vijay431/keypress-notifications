@@ -1,0 +1,263 @@
+name: ✨ Feature Request
+description: Got a brilliant idea? We'd love to hear it! 🚀
+title: "[Feature]: "
+labels: ["enhancement", "feature-request", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # ✨ Feature Request
+
+        Thanks for taking the time to suggest a new feature! Your ideas help make **Keypress Notifications** even more awesome. 🎯
+
+        **Before submitting:** Please search [existing issues](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues) to see if someone already suggested this feature.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: 🎯 Feature Summary
+      description: A clear and concise description of the feature you'd like to see.
+      placeholder: |
+        Example: Add customizable notification sounds for different keybinding types (copy, paste, save, etc.)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 📂 Feature Category
+      description: What type of feature is this?
+      options:
+        - 🔔 Notifications & UI
+        - ⌨️ Keybinding Detection
+        - ⚙️ Configuration & Settings
+        - 🎨 Customization & Themes
+        - 🔧 Developer Experience
+        - 📊 Analytics & Reporting
+        - 🔌 Integration & Compatibility
+        - 🚀 Performance & Optimization
+        - 📱 Accessibility
+        - 🌍 Internationalization
+        - Other (please specify in description)
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 🤔 Problem or Use Case
+      description: What problem does this feature solve? What's your use case?
+      placeholder: |
+        Example: As a developer who listens to music while coding, I often miss visual notifications. 
+        Audio feedback would help me know when important actions are performed without looking at the screen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 💡 Proposed Solution
+      description: Describe your ideal solution in detail.
+      placeholder: |
+        Example:
+        - Add a new setting "keypress-notifications.enableSounds"
+        - Provide different sound files for copy, cut, paste, save operations
+        - Allow users to upload custom sound files
+        - Include volume control slider
+        - Respect system "Do Not Disturb" mode
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 Alternatives Considered
+      description: Have you considered any alternative solutions or features?
+      placeholder: |
+        Example:
+        - Visual animation improvements instead of sounds
+        - Haptic feedback (if supported by VS Code)
+        - Integration with system notifications
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 🎚️ Priority Level
+      description: How important is this feature to you?
+      options:
+        - 🔴 Critical - I need this to use the extension effectively
+        - 🟠 High - Would significantly improve my experience
+        - 🟡 Medium - Nice to have, would be useful
+        - 🟢 Low - Small quality of life improvement
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: 🧩 Estimated Complexity
+      description: How complex do you think this feature would be to implement?
+      options:
+        - 🟢 Simple - Probably a configuration option
+        - 🟡 Medium - Might require some new code
+        - 🟠 Complex - Likely requires significant changes
+        - 🔴 Very Complex - Major architectural changes needed
+        - 🤷 Not sure - I'm not a developer
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: 🎯 Feature Scope
+      description: Check all that apply to your feature request
+      options:
+        - label: This feature would benefit all users
+        - label: This feature is for advanced/power users
+        - label: This feature is accessibility-related
+        - label: This feature requires new dependencies
+        - label: This feature changes existing behavior
+        - label: This feature is performance-sensitive
+        - label: This feature needs documentation updates
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: 🎨 Design Ideas / Mockups
+      description: |
+        If you have any design ideas, mockups, or visual examples, share them here!
+        You can drag & drop images or link to external mockups.
+      placeholder: |
+        Example:
+        - Settings UI mockup showing sound configuration panel
+        - Example of how notification would look with sound icon
+        - Reference to similar features in other VS Code extensions
+
+  - type: textarea
+    id: user-stories
+    attributes:
+      label: 👤 User Stories
+      description: Describe how different users would interact with this feature.
+      placeholder: |
+        Example:
+        - As a hearing-impaired developer, I want visual notifications to be more prominent
+        - As a streamer, I want to disable sounds during recording but keep visual feedback
+        - As a team lead, I want to see statistics on how often my team uses certain shortcuts
+      value: |
+        - As a [user type], I want [goal] so that [benefit]
+        - As a [user type], I want [goal] so that [benefit]
+
+  - type: textarea
+    id: technical-considerations
+    attributes:
+      label: 🔧 Technical Considerations
+      description: Any technical aspects you think should be considered?
+      placeholder: |
+        Example:
+        - Should work across all platforms (Windows, macOS, Linux)
+        - Consider performance impact of audio playback
+        - Need to handle cases where audio devices are not available
+        - Integration with VS Code's existing notification system
+
+  - type: checkboxes
+    id: compatibility
+    attributes:
+      label: 🔌 Compatibility Requirements
+      description: Check compatibility requirements for this feature
+      options:
+        - label: Should work on Windows
+        - label: Should work on macOS
+        - label: Should work on Linux
+        - label: Should work with VS Code Stable
+        - label: Should work with VS Code Insiders
+        - label: Should work with existing configurations
+        - label: Should not break existing functionality
+
+  - type: textarea
+    id: breaking-changes
+    attributes:
+      label: ⚠️ Breaking Changes
+      description: Would this feature introduce any breaking changes?
+      placeholder: |
+        Example:
+        - No breaking changes expected
+        - Might change default notification behavior (can be opt-in)
+        - Could affect performance for users with many notifications
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 📚 References & Examples
+      description: Links to similar features in other tools, extensions, or documentation.
+      placeholder: |
+        Example:
+        - Similar feature in IntelliJ IDEA: [link]
+        - VS Code extension with comparable functionality: [link]
+        - Relevant VS Code API documentation: [link]
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: 🤝 Contribution Interest
+      description: Would you be interested in helping implement this feature?
+      options:
+        - label: I'd like to implement this feature myself
+        - label: I can help with testing and feedback
+        - label: I can help with documentation
+        - label: I can help with design/mockups
+        - label: I'm just suggesting the idea
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📝 Additional Context
+      description: |
+        Anything else you'd like to add about this feature request?
+
+        **Consider including:**
+        - Why existing solutions don't work for you
+        - How this would fit into your workflow
+        - Any edge cases to consider
+        - Timeline if this is urgent
+      placeholder: |
+        Example:
+        - This would be especially useful during pair programming sessions
+        - Current workaround is manually checking VS Code's status bar
+        - Would love to see this in the next major release
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: ✅ Confirmation
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues to ensure this is not a duplicate
+          required: true
+        - label: I have provided sufficient detail for the development team to understand the request
+          required: true
+        - label: I understand that feature requests may take time to implement or may not be accepted
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        ## 🚀 What happens next?
+
+        1. **🏷️ Community Feedback**: Other users can upvote and comment on your idea
+        2. **🔍 Evaluation**: Our team will evaluate feasibility and priority
+        3. **📋 Planning**: If accepted, we'll add it to our development roadmap
+        4. **🔧 Development**: Implementation will begin based on priority
+        5. **📦 Release**: The feature will be included in a future release
+
+        **Thank you for helping make Keypress Notifications even better!** 🎯
+
+        💡 **Tip**: 
+        - ⭐ Star this repository to show your support!
+        - 👀 Watch for updates on your feature request
+        - 💬 Engage with the community in discussions

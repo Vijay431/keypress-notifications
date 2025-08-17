@@ -1,0 +1,383 @@
+name: 🚀 Performance Issue
+description: Report performance problems or optimization suggestions 📈
+title: "[Performance]: "
+labels: ["performance", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 🚀 Performance Issue Report
+
+        Thanks for helping us optimize **Keypress Notifications**! Performance matters for a smooth coding experience. ⚡
+
+        **Before submitting:** Please ensure this is genuinely a performance issue and not a bug in functionality.
+
+  - type: dropdown
+    id: performance-type
+    attributes:
+      label: 📊 Performance Issue Type
+      description: What type of performance issue are you experiencing?
+      options:
+        - ⏱️ Slow startup/activation time
+        - 🐌 Slow response to keybindings
+        - 💾 High memory usage
+        - 🔄 High CPU usage
+        - 🔋 Battery drain
+        - ⏳ UI/notification lag
+        - 📱 VS Code responsiveness impact
+        - 🔄 Memory leaks
+        - 🌡️ Thermal issues
+        - Other (please specify)
+    validations:
+      required: true
+
+  - type: textarea
+    id: performance-description
+    attributes:
+      label: 🔍 Performance Issue Description
+      description: Describe the performance problem you're experiencing in detail.
+      placeholder: |
+        Example: VS Code becomes noticeably slower after the extension has been running for several hours. Typing lag increases and notifications appear with a 2-3 second delay.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: 🔄 Steps to Reproduce
+      description: How can we reproduce this performance issue?
+      placeholder: |
+        1. Enable the extension with default settings
+        2. Work normally for 2-3 hours with frequent copy/paste operations
+        3. Notice typing lag starting to appear
+        4. Observe notification delays increasing over time
+      value: |
+        1. 
+        2. 
+        3. 
+        4.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-performance
+    attributes:
+      label: ⚡ Expected Performance
+      description: What performance behavior would you expect instead?
+      placeholder: |
+        Example: Extension should maintain consistent response times regardless of usage duration. Notifications should appear instantly within 100ms of keypress.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-performance
+    attributes:
+      label: 🐌 Actual Performance
+      description: What performance are you actually experiencing? Include specific measurements if possible.
+      placeholder: |
+        Example: 
+        - After 2 hours: 500ms notification delay
+        - After 4 hours: 2-3 second notification delay
+        - VS Code typing lag becomes noticeable
+        - Extension uses 150MB+ memory (measured in Task Manager)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: impact-severity
+    attributes:
+      label: 🚨 Performance Impact Severity
+      description: How severely does this performance issue affect your usage?
+      options:
+        - 🔴 Critical - Makes extension unusable
+        - 🟠 High - Significantly impacts workflow
+        - 🟡 Medium - Noticeable but manageable
+        - 🟢 Low - Minor annoyance
+    validations:
+      required: true
+
+  - type: textarea
+    id: system-specs
+    attributes:
+      label: 💻 System Specifications
+      description: |
+        Help us understand your system configuration:
+        - OS and version
+        - CPU model and specs
+        - RAM amount
+        - Storage type (SSD/HDD)
+        - VS Code version
+      placeholder: |
+        Example:
+        - OS: Windows 11 22H2
+        - CPU: Intel i7-12700K (12 cores, 20 threads)
+        - RAM: 32GB DDR4-3200
+        - Storage: NVMe SSD
+        - VS Code: 1.95.2 (Stable)
+        - Node.js: 20.10.0
+    validations:
+      required: true
+
+  - type: input
+    id: extension-version
+    attributes:
+      label: 📦 Extension Version
+      description: What version of Keypress Notifications are you using?
+      placeholder: "e.g., 0.1.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: configuration
+    attributes:
+      label: ⚙️ Extension Configuration
+      description: Share your extension settings that might impact performance.
+      placeholder: |
+        ```json
+        {
+          "keypress-notifications.enabled": true,
+          "keypress-notifications.logLevel": "debug",
+          "keypress-notifications.minimumKeys": 1,
+          "keypress-notifications.showCommandName": true,
+          "keypress-notifications.excludedCommands": []
+        }
+        ```
+      render: json
+    validations:
+      required: false
+
+  - type: textarea
+    id: usage-patterns
+    attributes:
+      label: 📈 Usage Patterns
+      description: |
+        Describe your typical usage that leads to the performance issue:
+        - How often do you trigger notifications?
+        - What types of operations do you perform?
+        - How long are your coding sessions?
+      placeholder: |
+        Example:
+        - Heavy copy/paste workflow (50-100 operations per hour)
+        - Long coding sessions (6-8 hours continuous)
+        - Multiple VS Code windows open simultaneously
+        - Working with large files (>10MB)
+    validations:
+      required: true
+
+  - type: textarea
+    id: other-extensions
+    attributes:
+      label: 🔌 Other Extensions
+      description: List other extensions that might interact or compete for resources.
+      placeholder: |
+        Example:
+        - Vim extension (heavy keybinding usage)
+        - GitLens (performance-intensive)
+        - Auto Save extension
+        - Copilot (AI processing)
+
+        Total extensions installed: ~25
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: performance-tools
+    attributes:
+      label: 🔧 Performance Measurement Tools Used
+      description: Have you used any tools to measure the performance issue? (Check all that apply)
+      options:
+        - label: VS Code Developer Tools (Help > Toggle Developer Tools)
+        - label: Task Manager / Activity Monitor
+        - label: Process Monitor (Windows)
+        - label: Performance Monitor (Windows)
+        - label: htop / top (Linux/macOS)
+        - label: VS Code Performance Profiler
+        - label: Browser dev tools for extension host
+        - label: Custom timing measurements
+        - label: Memory profiler tools
+        - label: None / Visual observation only
+
+  - type: textarea
+    id: measurements
+    attributes:
+      label: 📊 Performance Measurements
+      description: |
+        If you have specific measurements, please share them:
+        - Memory usage over time
+        - CPU usage patterns
+        - Response time measurements
+        - Screenshots of profiler data
+      placeholder: |
+        Example:
+        Memory usage:
+        - Start: 45MB
+        - After 1 hour: 87MB
+        - After 3 hours: 156MB
+        - After restart: back to 45MB
+
+        CPU usage: Spikes to 15-20% during notifications (normally <1%)
+      render: text
+
+  - type: dropdown
+    id: when-occurs
+    attributes:
+      label: ⏰ When Does the Issue Occur?
+      description: When do you notice the performance problem?
+      options:
+        - Immediately after activation
+        - After short usage (< 1 hour)
+        - After extended usage (1-4 hours)
+        - After very long usage (> 4 hours)
+        - Only during high activity periods
+        - Randomly/unpredictably
+        - During specific operations
+        - After VS Code has been running for a long time
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: troubleshooting
+    attributes:
+      label: 🔧 Troubleshooting Steps Tried
+      description: What steps have you already taken to address this issue?
+      options:
+        - label: Restarted VS Code
+        - label: Disabled and re-enabled the extension
+        - label: Tried with minimal configuration
+        - label: Tested with other extensions disabled
+        - label: Checked VS Code's performance monitor
+        - label: Updated VS Code to latest version
+        - label: Updated extension to latest version
+        - label: Monitored system resources
+        - label: Checked extension logs for errors
+
+  - type: textarea
+    id: workarounds
+    attributes:
+      label: 🔄 Workarounds Found
+      description: Have you found any temporary solutions or workarounds?
+      placeholder: |
+        Example:
+        - Restarting VS Code every 2 hours helps
+        - Disabling the extension during large file operations
+        - Setting logLevel to "error" instead of "debug" improves performance
+        - Reducing minimumKeys setting helped slightly
+
+  - type: textarea
+    id: environment-factors
+    attributes:
+      label: 🌍 Environmental Factors
+      description: |
+        Any environmental factors that might contribute to the performance issue:
+        - System load
+        - Other applications running
+        - Network activity
+        - File system type/location
+      placeholder: |
+        Example:
+        - Performance degrades when running Docker containers
+        - Issue more prominent on network drives
+        - Problem worse when system memory usage > 80%
+        - Occurs more frequently during Windows updates
+
+  - type: textarea
+    id: comparison
+    attributes:
+      label: 📊 Performance Comparison
+      description: |
+        How does performance compare to:
+        - When the extension is disabled
+        - Previous versions of the extension
+        - Similar extensions
+        - Fresh VS Code installation
+      placeholder: |
+        Example:
+        - VS Code starts 2-3 seconds faster with extension disabled
+        - Previous version 0.0.9 didn't have this issue
+        - Similar notification extensions perform better
+        - Fresh install shows same performance problems
+
+  - type: checkboxes
+    id: performance-goals
+    attributes:
+      label: 🎯 Performance Expectations
+      description: What performance characteristics would you consider acceptable?
+      options:
+        - label: Instant notification response (< 100ms)
+        - label: Minimal memory footprint (< 50MB)
+        - label: Negligible CPU usage when idle
+        - label: No impact on VS Code startup time
+        - label: Stable performance over long sessions
+        - label: No memory leaks over time
+        - label: Graceful degradation under load
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📝 Additional Context
+      description: |
+        Any other information that might help us optimize performance:
+        - Specific use cases
+        - Performance-critical scenarios
+        - Business impact
+        - Timeline for resolution
+      placeholder: |
+        Example:
+        - This affects our team's pair programming sessions
+        - Performance critical during live coding demos
+        - Issue reported by multiple team members
+        - Would like resolution before next sprint planning
+
+  - type: checkboxes
+    id: testing-willingness
+    attributes:
+      label: 🧪 Testing Assistance
+      description: Would you be willing to help test performance improvements?
+      options:
+        - label: I can test development versions
+        - label: I can provide detailed performance measurements
+        - label: I can test on different system configurations
+        - label: I can help with performance regression testing
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: ✅ Confirmation
+      description: Please confirm the following
+      options:
+        - label: I have verified this is a performance issue, not a functional bug
+          required: true
+        - label: I have provided specific measurements or observations
+          required: true
+        - label: I understand that performance optimizations may take time to implement
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        ## 🚀 What happens next?
+
+        1. **🔍 Analysis**: We'll analyze the performance issue and reproduction steps
+        2. **📊 Profiling**: Our team will profile the extension under similar conditions
+        3. **🎯 Optimization**: Identify and implement performance improvements
+        4. **🧪 Testing**: Test fixes with various configurations and usage patterns
+        5. **📦 Release**: Performance improvements included in future releases
+
+        **Thank you for helping us make Keypress Notifications faster!** ⚡
+
+        💡 **Performance Tips:**
+        - 🎯 Set appropriate log levels (avoid "debug" in production)
+        - 🚫 Use excludedCommands to reduce notification overhead
+        - 🔄 Restart VS Code periodically during very long sessions
+        - 📊 Monitor extension performance in VS Code's built-in tools
+
+        ---
+
+        📈 **Performance Resources:**
+        - [VS Code Performance Guide](https://code.visualstudio.com/docs/getstarted/performance)
+        - [Extension Performance Best Practices](https://code.visualstudio.com/api/advanced-topics/extension-host)
+        - [How to Profile Extensions](https://code.visualstudio.com/api/advanced-topics/extension-host#_performance)

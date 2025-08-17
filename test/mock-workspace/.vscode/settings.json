@@ -1,0 +1,8 @@
+{
+  "keypress-notifications.enabled": true,
+  "keypress-notifications.logLevel": "debug",
+  "editor.wordWrap": "on",
+  "editor.minimap.enabled": true,
+  "files.autoSave": "off",
+  "workbench.startupEditor": "readme"
+}
