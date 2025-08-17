@@ -18,7 +18,7 @@
 		"url": "https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues"
 	},
 	"engines": {
-		"vscode": "^1.90.0",
+		"vscode": "^1.102.0",
 		"node": ">=20.0.0"
 	},
 	"categories": [
@@ -139,6 +139,7 @@
 		"@types/vscode": "^1.102.0",
 		"@vscode/test-cli": "^0.0.11",
 		"@vscode/test-electron": "^2.5.2",
+		"@vscode/vsce": "^3.2.0",
 		"esbuild": "^0.25.9",
 		"eslint": "^9.33.0",
 		"fast-glob": "^3.3.3",
