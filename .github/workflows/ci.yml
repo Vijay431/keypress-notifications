@@ -62,7 +62,7 @@ jobs:
         run: npm run lint
 
       - name: Check Code Formatting
-        run: npm run format -- --check
+        run: npm run format:check
 
   # Security audit job - runs on all branches for security validation
   security:

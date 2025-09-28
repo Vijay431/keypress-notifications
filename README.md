@@ -8,7 +8,7 @@
 [![VS Code](https://img.shields.io/badge/VS%20Code-1.102.0+-blue.svg?style=flat-square&logo=visual-studio-code)](https://code.visualstudio.com/)
 [![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg?style=flat-square)](#)
 
-[🐛 Report Bug](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues) • [💡 Request Feature](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues)
+[🐛 Report Bug](https://github.com/Vijay431/keypress-notifications/issues) • [💡 Request Feature](https://github.com/Vijay431/keypress-notifications/issues)
 
 </div>
 
@@ -142,7 +142,7 @@ npm run test:manual     # Launch extension for manual testing
 
 ## 🐛 Issues & Support
 
-Found a bug or have a feature request? Please [create an issue](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues).
+Found a bug or have a feature request? Please [create an issue](https://github.com/Vijay431/keypress-notifications/issues).
 
 ## 📄 License
 

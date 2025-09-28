@@ -12,7 +12,7 @@ Welcome to the comprehensive documentation for **Keypress Notifications** - the 
 
 {: .fs-6 .fw-300 }
 
-[Get started now](#-quick-start){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 } [View on GitHub](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension){: .btn .fs-5 .mb-4 .mb-md-0 }
+[Get started now](#-quick-start){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 } [View on GitHub](https://github.com/Vijay431/keypress-notifications){: .btn .fs-5 .mb-4 .mb-md-0 }
 
 ---
 
@@ -153,9 +153,9 @@ The extension is lightweight and designed to have minimal impact on VS Code perf
 
 We welcome contributions! Check out our guides:
 
-- **🚀 [Contributing Guide](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/blob/master/.github/CONTRIBUTING.md)**
-- **📋 [Code of Conduct](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/blob/master/.github/CODE_OF_CONDUCT.md)**
-- **🔒 [Security Policy](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/blob/master/.github/SECURITY.md)**
+- **🚀 [Contributing Guide](https://github.com/Vijay431/keypress-notifications/blob/master/.github/CONTRIBUTING.md)**
+- **📋 [Code of Conduct](https://github.com/Vijay431/keypress-notifications/blob/master/.github/CODE_OF_CONDUCT.md)**
+- **🔒 [Security Policy](https://github.com/Vijay431/keypress-notifications/blob/master/.github/SECURITY.md)**
 
 ---
 
@@ -196,7 +196,7 @@ Ready to get started? Here's your path forward:
 
 **Made with ❤️ for the VS Code community**
 
-[⭐ Star on GitHub](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension) • [📝 Leave a Review](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications) • [🐦 Share](https://twitter.com/intent/tweet?text=Check%20out%20Keypress%20Notifications%20for%20VS%20Code!)
+[⭐ Star on GitHub](https://github.com/Vijay431/keypress-notifications) • [📝 Leave a Review](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications) • [🐦 Share](https://twitter.com/intent/tweet?text=Check%20out%20Keypress%20Notifications%20for%20VS%20Code!)
 
 _Happy coding!_ 🎉
 

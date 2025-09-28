@@ -1,7 +1,7 @@
 name: 🐛 Bug Report
 description: Found a bug? Help us squash it! 🔨
-title: '[Bug]: '
-labels: ['bug', 'needs-triage']
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
 assignees: []
 
 body:
@@ -12,7 +12,7 @@ body:
 
         Thanks for taking the time to report a bug! Your feedback helps make **Keypress Notifications** better for everyone. 🎯
 
-        **Before submitting:** Please search [existing issues](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues) to avoid duplicates.
+        **Before submitting:** Please search [existing issues](https://github.com/Vijay431/keypress-notifications/issues) to avoid duplicates.
 
   - type: textarea
     id: description
@@ -35,9 +35,9 @@ body:
         3. Press Ctrl+C to copy
         4. Expected notification doesn't appear
       value: |
-        1. 
-        2. 
-        3. 
+        1.
+        2.
+        3.
         4.
     validations:
       required: true
@@ -115,7 +115,7 @@ body:
     attributes:
       label: 📦 Extension Version
       description: What version of Keypress Notifications are you using?
-      placeholder: 'e.g., 0.1.0 (you can find this in Extensions view)'
+      placeholder: "e.g., 0.1.0 (you can find this in Extensions view)"
     validations:
       required: true
 

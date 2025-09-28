@@ -138,7 +138,7 @@ RUN code --install-extension VijayGangatharan.keypress-notifications
 
 If you need to install from a VSIX file:
 
-1. **Download VSIX** from [GitHub Releases](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/releases)
+1. **Download VSIX** from [GitHub Releases](https://github.com/Vijay431/keypress-notifications/releases)
 2. **Open Command Palette** (`Ctrl+Shift+P`)
 3. **Run:** `Extensions: Install from VSIX...`
 4. **Select** the downloaded VSIX file
@@ -246,7 +246,7 @@ You'll be notified of updates via:
 If installation issues persist:
 
 1. **Check our** [Troubleshooting Guide](troubleshooting)
-2. **Search** [GitHub Issues](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues)
+2. **Search** [GitHub Issues](https://github.com/Vijay431/keypress-notifications/issues)
 3. **Create new issue** with:
    - OS and VS Code version
    - Installation method attempted

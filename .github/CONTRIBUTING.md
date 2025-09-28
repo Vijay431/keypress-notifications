@@ -32,8 +32,8 @@ This project and everyone participating in it is governed by our Code of Conduct
 
 ```bash
 # Clone the repository
-git clone https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension.git
-cd vscode-keypress_snackbar_notification-extension
+git clone https://github.com/Vijay431/keypress-notifications.git
+cd keypress-notifications
 
 # Install dependencies
 npm install
@@ -55,8 +55,8 @@ npm run test:dev
 1. Fork the repository on GitHub
 2. Clone your fork locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/vscode-keypress_snackbar_notification-extension.git
-   cd vscode-keypress_snackbar_notification-extension
+   git clone https://github.com/YOUR_USERNAME/keypress-notifications.git
+   cd keypress-notifications
    ```
 
 ### 2. Install Dependencies
@@ -358,6 +358,6 @@ Thank you for taking the time to contribute! Every contribution, no matter how s
 
 <div align="center">
 
-**Questions?** Reach out in [GitHub Discussions](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/discussions) or email [vijayanand431@gmail.com](mailto:vijayanand431@gmail.com)
+**Questions?** Reach out in [GitHub Discussions](https://github.com/Vijay431/keypress-notifications/discussions) or email [vijayanand431@gmail.com](mailto:vijayanand431@gmail.com)
 
 </div>

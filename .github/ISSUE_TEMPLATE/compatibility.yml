@@ -1,7 +1,7 @@
 name: 🔧 Compatibility Issue
 description: Report compatibility problems with VS Code, Node.js, or other software 🔗
-title: '[Compatibility]: '
-labels: ['compatibility', 'needs-triage']
+title: "[Compatibility]: "
+labels: ["compatibility", "needs-triage"]
 assignees: []
 
 body:
@@ -12,7 +12,7 @@ body:
 
         Thanks for reporting a compatibility issue! We strive to make **Keypress Notifications** work seamlessly across all supported environments. 🌍
 
-        **Before submitting:** Please check our [compatibility matrix](https://vijay431.github.io/vscode-keypress_snackbar_notification-extension/#compatibility) to see if your configuration is officially supported.
+        **Before submitting:** Please check our [compatibility matrix](https://vijay431.github.io/keypress-notifications/#compatibility) to see if your configuration is officially supported.
 
   - type: dropdown
     id: compatibility-type
@@ -71,7 +71,7 @@ body:
     attributes:
       label: 🔢 Exact VS Code Version
       description: What's the exact VS Code version? (Help > About)
-      placeholder: 'e.g., 1.95.2 (commit 4710f68) or 1.96.0-insider (commit abc123)'
+      placeholder: "e.g., 1.95.2 (commit 4710f68) or 1.96.0-insider (commit abc123)"
     validations:
       required: true
 
@@ -108,7 +108,7 @@ body:
     attributes:
       label: 🔢 Exact OS Version & Architecture
       description: Provide exact OS version and architecture (x64, ARM64, etc.)
-      placeholder: 'e.g., Windows 11 22H2 (Build 22621.2715) x64, macOS 14.2.1 ARM64, Ubuntu 22.04.3 LTS x86_64'
+      placeholder: "e.g., Windows 11 22H2 (Build 22621.2715) x64, macOS 14.2.1 ARM64, Ubuntu 22.04.3 LTS x86_64"
     validations:
       required: true
 
@@ -136,7 +136,7 @@ body:
     attributes:
       label: 🔢 Exact Node.js Version
       description: What's the exact Node.js version if known?
-      placeholder: 'e.g., v20.10.0, v22.1.0'
+      placeholder: "e.g., v20.10.0, v22.1.0"
     validations:
       required: false
 
@@ -145,7 +145,7 @@ body:
     attributes:
       label: 📦 Extension Version
       description: What version of Keypress Notifications?
-      placeholder: 'e.g., 0.1.0'
+      placeholder: "e.g., 0.1.0"
     validations:
       required: true
 
@@ -161,9 +161,9 @@ body:
         4. Attempt to activate extension
         5. Observe activation failure
       value: |
-        1. 
-        2. 
-        3. 
+        1.
+        2.
+        3.
         4.
     validations:
       required: true
@@ -204,7 +204,7 @@ body:
       placeholder: |
         Example:
         ```
-        [2024-01-15 10:30:45] ERROR in Extension Host: 
+        [2024-01-15 10:30:45] ERROR in Extension Host:
         Error: Cannot find module '@vscode/vsce'
         at Function.Module._resolveFilename (node:internal/modules/cjs/loader:1028:15)
         at Function.Module._load (node:internal/modules/cjs/loader:873:27)
@@ -405,7 +405,7 @@ body:
         ---
 
         🔗 **Compatibility Resources:**
-        - [Official Compatibility Matrix](https://vijay431.github.io/vscode-keypress_snackbar_notification-extension/#compatibility)
-        - [Supported VS Code Versions](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension#requirements)
-        - [Node.js Compatibility Testing](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/actions/workflows/node-compatibility.yml)
-        - [Platform-Specific Issues](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/labels/compatibility)
+        - [Official Compatibility Matrix](https://vijay431.github.io/keypress-notifications/#compatibility)
+        - [Supported VS Code Versions](https://github.com/Vijay431/keypress-notifications#requirements)
+        - [Node.js Compatibility Testing](https://github.com/Vijay431/keypress-notifications/actions/workflows/node-compatibility.yml)
+        - [Platform-Specific Issues](https://github.com/Vijay431/keypress-notifications/labels/compatibility)

@@ -1,7 +1,7 @@
 name: ✨ Feature Request
 description: Got a brilliant idea? We'd love to hear it! 🚀
-title: '[Feature]: '
-labels: ['enhancement', 'feature-request', 'needs-triage']
+title: "[Feature]: "
+labels: ["enhancement", "feature-request", "needs-triage"]
 assignees: []
 
 body:
@@ -12,7 +12,7 @@ body:
 
         Thanks for taking the time to suggest a new feature! Your ideas help make **Keypress Notifications** even more awesome. 🎯
 
-        **Before submitting:** Please search [existing issues](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues) to see if someone already suggested this feature.
+        **Before submitting:** Please search [existing issues](https://github.com/Vijay431/keypress-notifications/issues) to see if someone already suggested this feature.
 
   - type: textarea
     id: summary
@@ -48,7 +48,7 @@ body:
       label: 🤔 Problem or Use Case
       description: What problem does this feature solve? What's your use case?
       placeholder: |
-        Example: As a developer who listens to music while coding, I often miss visual notifications. 
+        Example: As a developer who listens to music while coding, I often miss visual notifications.
         Audio feedback would help me know when important actions are performed without looking at the screen.
     validations:
       required: true
@@ -254,7 +254,7 @@ body:
 
         **Thank you for helping make Keypress Notifications even better!** 🎯
 
-        💡 **Tip**: 
+        💡 **Tip**:
         - ⭐ Star this repository to show your support!
         - 👀 Watch for updates on your feature request
         - 💬 Engage with the community in discussions

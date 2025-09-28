@@ -12,12 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension.git"
+    "url": "https://github.com/Vijay431/keypress-notifications.git"
   },
   "bugs": {
-    "url": "https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues"
+    "url": "https://github.com/Vijay431/keypress-notifications/issues"
   },
-  "homepage": "https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension#readme",
+  "homepage": "https://github.com/Vijay431/keypress-notifications#readme",
   "keywords": [
     "vscode",
     "extension",
@@ -105,7 +105,8 @@
     "test:minimal": "npm test",
     "test:clean": "rm -rf .vscode-test/minimal-extension .vscode-test/user-data-isolated .vscode-test/user-data-dev",
     "create-minimal": "tsx scripts/create-minimal-extension.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
