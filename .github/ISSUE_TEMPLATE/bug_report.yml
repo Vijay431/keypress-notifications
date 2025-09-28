@@ -66,16 +66,15 @@ body:
     id: vscode-version
     attributes:
       label: 💻 VS Code Version
-      description: What version of VS Code are you using?
+      description: What version of VS Code are you using? (Extension requires 1.102.0+)
       options:
         - VS Code Stable (latest)
         - VS Code Insiders
-        - VS Code 1.95.x
-        - VS Code 1.94.x
-        - VS Code 1.93.x
-        - VS Code 1.92.x
-        - VS Code 1.91.x
-        - VS Code 1.90.x
+        - VS Code 1.105.x
+        - VS Code 1.104.x
+        - VS Code 1.103.x
+        - VS Code 1.102.x
+        - Older than 1.102.x (not supported)
         - Other (please specify in additional context)
     validations:
       required: true
@@ -100,13 +99,13 @@ body:
     id: node-version
     attributes:
       label: 🟢 Node.js Version (if known)
-      description: What Node.js version are you using? (Check with `node --version`)
+      description: What Node.js version are you using? (Only needed for development, check with `node --version`)
       options:
         - Node.js 22.x
         - Node.js 20.x (LTS)
         - Node.js 18.x
         - Node.js 16.x
-        - Not sure / Don't know
+        - Not sure / Don't know / Not applicable
         - Other (please specify in additional context)
     validations:
       required: false
@@ -130,10 +129,7 @@ body:
         ```json
         {
           "keypress-notifications.enabled": true,
-          "keypress-notifications.logLevel": "info",
-          "keypress-notifications.minimumKeys": 2,
-          "keypress-notifications.showCommandName": true,
-          "keypress-notifications.excludedCommands": []
+          "keypress-notifications.minimumKeys": 2
         }
         ```
       render: json
@@ -150,7 +146,7 @@ body:
         **How to get logs:**
         1. Open Command Palette (Ctrl+Shift+P)
         2. Run "Keypress Notifications: Show Output Channel"
-        3. Copy relevant log entries
+        3. Copy any error messages or relevant information
       placeholder: |
         Example:
         [2024-01-15 10:30:45] INFO: Extension activated

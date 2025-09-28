@@ -34,8 +34,8 @@ When reporting a security vulnerability, please include:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 0.1.x   | ✅ Yes            |
-| 0.0.x   | ❌ No             |
+| 1.0.x   | ✅ Yes            |
+| 0.x.x   | ❌ No             |
 
 ## 🛡️ Security Measures
 
@@ -66,15 +66,15 @@ When reporting a security vulnerability, please include:
 ### ⚠️ Potential Risk Areas
 
 1. **Command Interception**: Extension intercepts VS Code commands
-   - **Mitigation**: Only monitors specific clipboard commands
-   - **Scope**: Limited to built-in VS Code clipboard operations
+   - **Mitigation**: Only monitors common multi-key commands
+   - **Scope**: Limited to built-in VS Code operations (clipboard, navigation, file ops)
 
 2. **Configuration Storage**: Extension stores user preferences
    - **Mitigation**: Uses VS Code's secure configuration system
    - **Scope**: Only extension settings, no sensitive data
 
-3. **Logging**: Extension may log debugging information
-   - **Mitigation**: Configurable log levels, no sensitive data logged
+3. **Logging**: Extension may log basic debugging information
+   - **Mitigation**: No sensitive data logged, basic operation info only
    - **Scope**: Local VS Code output channel only
 
 ### ✅ Security Features
@@ -171,7 +171,7 @@ While we don't offer monetary rewards, we provide:
 
 This security policy may be updated from time to time. Check this document regularly for the latest security information.
 
-**Last Updated**: September 28, 2025
+**Last Updated**: September 28, 2024
 
 ---
 

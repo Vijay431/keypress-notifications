@@ -18,15 +18,14 @@ Welcome to the comprehensive documentation for **Keypress Notifications** - the 
 
 ## 🎯 What is Keypress Notifications?
 
-Keypress Notifications is an enterprise-grade VS Code extension that displays visual notifications whenever you execute multi-key combinations. Perfect for visual learners, heavy keybinding users, and anyone who wants instant confirmation that their shortcuts are working.
+Keypress Notifications is a simple VS Code extension that displays visual notifications when you execute common multi-key combinations. Perfect for visual learners and anyone who wants instant confirmation that their shortcuts are working.
 
 ### ✨ Key Features
 
-- **🔔 Instant Feedback**: Visual notifications for all multi-key combinations
-- **⚙️ Highly Configurable**: Customize which commands to show/hide
-- **🏢 Enterprise Ready**: Built with security, performance, and reliability in mind
-- **🔍 Smart Detection**: Intelligent filtering for noise reduction
-- **🎨 Beautiful UI**: Clean, unobtrusive notifications that match VS Code's theme
+- **🔔 Instant Feedback**: Visual notifications for common multi-key combinations
+- **⚙️ Simple Configuration**: Basic settings for enabling/disabling notifications
+- **🔍 Smart Detection**: Configurable minimum key count for filtering
+- **🎨 Clean UI**: Unobtrusive notifications using VS Code's built-in system
 
 ---
 
@@ -49,9 +48,9 @@ Or install through VS Code:
 
 No setup required! Start using your keybindings and see the notifications:
 
-- Press `Ctrl+C` → See "Copy detected! 📄✨"
-- Press `Ctrl+Shift+P` → See "Command Palette detected! 🎯🚀"
-- Press `Ctrl+K S` → See "Save All detected! 💾🔥"
+- Press `Ctrl+C` → See "Ctrl+C detected"
+- Press `Ctrl+Shift+P` → See "Ctrl+Shift+P detected"
+- Press `Ctrl+K S` → See "Ctrl+K S detected"
 
 ### Basic Configuration
 
@@ -60,8 +59,7 @@ Access settings through VS Code preferences:
 ```json
 {
   "keypress-notifications.enabled": true,
-  "keypress-notifications.minimumKeys": 2,
-  "keypress-notifications.showCommandName": true
+  "keypress-notifications.minimumKeys": 2
 }
 ```
 
@@ -128,28 +126,16 @@ Access settings through VS Code preferences:
 
 ---
 
-## 🏢 Enterprise Features
+## 🏗️ How It Works
 
-### 🔒 Security & Compliance
+The extension works by detecting common multi-key commands and showing simple notifications using VS Code's built-in notification system. It tracks commands like:
 
-- **Zero Vulnerabilities**: Clean security audit across all dependencies
-- **No Data Collection**: Complete privacy with zero telemetry
-- **Secure Architecture**: Sandboxed execution with minimal permissions
-- **Automated Security Scanning**: Continuous monitoring for vulnerabilities
+- **Clipboard operations**: Copy (Ctrl+C), Cut (Ctrl+X), Paste (Ctrl+V)
+- **Navigation**: Command Palette (Ctrl+Shift+P), Quick Open (Ctrl+P)
+- **File operations**: Save (Ctrl+S), Save All (Ctrl+K S)
+- **View operations**: Toggle Sidebar (Ctrl+B), Toggle Terminal (Ctrl+`)
 
-### 📊 Quality Assurance
-
-- **95%+ Test Coverage**: Comprehensive automated testing
-- **Cross-Platform Support**: Windows, macOS, Linux compatibility
-- **Multi-Node.js Support**: Tested across Node.js 16, 18, 20, 22+
-- **Performance Optimized**: Minimal impact on VS Code performance
-
-### 🚀 DevOps Integration
-
-- **CI/CD Ready**: Automated deployment and quality gates
-- **Monitoring & Logging**: Enterprise observability features
-- **Configuration Management**: Centralized settings deployment
-- **Update Management**: Controlled rollout capabilities
+The extension is lightweight and designed to have minimal impact on VS Code performance.
 
 ---
 
@@ -178,12 +164,12 @@ We welcome contributions! Check out our guides:
 
 | Keybinding | Command | Notification |
 |------------|---------|--------------|
-| `Ctrl+C` | Copy | "Copy detected! 📄✨" |
-| `Ctrl+X` | Cut | "Cut detected! ✂️💫" |
-| `Ctrl+V` | Paste | "Paste detected! 📋🎯" |
-| `Ctrl+K S` | Save All | "Save All detected! 💾🔥" |
-| `Ctrl+Shift+P` | Command Palette | "Command Palette detected! 🎯🚀" |
-| `Ctrl+Shift+F` | Find in Files | "Find in Files detected! 🔍⚡" |
+| `Ctrl+C` | Copy | "Ctrl+C detected" |
+| `Ctrl+X` | Cut | "Ctrl+X detected" |
+| `Ctrl+V` | Paste | "Ctrl+V detected" |
+| `Ctrl+K S` | Save All | "Ctrl+K S detected" |
+| `Ctrl+Shift+P` | Command Palette | "Ctrl+Shift+P detected" |
+| `Ctrl+Shift+F` | Find in Files | "Ctrl+Shift+F detected" |
 
 ### ⚙️ Configuration Quick Reference
 
@@ -191,9 +177,6 @@ We welcome contributions! Check out our guides:
 |---------|------|---------|-------------|
 | `enabled` | boolean | `true` | Enable/disable notifications |
 | `minimumKeys` | number | `2` | Minimum keys to trigger notification |
-| `showCommandName` | boolean | `true` | Show command name in notification |
-| `excludedCommands` | array | `[]` | Commands to exclude from notifications |
-| `logLevel` | string | `"info"` | Logging verbosity level |
 
 ---
 
@@ -202,8 +185,8 @@ We welcome contributions! Check out our guides:
 Ready to get started? Here's your path forward:
 
 1. **📦 [Install the Extension](guides/installation)** - Get up and running in 30 seconds
-2. **⚙️ [Configure Your Settings](guides/configuration)** - Customize to your workflow
-3. **🎯 [Explore Examples](examples/basic-usage)** - See real-world usage scenarios
+2. **⚙️ [Configure Your Settings](guides/configuration)** - Customize the basic settings
+3. **🎯 [Explore Examples](examples/basic-usage)** - See how it works
 4. **🏗️ [Join Development](guides/development)** - Contribute to the project
 
 ---

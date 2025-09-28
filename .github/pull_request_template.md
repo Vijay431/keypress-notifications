@@ -32,8 +32,7 @@
 - [ ] Manual testing performed
 - [ ] Automated tests added/updated
 - [ ] Cross-platform testing (Windows/macOS/Linux)
-- [ ] Node.js compatibility testing (16, 18, 20, 22)
-- [ ] VS Code version compatibility testing
+- [ ] VS Code version compatibility testing (1.102.0+)
 - [ ] Performance impact assessment
 
 ### 🔧 Manual Testing Steps
@@ -45,14 +44,14 @@
 ### 📊 Test Results
 <!-- Provide test results, screenshots, or performance measurements -->
 
-## 🔄 Node.js Compatibility
-<!-- Check all Node.js versions this change has been tested with -->
+## 🔄 Node.js Compatibility (for development)
+<!-- Check Node.js versions if making build/development changes -->
 
 - [ ] ✅ Node.js 16.x
-- [ ] ✅ Node.js 18.x  
+- [ ] ✅ Node.js 18.x
 - [ ] ✅ Node.js 20.x (LTS)
 - [ ] ✅ Node.js 22.x
-- [ ] ✅ Node.js latest
+- [ ] N/A - No development changes
 
 ## 💻 Platform Testing
 <!-- Check all platforms this change has been tested on -->
@@ -74,9 +73,10 @@
 
 ### 📁 Files Modified
 
-- `src/` -
+- `src/extension.ts` -
+- `src/services/KeypressService.ts` -
+- `src/types/` -
 - `test/` -
-- `docs/` -
 - Other:
 
 ## ⚠️ Breaking Changes

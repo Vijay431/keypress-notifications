@@ -23,9 +23,9 @@ This project and everyone participating in it is governed by our Code of Conduct
 
 ### Prerequisites
 
-- **Node.js**: Version 20.0.0 or higher
+- **Node.js**: Version 16.0.0 or higher
 - **npm**: Latest version (comes with Node.js)
-- **VS Code**: Version 1.90.0 or higher
+- **VS Code**: Version 1.102.0 or higher
 - **Git**: For version control
 
 ### Quick Setup
@@ -206,49 +206,44 @@ Use our feature request template and include:
 
 ### Architecture
 
-Our extension follows a modular architecture:
+Our extension follows a simple, focused architecture:
 
 ```
 src/
-├── extension.ts           # Entry point
-├── managers/             # High-level coordination
-├── services/             # Core business logic
-├── utils/               # Shared utilities
-└── types/               # TypeScript definitions
+├── extension.ts           # Entry point and activation logic
+├── services/
+│   └── KeypressService.ts # Core keybinding detection service
+├── utils/                 # Shared utilities (logger)
+└── types/                 # TypeScript definitions
 ```
 
 ### Key Principles
 
-1. **Separation of Concerns**: Each module has a single responsibility
-2. **Dependency Injection**: Services are injected, not imported directly
-3. **Error Handling**: Graceful degradation and proper error boundaries
-4. **Performance**: Minimal impact on VS Code performance
-5. **Security**: No sensitive data exposure or injection vulnerabilities
+1. **Simplicity**: Keep the codebase focused and easy to understand
+2. **Error Handling**: Graceful degradation with proper error boundaries
+3. **Performance**: Minimal impact on VS Code performance
+4. **Type Safety**: Full TypeScript coverage with strict mode
 
 ### Adding New Features
 
-1. **Design First**: Consider architecture and integration points
-2. **Service Layer**: Implement core logic in services
-3. **Manager Integration**: Wire up through ExtensionManager
-4. **Configuration**: Add settings if user-configurable
-5. **Testing**: Write comprehensive tests
-6. **Documentation**: Update relevant docs
+1. **Keep It Simple**: Consider if the feature aligns with the extension's focused purpose
+2. **Core Service**: Most logic should go in KeypressService.ts
+3. **Configuration**: Add settings to package.json if user-configurable
+4. **Testing**: Write tests to cover new functionality
+5. **Documentation**: Update relevant docs
 
 ## 🧪 Testing
 
 ### Test Types
 
 - **E2E Tests**: Full extension testing with VS Code host
-- **Unit Tests**: Individual component testing
-- **Integration Tests**: Service interaction testing
 - **Manual Tests**: Human verification with mock workspace
 
 ### Writing Tests
 
 ```bash
-# Run specific test types
-npm run test:e2e         # End-to-end tests
-npm run test:unit        # Unit tests (when available)
+# Run tests
+npm test                 # End-to-end tests
 npm run test:manual      # Manual testing environment
 ```
 
@@ -271,7 +266,7 @@ npm run test:manual      # Manual testing environment
 
 ### ESLint Configuration
 
-We use enterprise-grade ESLint rules:
+We use modern ESLint flat config with TypeScript rules:
 
 ```bash
 # Check linting
