@@ -1,4 +1,4 @@
-import { Disposable, commands, window, workspace, env } from 'vscode';
+import { Disposable, commands, window, workspace } from 'vscode';
 
 /**
  * Simplified service for detecting multi-key command executions and showing notifications.

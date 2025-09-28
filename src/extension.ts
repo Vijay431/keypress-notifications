@@ -62,7 +62,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
     await commands.executeCommand('setContext', 'keypress-notifications.enabled', isEnabled);
 
     // Show activation message in development mode
-    if (process.env['NODE_ENV'] === 'development' && isEnabled) {
+    if (process.env['NODE_ENV'] === 'development') {
       window.showInformationMessage('Keypress Notifications is now active');
     }
   } catch (error) {
