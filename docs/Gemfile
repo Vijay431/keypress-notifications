@@ -1,0 +1,12 @@
+source "https://rubygems.org"
+
+# GitHub Pages gem
+gem "github-pages", group: :jekyll_plugins
+
+# Plugins used in _config.yml
+gem "jekyll-feed"
+gem "jekyll-sitemap"
+gem "jekyll-seo-tag"
+
+# Theme
+gem "just-the-docs"
