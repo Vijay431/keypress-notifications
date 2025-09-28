@@ -31,21 +31,26 @@ Great for:
 The extension shows notifications for these common multi-key combinations:
 
 **Clipboard Operations:**
+
 - Copy (Ctrl+C), Cut (Ctrl+X), Paste (Ctrl+V)
 
 **Navigation & Search:**
+
 - Command Palette (Ctrl+Shift+P), Quick Open (Ctrl+P)
 - Find in Files (Ctrl+Shift+F), Go to Line (Ctrl+G)
 
 **View Operations:**
+
 - Toggle Sidebar (Ctrl+B), Toggle Terminal (Ctrl+`)
 - Toggle Panel (Ctrl+J)
 
 **File Operations:**
+
 - Save (Ctrl+S), Save All (Ctrl+K S)
 - New File (Ctrl+N), Open File (Ctrl+O)
 
 **Editor Operations:**
+
 - Format Document (Shift+Alt+F), Comment Line (Ctrl+/)
 - Add Selection to Next Match (Ctrl+D)
 
@@ -61,7 +66,6 @@ Access via Command Palette (`Ctrl+Shift+P`):
 
 - Automatically enabled on VS Code startup
 - Configurable minimum key count (default: 2)
-
 
 ---
 

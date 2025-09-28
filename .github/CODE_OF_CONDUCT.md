@@ -34,6 +34,7 @@ In the interest of fostering an open and welcoming environment, we as contributo
 Project maintainers are responsible for clarifying and enforcing our standards of acceptable behavior and will take appropriate and fair corrective action in response to any instances of unacceptable behavior.
 
 Project maintainers have the right and responsibility to:
+
 - **🗑️ Remove, edit, or reject** comments, commits, code, wiki edits, issues, and other contributions
 - **⏸️ Temporarily or permanently ban** any contributor for behaviors they deem inappropriate
 - **📝 Document incidents** and enforcement actions appropriately
@@ -92,16 +93,19 @@ When reporting an incident, please include:
 Depending on the severity and context of the violation, consequences may include:
 
 #### 🟨 Level 1: Warning
+
 - **📝 Written warning** explaining the violation
 - **📚 Educational resources** about expected behavior
 - **👀 Monitoring** for future incidents
 
 #### 🟧 Level 2: Temporary Suspension
+
 - **⏸️ Temporary ban** from community spaces (1-30 days)
 - **📝 Public acknowledgment** required before reinstatement
 - **🎓 Completion of educational activities** (if applicable)
 
 #### 🟥 Level 3: Permanent Ban
+
 - **🚫 Permanent removal** from all community spaces
 - **📋 Documented record** for future reference
 - **🔄 No appeal process** for severe violations
@@ -164,6 +168,7 @@ We believe in **education over punishment** whenever possible:
 ### 🆘 Emergency Contacts
 
 For urgent situations requiring immediate attention:
+
 - **Email**: Mark subject as `[URGENT] Code of Conduct`
 - **Escalation**: If primary contact is unavailable, contact GitHub Support
 
@@ -185,6 +190,7 @@ For urgent situations requiring immediate attention:
 ## 🔄 Updates to This Code of Conduct
 
 This Code of Conduct may be updated from time to time to:
+
 - **📈 Improve clarity** and effectiveness
 - **🌍 Reflect community growth** and changing needs
 - **📚 Incorporate lessons learned** from incidents
@@ -196,6 +202,7 @@ This Code of Conduct may be updated from time to time to:
 ## 🙏 Acknowledgments
 
 This Code of Conduct is adapted from:
+
 - [Contributor Covenant](https://www.contributor-covenant.org/), version 2.1
 - [Mozilla Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/)
 - Best practices from the open source community
@@ -206,6 +213,6 @@ This Code of Conduct is adapted from:
 
 **Together, we can build an amazing community where everyone feels welcome and valued!** 🌟
 
-*Questions about this Code of Conduct? Feel free to reach out to [vijayanand431@gmail.com](mailto:vijayanand431@gmail.com)*
+_Questions about this Code of Conduct? Feel free to reach out to [vijayanand431@gmail.com](mailto:vijayanand431@gmail.com)_
 
 </div>

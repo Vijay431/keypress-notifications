@@ -3,7 +3,7 @@ layout: default
 title: Configuration Guide
 parent: Guides
 nav_order: 2
-description: "Complete configuration options for Keypress Notifications"
+description: 'Complete configuration options for Keypress Notifications'
 ---
 
 # ⚙️ Configuration Guide
@@ -50,6 +50,7 @@ Or edit `settings.json` directly:
 ```
 
 **Use cases**:
+
 - Quickly disable all notifications
 - Temporarily pause during presentations
 - Disable for specific workspaces
@@ -68,6 +69,7 @@ Or edit `settings.json` directly:
 ```
 
 **Examples**:
+
 - `1`: Shows notifications for single keys (very noisy)
 - `2`: Shows Ctrl+C, Ctrl+V (recommended)
 - `3`: Shows Ctrl+Shift+P, Ctrl+K S (quieter)
@@ -146,6 +148,7 @@ Share configuration with your team by committing workspace settings:
 ## 🎛️ Runtime Configuration
 
 Control the extension during runtime using the Command Palette (`Ctrl+Shift+P`):
+
 - `Keypress Notifications: Activate`
 - `Keypress Notifications: Deactivate`
 
@@ -170,4 +173,4 @@ To reset all settings to defaults:
 
 ---
 
-*Need help with configuration? [Open an issue](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues)!*
+_Need help with configuration? [Open an issue](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues)!_

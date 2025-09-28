@@ -3,7 +3,7 @@ layout: default
 title: Installation Guide
 parent: Guides
 nav_order: 1
-description: "Complete installation instructions for Keypress Notifications"
+description: 'Complete installation instructions for Keypress Notifications'
 ---
 
 # 📦 Installation Guide
@@ -53,12 +53,12 @@ code --install-extension VijayGangatharan.keypress-notifications
 
 ### 🔧 Software Requirements
 
-| Requirement | Minimum | Recommended |
-|-------------|---------|-------------|
-| **VS Code** | 1.90.0+ | Latest stable |
-| **Node.js** | 16.x | 20.x LTS |
-| **Memory** | 512MB free | 1GB+ free |
-| **Disk Space** | 5MB | 10MB |
+| Requirement    | Minimum    | Recommended   |
+| -------------- | ---------- | ------------- |
+| **VS Code**    | 1.90.0+    | Latest stable |
+| **Node.js**    | 16.x       | 20.x LTS      |
+| **Memory**     | 512MB free | 1GB+ free     |
+| **Disk Space** | 5MB        | 10MB          |
 
 ### 🌐 Network Requirements
 
@@ -220,11 +220,13 @@ You'll be notified of updates via:
 #### ❌ "Installation failed"
 
 **Possible causes**:
+
 - Insufficient disk space
 - VS Code not running as administrator (Windows)
 - Network connectivity issues
 
 **Solutions**:
+
 1. Free up disk space (5MB minimum)
 2. Run VS Code as administrator
 3. Check internet connection
@@ -233,6 +235,7 @@ You'll be notified of updates via:
 #### ❌ "Extension not loading"
 
 **Solutions**:
+
 1. Reload VS Code window (`Ctrl+Shift+P` → "Reload Window")
 2. Restart VS Code completely
 3. Check VS Code output panel for errors

@@ -10,7 +10,7 @@ describe('Keypress Notifications Extension Tests', () => {
     const config = vscode.workspace.getConfiguration('keypress-notifications');
     originalConfig = {
       enabled: config.get('enabled'),
-      minimumKeys: config.get('minimumKeys')
+      minimumKeys: config.get('minimumKeys'),
     };
 
     // Ensure extension is enabled for tests
@@ -18,23 +18,36 @@ describe('Keypress Notifications Extension Tests', () => {
     await config.update('minimumKeys', 2, vscode.ConfigurationTarget.Global);
 
     // Wait for extension to activate
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   });
 
   after(async () => {
     // Restore original configuration
     const config = vscode.workspace.getConfiguration('keypress-notifications');
     await config.update('enabled', originalConfig.enabled, vscode.ConfigurationTarget.Global);
-    await config.update('minimumKeys', originalConfig.minimumKeys, vscode.ConfigurationTarget.Global);
+    await config.update(
+      'minimumKeys',
+      originalConfig.minimumKeys,
+      vscode.ConfigurationTarget.Global,
+    );
   });
 
   describe('Extension Lifecycle', () => {
     it('should have extension commands registered', async () => {
       const commands = await vscode.commands.getCommands();
 
-      assert.ok(commands.includes('keypress-notifications.activate'), 'Activate command should be registered');
-      assert.ok(commands.includes('keypress-notifications.deactivate'), 'Deactivate command should be registered');
-      assert.ok(commands.includes('keypress-notifications.showOutputChannel'), 'Show output command should be registered');
+      assert.ok(
+        commands.includes('keypress-notifications.activate'),
+        'Activate command should be registered',
+      );
+      assert.ok(
+        commands.includes('keypress-notifications.deactivate'),
+        'Deactivate command should be registered',
+      );
+      assert.ok(
+        commands.includes('keypress-notifications.showOutputChannel'),
+        'Show output command should be registered',
+      );
     });
 
     it('should load configuration correctly', () => {
@@ -49,11 +62,11 @@ describe('Keypress Notifications Extension Tests', () => {
     it('should activate extension via command', async () => {
       // Ensure we start from deactivated state
       await vscode.commands.executeCommand('keypress-notifications.deactivate');
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Activate via command
       await vscode.commands.executeCommand('keypress-notifications.activate');
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const config = vscode.workspace.getConfiguration('keypress-notifications');
       const enabled = config.get('enabled');
@@ -63,11 +76,11 @@ describe('Keypress Notifications Extension Tests', () => {
     it('should deactivate extension via command', async () => {
       // Ensure we start from activated state
       await vscode.commands.executeCommand('keypress-notifications.activate');
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Deactivate via command
       await vscode.commands.executeCommand('keypress-notifications.deactivate');
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const config = vscode.workspace.getConfiguration('keypress-notifications');
       const enabled = config.get('enabled');
@@ -89,7 +102,7 @@ describe('Keypress Notifications Extension Tests', () => {
       // Create a test document
       document = await vscode.workspace.openTextDocument({
         content: 'Hello World\nThis is a test document\nfor clipboard operations',
-        language: 'plaintext'
+        language: 'plaintext',
       });
       editor = await vscode.window.showTextDocument(document);
     });
@@ -106,7 +119,7 @@ describe('Keypress Notifications Extension Tests', () => {
       // Execute copy command - just verify it doesn't throw
       try {
         await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
-        await new Promise(resolve => setTimeout(resolve, 300));
+        await new Promise((resolve) => setTimeout(resolve, 300));
         assert.ok(true, 'Copy command executed successfully');
       } catch (error) {
         assert.fail(`Copy command should not throw: ${error}`);
@@ -121,7 +134,7 @@ describe('Keypress Notifications Extension Tests', () => {
       // Execute cut command - just verify it doesn't throw
       try {
         await vscode.commands.executeCommand('editor.action.clipboardCutAction');
-        await new Promise(resolve => setTimeout(resolve, 300));
+        await new Promise((resolve) => setTimeout(resolve, 300));
         assert.ok(true, 'Cut command executed successfully');
       } catch (error) {
         assert.fail(`Cut command should not throw: ${error}`);
@@ -138,7 +151,7 @@ describe('Keypress Notifications Extension Tests', () => {
 
       // Execute paste command
       await vscode.commands.executeCommand('editor.action.clipboardPasteAction');
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Verify text was pasted
       const lineText = document.lineAt(0).text;
@@ -149,7 +162,7 @@ describe('Keypress Notifications Extension Tests', () => {
   describe('Navigation & UI Operations', () => {
     it('should handle Command Palette operation (Ctrl+Shift+P)', async () => {
       await vscode.commands.executeCommand('workbench.action.showCommands');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       // Close the command palette
       await vscode.commands.executeCommand('workbench.action.closeQuickOpen');
@@ -158,7 +171,7 @@ describe('Keypress Notifications Extension Tests', () => {
 
     it('should handle Quick Open operation (Ctrl+P)', async () => {
       await vscode.commands.executeCommand('workbench.action.quickOpen');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       // Close quick open
       await vscode.commands.executeCommand('workbench.action.closeQuickOpen');
@@ -168,33 +181,33 @@ describe('Keypress Notifications Extension Tests', () => {
     it('should handle Sidebar toggle operation (Ctrl+B)', async () => {
       // Toggle sidebar
       await vscode.commands.executeCommand('workbench.action.toggleSidebarVisibility');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       // Toggle back
       await vscode.commands.executeCommand('workbench.action.toggleSidebarVisibility');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       assert.ok(true, 'Sidebar toggle should work without error');
     });
 
     it('should handle Terminal toggle operation (Ctrl+`)', async () => {
       await vscode.commands.executeCommand('workbench.action.terminal.toggleTerminal');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       // Toggle back to close terminal
       await vscode.commands.executeCommand('workbench.action.terminal.toggleTerminal');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       assert.ok(true, 'Terminal toggle should work without error');
     });
 
     it('should handle Panel toggle operation (Ctrl+J)', async () => {
       await vscode.commands.executeCommand('workbench.action.togglePanel');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       // Toggle back
       await vscode.commands.executeCommand('workbench.action.togglePanel');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       assert.ok(true, 'Panel toggle should work without error');
     });
@@ -203,7 +216,7 @@ describe('Keypress Notifications Extension Tests', () => {
   describe('Multi-key Combination Tests', () => {
     it('should handle Find in Files (Ctrl+Shift+F) - 3 keys', async () => {
       await vscode.commands.executeCommand('workbench.action.findInFiles');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       // Close the search panel
       await vscode.commands.executeCommand('workbench.action.togglePanel');
@@ -212,7 +225,7 @@ describe('Keypress Notifications Extension Tests', () => {
 
     it('should handle Go to Line (Ctrl+G) - 2 keys', async () => {
       await vscode.commands.executeCommand('workbench.action.gotoLine');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       // Close the dialog
       await vscode.commands.executeCommand('workbench.action.closeQuickOpen');
@@ -221,7 +234,7 @@ describe('Keypress Notifications Extension Tests', () => {
 
     it('should handle New File (Ctrl+N) - 2 keys', async () => {
       await vscode.commands.executeCommand('workbench.action.files.newUntitledFile');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       // Close the new file
       await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
@@ -235,17 +248,17 @@ describe('Keypress Notifications Extension Tests', () => {
 
       // Set minimum keys to 3
       await config.update('minimumKeys', 3, vscode.ConfigurationTarget.Global);
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Execute a 2-key command (should not trigger notification with minimumKeys=3)
       await vscode.commands.executeCommand('workbench.action.quickOpen');
       await vscode.commands.executeCommand('workbench.action.closeQuickOpen');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       // Execute a 3-key command (should trigger notification)
       await vscode.commands.executeCommand('workbench.action.findInFiles');
       await vscode.commands.executeCommand('workbench.action.togglePanel');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       // Reset to default
       await config.update('minimumKeys', 2, vscode.ConfigurationTarget.Global);
@@ -257,21 +270,21 @@ describe('Keypress Notifications Extension Tests', () => {
 
       // Disable notifications
       await config.update('enabled', false, vscode.ConfigurationTarget.Global);
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Execute commands (should not trigger notifications)
       await vscode.commands.executeCommand('workbench.action.quickOpen');
       await vscode.commands.executeCommand('workbench.action.closeQuickOpen');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       // Re-enable notifications
       await config.update('enabled', true, vscode.ConfigurationTarget.Global);
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Execute commands (should trigger notifications again)
       await vscode.commands.executeCommand('workbench.action.quickOpen');
       await vscode.commands.executeCommand('workbench.action.closeQuickOpen');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       assert.ok(true, 'Enabled setting should control notification display');
     });
@@ -282,7 +295,7 @@ describe('Keypress Notifications Extension Tests', () => {
       // Execute save command - just verify it doesn't throw
       try {
         await vscode.commands.executeCommand('workbench.action.files.save');
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 500));
         assert.ok(true, 'Save command executed successfully');
       } catch (error) {
         // Save command may show dialog but should not throw
@@ -292,7 +305,7 @@ describe('Keypress Notifications Extension Tests', () => {
 
     it('should handle New Window operation (Ctrl+Shift+N)', async () => {
       await vscode.commands.executeCommand('workbench.action.newWindow');
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       assert.ok(true, 'New Window operation should execute without error');
     });

@@ -25,7 +25,6 @@ export interface ExtensionConfig {
   showCommandName: boolean; // Whether to show the command name in notifications
 }
 
-
 /**
  * Logger interface for consistent logging across the extension
  */

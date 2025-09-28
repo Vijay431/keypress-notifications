@@ -9,6 +9,7 @@ The security of Keypress Notifications is a top priority. We appreciate your eff
 **Please do NOT create public GitHub issues for security vulnerabilities.**
 
 Instead, please report security issues privately to:
+
 - **Email**: [vijayanand431@gmail.com](mailto:vijayanand431@gmail.com)
 - **Subject**: `[SECURITY] Keypress Notifications - [Brief Description]`
 
@@ -32,10 +33,10 @@ When reporting a security vulnerability, please include:
 
 ## 🔍 Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.0.x   | ✅ Yes            |
-| 0.x.x   | ❌ No             |
+| Version | Supported |
+| ------- | --------- |
+| 1.0.x   | ✅ Yes    |
+| 0.x.x   | ❌ No     |
 
 ## 🛡️ Security Measures
 
@@ -106,12 +107,12 @@ When reporting a security vulnerability, please include:
 
 ### 📊 Severity Levels
 
-| Severity | Response Time | Release Timeline |
-|----------|---------------|------------------|
-| 🔴 Critical | 24 hours | 1-3 days |
-| 🟠 High | 48 hours | 1 week |
-| 🟡 Medium | 1 week | 2 weeks |
-| 🟢 Low | 2 weeks | Next release |
+| Severity    | Response Time | Release Timeline |
+| ----------- | ------------- | ---------------- |
+| 🔴 Critical | 24 hours      | 1-3 days         |
+| 🟠 High     | 48 hours      | 1 week           |
+| 🟡 Medium   | 1 week        | 2 weeks          |
+| 🟢 Low      | 2 weeks       | Next release     |
 
 ### 🚀 Update Distribution
 
@@ -142,7 +143,7 @@ When reporting a security vulnerability, please include:
 
 We recognize security researchers who help improve our security:
 
-*Coming soon - first security reporter will be featured here!*
+_Coming soon - first security reporter will be featured here!_
 
 ### 🎁 Recognition Program
 

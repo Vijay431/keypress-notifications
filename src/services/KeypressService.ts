@@ -55,7 +55,7 @@ export class KeypressService {
 
   public dispose(): void {
     this.disposeInterceptors();
-    this.disposables.forEach(d => d.dispose());
+    this.disposables.forEach((d) => d.dispose());
     this.disposables.length = 0;
   }
 
@@ -66,7 +66,7 @@ export class KeypressService {
   }
 
   private setupConfigurationWatcher(): void {
-    const disposable = workspace.onDidChangeConfiguration(event => {
+    const disposable = workspace.onDidChangeConfiguration((event) => {
       if (event.affectsConfiguration('keypress-notifications')) {
         const wasEnabled = this.isEnabled;
         this.loadConfiguration();
@@ -135,7 +135,7 @@ export class KeypressService {
 
   private getKeyCount(keyCombo: string): number {
     // Count the number of keys in combination (e.g., "Ctrl+Shift+P" = 3, "Ctrl+K S" = 3)
-    return keyCombo.split(/[+\s]/).filter(key => key.length > 0).length;
+    return keyCombo.split(/[+\s]/).filter((key) => key.length > 0).length;
   }
 
   private disposeInterceptors(): void {

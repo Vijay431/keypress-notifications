@@ -1,7 +1,7 @@
 name: 🔧 Compatibility Issue
 description: Report compatibility problems with VS Code, Node.js, or other software 🔗
-title: "[Compatibility]: "
-labels: ["compatibility", "needs-triage"]
+title: '[Compatibility]: '
+labels: ['compatibility', 'needs-triage']
 assignees: []
 
 body:
@@ -71,7 +71,7 @@ body:
     attributes:
       label: 🔢 Exact VS Code Version
       description: What's the exact VS Code version? (Help > About)
-      placeholder: "e.g., 1.95.2 (commit 4710f68) or 1.96.0-insider (commit abc123)"
+      placeholder: 'e.g., 1.95.2 (commit 4710f68) or 1.96.0-insider (commit abc123)'
     validations:
       required: true
 
@@ -108,7 +108,7 @@ body:
     attributes:
       label: 🔢 Exact OS Version & Architecture
       description: Provide exact OS version and architecture (x64, ARM64, etc.)
-      placeholder: "e.g., Windows 11 22H2 (Build 22621.2715) x64, macOS 14.2.1 ARM64, Ubuntu 22.04.3 LTS x86_64"
+      placeholder: 'e.g., Windows 11 22H2 (Build 22621.2715) x64, macOS 14.2.1 ARM64, Ubuntu 22.04.3 LTS x86_64'
     validations:
       required: true
 
@@ -136,7 +136,7 @@ body:
     attributes:
       label: 🔢 Exact Node.js Version
       description: What's the exact Node.js version if known?
-      placeholder: "e.g., v20.10.0, v22.1.0"
+      placeholder: 'e.g., v20.10.0, v22.1.0'
     validations:
       required: false
 
@@ -145,7 +145,7 @@ body:
     attributes:
       label: 📦 Extension Version
       description: What version of Keypress Notifications?
-      placeholder: "e.g., 0.1.0"
+      placeholder: 'e.g., 0.1.0'
     validations:
       required: true
 

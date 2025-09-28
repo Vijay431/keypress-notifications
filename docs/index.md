@@ -2,7 +2,7 @@
 layout: default
 title: Keypress Notifications Documentation
 nav_order: 1
-description: "Complete documentation for the Keypress Notifications VS Code extension"
+description: 'Complete documentation for the Keypress Notifications VS Code extension'
 permalink: /
 ---
 
@@ -40,6 +40,7 @@ code --install-extension VijayGangatharan.keypress-notifications
 ```
 
 Or install through VS Code:
+
 1. Open Extensions (`Ctrl+Shift+X`)
 2. Search for "Keypress Notifications"
 3. Click Install
@@ -162,21 +163,21 @@ We welcome contributions! Check out our guides:
 
 ### ⌨️ Default Keybindings Monitored
 
-| Keybinding | Command | Notification |
-|------------|---------|--------------|
-| `Ctrl+C` | Copy | "Ctrl+C detected" |
-| `Ctrl+X` | Cut | "Ctrl+X detected" |
-| `Ctrl+V` | Paste | "Ctrl+V detected" |
-| `Ctrl+K S` | Save All | "Ctrl+K S detected" |
+| Keybinding     | Command         | Notification            |
+| -------------- | --------------- | ----------------------- |
+| `Ctrl+C`       | Copy            | "Ctrl+C detected"       |
+| `Ctrl+X`       | Cut             | "Ctrl+X detected"       |
+| `Ctrl+V`       | Paste           | "Ctrl+V detected"       |
+| `Ctrl+K S`     | Save All        | "Ctrl+K S detected"     |
 | `Ctrl+Shift+P` | Command Palette | "Ctrl+Shift+P detected" |
-| `Ctrl+Shift+F` | Find in Files | "Ctrl+Shift+F detected" |
+| `Ctrl+Shift+F` | Find in Files   | "Ctrl+Shift+F detected" |
 
 ### ⚙️ Configuration Quick Reference
 
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| `enabled` | boolean | `true` | Enable/disable notifications |
-| `minimumKeys` | number | `2` | Minimum keys to trigger notification |
+| Setting       | Type    | Default | Description                          |
+| ------------- | ------- | ------- | ------------------------------------ |
+| `enabled`     | boolean | `true`  | Enable/disable notifications         |
+| `minimumKeys` | number  | `2`     | Minimum keys to trigger notification |
 
 ---
 
@@ -197,7 +198,7 @@ Ready to get started? Here's your path forward:
 
 [⭐ Star on GitHub](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension) • [📝 Leave a Review](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications) • [🐦 Share](https://twitter.com/intent/tweet?text=Check%20out%20Keypress%20Notifications%20for%20VS%20Code!)
 
-*Happy coding!* 🎉
+_Happy coding!_ 🎉
 
 </div>
 

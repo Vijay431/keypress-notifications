@@ -1,7 +1,7 @@
 name: ✨ Feature Request
 description: Got a brilliant idea? We'd love to hear it! 🚀
-title: "[Feature]: "
-labels: ["enhancement", "feature-request", "needs-triage"]
+title: '[Feature]: '
+labels: ['enhancement', 'feature-request', 'needs-triage']
 assignees: []
 
 body:

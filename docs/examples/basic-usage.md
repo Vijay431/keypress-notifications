@@ -3,7 +3,7 @@ layout: default
 title: Basic Usage Examples
 parent: Examples
 nav_order: 1
-description: "Getting started with Keypress Notifications - common scenarios and examples"
+description: 'Getting started with Keypress Notifications - common scenarios and examples'
 ---
 
 # 🎯 Basic Usage Examples
@@ -29,13 +29,13 @@ If you see the notification, you're ready to go! 🎉
 
 Try these common keybindings:
 
-| Shortcut | Action | Expected Notification |
-|----------|--------|----------------------|
-| `Ctrl+C` | Copy | "Copy detected! 📄✨" |
-| `Ctrl+X` | Cut | "Cut detected! ✂️💫" |
-| `Ctrl+V` | Paste | "Paste detected! 📋🎯" |
+| Shortcut       | Action          | Expected Notification            |
+| -------------- | --------------- | -------------------------------- |
+| `Ctrl+C`       | Copy            | "Copy detected! 📄✨"            |
+| `Ctrl+X`       | Cut             | "Cut detected! ✂️💫"             |
+| `Ctrl+V`       | Paste           | "Paste detected! 📋🎯"           |
 | `Ctrl+Shift+P` | Command Palette | "Command Palette detected! 🎯🚀" |
-| `Ctrl+K S` | Save All | "Save All detected! 💾🔥" |
+| `Ctrl+K S`     | Save All        | "Save All detected! 💾🔥"        |
 
 ---
 
@@ -86,6 +86,7 @@ Moving around your codebase:
 **Scenario**: You want to learn VS Code shortcuts and get confirmation they work.
 
 **Setup**:
+
 ```json
 {
   "keypress-notifications.enabled": true,
@@ -95,6 +96,7 @@ Moving around your codebase:
 ```
 
 **Try these shortcuts**:
+
 1. `Ctrl+Shift+E` → "Explorer detected! 📁🌟"
 2. `Ctrl+Shift+F` → "Find in Files detected! 🔍⚡"
 3. `Ctrl+Shift+G` → "Source Control detected! 🔄💫"
@@ -106,6 +108,7 @@ Moving around your codebase:
 **Scenario**: Working with text and want copy/paste feedback.
 
 **Test sequence**:
+
 1. **Select some text** in any file
 2. **Press** `Ctrl+C` → See "Copy detected! 📄✨"
 3. **Move cursor** to new location
@@ -117,6 +120,7 @@ Moving around your codebase:
 **Scenario**: Managing files and wanting save confirmation.
 
 **Test sequence**:
+
 1. **Make changes** to a file
 2. **Press** `Ctrl+S` → See "Save detected! 💾⚡"
 3. **Press** `Ctrl+K S` → See "Save All detected! 💾🔥"
@@ -131,6 +135,7 @@ Moving around your codebase:
 **Use case**: Experienced user who only wants complex shortcut feedback.
 
 **Configuration**:
+
 ```json
 {
   "keypress-notifications.minimumKeys": 3,
@@ -148,6 +153,7 @@ Moving around your codebase:
 **Use case**: New user who wants to see all multi-key shortcuts.
 
 **Configuration**:
+
 ```json
 {
   "keypress-notifications.minimumKeys": 2,
@@ -163,6 +169,7 @@ Moving around your codebase:
 **Use case**: Demonstrating VS Code features to an audience.
 
 **Configuration**:
+
 ```json
 {
   "keypress-notifications.minimumKeys": 2,
@@ -186,6 +193,7 @@ Moving around your codebase:
 **Goal**: Learn keyboard shortcuts effectively
 
 **Recommended settings**:
+
 ```json
 {
   "keypress-notifications.enabled": true,
@@ -196,6 +204,7 @@ Moving around your codebase:
 ```
 
 **Learning approach**:
+
 1. **Start with basics**: Copy (`Ctrl+C`), Paste (`Ctrl+V`), Save (`Ctrl+S`)
 2. **Try navigation**: Command Palette (`Ctrl+Shift+P`), Quick Open (`Ctrl+P`)
 3. **Explore panels**: Explorer (`Ctrl+Shift+E`), Terminal (`Ctrl+``)
@@ -207,17 +216,17 @@ Moving around your codebase:
 **Goal**: Confirm debug shortcuts are working
 
 **Recommended settings**:
+
 ```json
 {
   "keypress-notifications.minimumKeys": 2,
   "keypress-notifications.showCommandName": false,
-  "keypress-notifications.excludedCommands": [
-    "editor.action.triggerSuggest"
-  ]
+  "keypress-notifications.excludedCommands": ["editor.action.triggerSuggest"]
 }
 ```
 
 **Debug workflow**:
+
 1. **Set breakpoint**: `F9` → No notification (single key)
 2. **Start debugging**: `F5` → No notification (single key)
 3. **Step over**: `F10` → No notification (single key)
@@ -229,6 +238,7 @@ Moving around your codebase:
 **Goal**: Navigate efficiently with feedback
 
 **Test workflow**:
+
 1. **Open file**: `Ctrl+P` → "Quick Open detected! 📁⚡"
 2. **Find text**: `Ctrl+F` → "Find detected! 🔍✨"
 3. **Next match**: `F3` → No notification (single key)
@@ -242,7 +252,9 @@ Moving around your codebase:
 ### Issue: No Notifications Appearing
 
 **Check list**:
+
 1. **Verify extension is enabled**:
+
    ```json
    { "keypress-notifications.enabled": true }
    ```
@@ -250,6 +262,7 @@ Moving around your codebase:
 2. **Try simple test**: Press `Ctrl+C` in any file
 
 3. **Check minimum keys setting**:
+
    ```json
    { "keypress-notifications.minimumKeys": 2 }
    ```
@@ -292,16 +305,19 @@ Moving around your codebase:
 When properly configured, you'll see notifications like:
 
 **Basic notifications**:
+
 - `Ctrl+C` → "Copy detected! 📄✨"
 - `Ctrl+V` → "Paste detected! 📋🎯"
 - `Ctrl+Z` → "Undo detected! ↩️⚡"
 
 **Advanced notifications**:
+
 - `Ctrl+Shift+P` → "Command Palette detected! 🎯🚀"
 - `Ctrl+K S` → "Save All detected! 💾🔥"
 - `Ctrl+Shift+F` → "Find in Files detected! 🔍⚡"
 
 **With command names disabled**:
+
 - `Ctrl+C` → "Keybinding detected! ⌨️"
 - `Ctrl+Shift+P` → "Multi-key detected! 🎯"
 
@@ -329,22 +345,22 @@ Ready to explore more advanced features?
 
 ### Most Common Shortcuts
 
-| Shortcut | Command | Notification |
-|----------|---------|--------------|
-| `Ctrl+C` | Copy | "Copy detected! 📄✨" |
-| `Ctrl+V` | Paste | "Paste detected! 📋🎯" |
-| `Ctrl+S` | Save | "Save detected! 💾⚡" |
-| `Ctrl+Z` | Undo | "Undo detected! ↩️⚡" |
+| Shortcut       | Command         | Notification                     |
+| -------------- | --------------- | -------------------------------- |
+| `Ctrl+C`       | Copy            | "Copy detected! 📄✨"            |
+| `Ctrl+V`       | Paste           | "Paste detected! 📋🎯"           |
+| `Ctrl+S`       | Save            | "Save detected! 💾⚡"            |
+| `Ctrl+Z`       | Undo            | "Undo detected! ↩️⚡"            |
 | `Ctrl+Shift+P` | Command Palette | "Command Palette detected! 🎯🚀" |
 
 ### Quick Settings
 
-| Setting | Quick Value | Effect |
-|---------|-------------|--------|
-| `minimumKeys` | `1` | Show all shortcuts |
-| `minimumKeys` | `3` | Only complex shortcuts |
-| `showCommandName` | `false` | Hide command names |
-| `enabled` | `false` | Disable completely |
+| Setting           | Quick Value | Effect                 |
+| ----------------- | ----------- | ---------------------- |
+| `minimumKeys`     | `1`         | Show all shortcuts     |
+| `minimumKeys`     | `3`         | Only complex shortcuts |
+| `showCommandName` | `false`     | Hide command names     |
+| `enabled`         | `false`     | Disable completely     |
 
 ---
 

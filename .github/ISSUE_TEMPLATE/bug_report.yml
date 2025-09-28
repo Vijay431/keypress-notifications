@@ -1,7 +1,7 @@
 name: 🐛 Bug Report
 description: Found a bug? Help us squash it! 🔨
-title: "[Bug]: "
-labels: ["bug", "needs-triage"]
+title: '[Bug]: '
+labels: ['bug', 'needs-triage']
 assignees: []
 
 body:
@@ -115,7 +115,7 @@ body:
     attributes:
       label: 📦 Extension Version
       description: What version of Keypress Notifications are you using?
-      placeholder: "e.g., 0.1.0 (you can find this in Extensions view)"
+      placeholder: 'e.g., 0.1.0 (you can find this in Extensions view)'
     validations:
       required: true
 
