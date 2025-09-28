@@ -139,8 +139,8 @@
 
 ### 📦 Build & Deployment
 
-- [ ] Project builds successfully (`pnpm run compile`)
-- [ ] Production build works (`pnpm run package`)
+- [ ] Project builds successfully (`npm run build`)
+- [ ] Production build works (`npm run package`)
 - [ ] No new dependencies added without justification
 - [ ] Package.json version updated (if releasing)
 

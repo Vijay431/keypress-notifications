@@ -28,5 +28,5 @@
     "skipLibCheck": false,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["node_modules", ".vscode-test", "test/**/*", "dist/test/**/*", "_boilerplate/**/*"]
+  "exclude": ["node_modules", ".vscode-test", "test/**/*", "dist/test/**/*"]
 }

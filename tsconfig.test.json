@@ -1,18 +1,14 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist/test",
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "rootDir": "."
+    "outDir": "./dist",
+    "rootDir": "./",
+    "skipLibCheck": true,
+    "jsx": "react",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "test/e2e/**/*",
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    ".vscode-test",
-    "test/mock-workspace/**/*"
-  ]
+  "include": ["test/**/*.ts"],
+  "exclude": ["test/fixtures/**/*.ts", "node_modules"]
 }

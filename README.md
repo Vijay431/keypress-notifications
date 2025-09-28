@@ -87,7 +87,7 @@ Built with **enterprise-grade standards** for professional development environme
 
 ### 📋 Compliance & Governance
 
-- **Conventional Commits**: Automated commit validation with commitlint
+- **Conventional Commits**: Automated commit validation
 - **Code Quality Gates**: ESLint + Prettier + TypeScript strict enforcement
 - **Dependency Auditing**: Automated security and license compliance
 - **Professional Documentation**: Enterprise-grade setup, API, and troubleshooting guides
@@ -217,18 +217,18 @@ The extension uses **advanced command interception** to monitor VS Code's keybin
 
 ```bash
 # 🚀 Enterprise one-command developer experience
-pnpm test:dev  # Watch mode + automated test extension launch
+npm run test:dev  # Watch mode + automated test extension launch
 
 # 📋 Enterprise step-by-step setup:
-pnpm install         # 📦 Enterprise dependency management with security auditing
-pnpm run compile     # 🏗️ Production-grade TypeScript compilation with esbuild
-pnpm test:setup      # 📁 Generate enterprise mock workspace with realistic scenarios
-pnpm test:manual     # 🎯 Launch extension in development host with full debugging
+npm install         # 📦 Enterprise dependency management with security auditing
+npm run build       # 🏗️ Production-grade TypeScript compilation with esbuild
+npm run test:setup  # 📁 Generate enterprise mock workspace with realistic scenarios
+npm run test:manual # 🎯 Launch extension in development host with full debugging
 ```
 
 **🏢 Enterprise Features:**
 
-- **Security-First**: Frozen lockfiles, automated vulnerability scanning
+- **Security-First**: Package-lock.json integrity, automated vulnerability scanning
 - **Performance**: esbuild compilation, optimized for large codebases  
 - **Quality**: Automated linting, formatting, and type checking
 - **Reliability**: Cross-platform testing, comprehensive error handling
@@ -238,38 +238,38 @@ pnpm test:manual     # 🎯 Launch extension in development host with full debug
 #### 🏗️ Enterprise Build Pipeline
 
 ```bash
-pnpm compile     # 📦 Enterprise TypeScript compilation with esbuild optimization
-pnpm watch      # 👁️ Development watch mode with source maps and hot reload
-pnpm package    # 🎁 Production build with minification and tree-shaking
-pnpm build      # 🔄 Alias for compile (CI/CD compatibility)
-pnpm clean      # 🧹 Clean build artifacts and prepare for fresh build
+npm run build       # 📦 Enterprise TypeScript compilation with esbuild optimization
+npm run watch       # 👁️ Development watch mode with source maps and hot reload
+npm run package     # 🎁 Production build with minification and tree-shaking
+npm run compile     # 🔄 Alias for build (CI/CD compatibility)
+npm run clean       # 🧹 Clean build artifacts and prepare for fresh build
 ```
 
 #### 🧪 Enterprise Testing Framework
 
 ```bash
-pnpm test          # 🎯 Comprehensive test suite (E2E + cross-platform)
-pnpm test:e2e      # 🤖 End-to-end tests with VS Code extension host
-pnpm test:manual   # 🎮 Development testing with enterprise mock workspace
-pnpm test:dev      # 🔄 Watch mode + automated testing pipeline
-pnpm test:setup    # 📁 Generate enterprise mock workspace with realistic scenarios
-pnpm test:quick    # ⚡ Fast compile + test for CI environments
+npm test              # 🎯 Comprehensive test suite (E2E + cross-platform)
+npm run test:e2e      # 🤖 End-to-end tests with VS Code extension host
+npm run test:manual   # 🎮 Development testing with enterprise mock workspace
+npm run test:dev      # 🔄 Watch mode + automated testing pipeline
+npm run test:setup    # 📁 Generate enterprise mock workspace with realistic scenarios
+npm run test:quick    # ⚡ Fast compile + test for CI environments
 ```
 
 #### ✨ Enterprise Code Quality
 
 ```bash
-pnpm lint          # 🕵️ ESLint with TypeScript strict rules and stylistic enforcement
-pnpm lint:fix      # 🔧 Auto-fix linting issues with enterprise standards
-pnpm check-types   # 📊 TypeScript strict mode validation without compilation
-pnpm format        # 🎨 Prettier code formatting with enterprise consistency
-pnpm audit         # 🔒 Security audit for vulnerabilities and compliance
+npm run lint          # 🕵️ ESLint with TypeScript strict rules and stylistic enforcement
+npm run lint:fix      # 🔧 Auto-fix linting issues with enterprise standards
+npm run check-types   # 📊 TypeScript strict mode validation without compilation
+npm run format        # 🎨 Prettier code formatting with enterprise consistency
+npm audit             # 🔒 Security audit for vulnerabilities and compliance
 ```
 
 ### 🎯 Manual Testing Process
 
-1. **🏗️ Setup**: `pnpm test:setup` creates a playground workspace
-2. **🚀 Launch**: `pnpm test:manual` opens the extension in development mode  
+1. **🏗️ Setup**: `npm run test:setup` creates a playground workspace
+2. **🚀 Launch**: `npm run test:manual` opens the extension in development mode  
 3. **🎮 Test**: Try various keybinding operations in the mock workspace:
    - Copy some text (Ctrl+C) → Look for notification! 📄
    - Cut some text (Ctrl+X) → Look for notification! ✂️
@@ -311,8 +311,8 @@ We'd love your help making this extension even better! 🌟
 ```bash
 git clone https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension.git
 cd vscode-keypress_snackbar_notification-extension
-pnpm install
-pnpm test:dev  # You're ready to code! 🎉
+npm install
+npm run test:dev  # You're ready to code! 🎉
 ```
 
 ---

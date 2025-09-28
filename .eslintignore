@@ -9,9 +9,7 @@ lib/
 
 # Dependencies & package management
 node_modules/
-.pnpm/
 .yarn/
-pnpm-lock.yaml
 package-lock.json
 
 # Test infrastructure & fixtures

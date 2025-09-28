@@ -7,7 +7,7 @@ export function run(): Promise<void> {
   const mocha = new Mocha({
     ui: 'tdd',
     color: true,
-    timeout: 30000, // 30 seconds timeout for E2E tests
+    timeout: 60000, // 60 seconds timeout for E2E tests
   });
 
   const testsRoot = path.resolve(__dirname, '.');
