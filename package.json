@@ -105,7 +105,8 @@
     "test:minimal": "npm test",
     "test:clean": "rm -rf .vscode-test/minimal-extension .vscode-test/user-data-isolated .vscode-test/user-data-dev",
     "create-minimal": "tsx scripts/create-minimal-extension.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
