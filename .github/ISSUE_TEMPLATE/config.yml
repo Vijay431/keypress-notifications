@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: 💬 Discussion Forum
-    url: https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/discussions
+    url: https://github.com/Vijay431/keypress-notifications/discussions
     about: Ask questions and discuss with the community
   - name: 📚 Documentation
-    url: https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension#readme
+    url: https://github.com/Vijay431/keypress-notifications#readme
     about: Read the documentation for usage and setup

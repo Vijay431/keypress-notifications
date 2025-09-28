@@ -164,8 +164,8 @@ While we don't offer monetary rewards, we provide:
 
 ### 🌐 Additional Resources
 
-- **Project Repository**: [GitHub](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension)
-- **Issue Tracker**: [GitHub Issues](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues) (for non-security issues)
+- **Project Repository**: [GitHub](https://github.com/Vijay431/keypress-notifications)
+- **Issue Tracker**: [GitHub Issues](https://github.com/Vijay431/keypress-notifications/issues) (for non-security issues)
 - **Documentation**: [README.md](../README.md)
 
 ## 🔄 Policy Updates

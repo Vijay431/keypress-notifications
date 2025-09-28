@@ -1,7 +1,7 @@
 name: ❓ Question
 description: Have a question? Ask away!
-title: '[Question]: '
-labels: ['question', 'needs-response']
+title: "[Question]: "
+labels: ["question", "needs-response"]
 
 body:
   - type: markdown
@@ -11,7 +11,7 @@ body:
 
         Have a question about **Keypress Notifications**? We're here to help! 🎯
 
-        **Before asking:** Please check the [README](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension#readme) and [existing discussions](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/discussions).
+        **Before asking:** Please check the [README](https://github.com/Vijay431/keypress-notifications#readme) and [existing discussions](https://github.com/Vijay431/keypress-notifications/discussions).
 
   - type: textarea
     id: question

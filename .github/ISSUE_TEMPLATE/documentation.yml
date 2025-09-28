@@ -1,7 +1,7 @@
 name: 📚 Documentation Improvement
 description: Help us improve our documentation! 📖
-title: '[Docs]: '
-labels: ['documentation', 'good-first-issue', 'needs-triage']
+title: "[Docs]: "
+labels: ["documentation", "good-first-issue", "needs-triage"]
 assignees: []
 
 body:
@@ -12,7 +12,7 @@ body:
 
         Thanks for helping improve our documentation! Clear docs make **Keypress Notifications** accessible to everyone. 🎯
 
-        **Before submitting:** Please check our [existing documentation](https://vijay431.github.io/vscode-keypress_snackbar_notification-extension/) to see what's already covered.
+        **Before submitting:** Please check our [existing documentation](https://vijay431.github.io/keypress-notifications/) to see what's already covered.
 
   - type: dropdown
     id: doc-type
@@ -62,7 +62,7 @@ body:
         Example:
         Current text: "Supports VS Code 1.80.0+"
         Location: README.md, Requirements section, line 25
-        Link: https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension#requirements
+        Link: https://github.com/Vijay431/keypress-notifications#requirements
       render: markdown
 
   - type: textarea
@@ -84,7 +84,7 @@ body:
     attributes:
       label: ✍️ Proposed Content/Changes
       description: |
-        What should the documentation say instead? 
+        What should the documentation say instead?
         Provide the corrected/improved content if you have it.
       placeholder: |
         Example:
@@ -279,6 +279,6 @@ body:
         ---
 
         📖 **Documentation Resources:**
-        - [Current Documentation Site](https://vijay431.github.io/vscode-keypress_snackbar_notification-extension/)
-        - [Contributing Guidelines](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/blob/master/CONTRIBUTING.md)
-        - [Style Guide for Documentation](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/wiki/Documentation-Style-Guide)
+        - [Current Documentation Site](https://vijay431.github.io/keypress-notifications/)
+        - [Contributing Guidelines](https://github.com/Vijay431/keypress-notifications/blob/master/CONTRIBUTING.md)
+        - [Style Guide for Documentation](https://github.com/Vijay431/keypress-notifications/wiki/Documentation-Style-Guide)
