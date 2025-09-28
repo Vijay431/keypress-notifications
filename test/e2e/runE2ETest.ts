@@ -1,65 +1,46 @@
-import { runTests } from '@vscode/test-electron';
-import * as fs from 'fs';
 import * as path from 'path';
-
-/**
- * Find the project root directory by looking for package.json
- * This works regardless of where the compiled test files are located
- */
-function findProjectRoot(startDir: string): string {
-  let currentDir = startDir;
-
-  while (currentDir !== path.dirname(currentDir)) {
-    const packageJsonPath = path.join(currentDir, 'package.json');
-    if (fs.existsSync(packageJsonPath)) {
-      // Verify this is our extension's package.json by checking the name
-      try {
-        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-        if (packageJson.name === 'keypress-notifications') {
-          return currentDir;
-        }
-      } catch {
-        // Continue searching if package.json is malformed
-      }
-    }
-    currentDir = path.dirname(currentDir);
-  }
-
-  throw new Error('Could not find project root containing package.json');
-}
+import * as fs from 'fs';
+import * as os from 'os';
+import { runTests } from '@vscode/test-electron';
 
 async function main() {
   try {
-    console.log('🚀 Starting Keypress Notifications E2E Tests...');
+    const extensionDevelopmentPath = path.resolve(__dirname, '../../..');
+    const extensionTestsPath = path.resolve(__dirname, './index.js');
 
-    // Find the project root dynamically
-    const projectRoot = findProjectRoot(__dirname);
-    const extensionDevelopmentPath = projectRoot.replace(/\\/g, '/');
+    // Create a temporary workspace for testing
+    const tempWorkspace = path.join(os.tmpdir(), 'keypress-notifications-test-workspace');
 
-    // The path to the E2E test runner (compiled JavaScript version)
-    const extensionTestsPath = path.resolve(__dirname, './index.js').replace(/\\/g, '/');
+    // Ensure workspace directory exists
+    if (!fs.existsSync(tempWorkspace)) {
+      fs.mkdirSync(tempWorkspace, { recursive: true });
+    }
 
-    console.log('📁 Extension path:', extensionDevelopmentPath);
-    console.log('🧪 E2E tests path:', extensionTestsPath);
+    console.log('Running E2E tests for Keypress Notifications v0.1.0');
+    console.log('Extension development path:', extensionDevelopmentPath);
+    console.log('Extension tests path:', extensionTestsPath);
+    console.log('Test workspace:', tempWorkspace);
 
-    // Download VS Code, unzip it and run the E2E tests
     await runTests({
       extensionDevelopmentPath,
       extensionTestsPath,
       launchArgs: [
-        '--disable-extensions', // Disable other extensions during testing
-        '--disable-workspace-trust', // Skip workspace trust dialog
-        '--disable-telemetry', // Disable telemetry for tests
-        '--no-sandbox', // Allow tests to run in sandboxed environments
-        '--disable-gpu', // Disable GPU acceleration for tests
-        '--force-device-scale-factor=1', // Force scale factor for consistency
-        extensionDevelopmentPath, // Open the extension's workspace folder
+        tempWorkspace, // Open the temp workspace
+        '--disable-extensions',
+        '--no-sandbox',
+        '--disable-dev-shm-usage',
       ],
     });
 
-    console.log('✅ All E2E tests completed successfully!');
+    // Clean up temp workspace after tests
+    try {
+      fs.rmSync(tempWorkspace, { recursive: true, force: true });
+      console.log('Cleaned up test workspace');
+    } catch (cleanupError) {
+      console.warn('Failed to cleanup test workspace:', cleanupError);
+    }
   } catch (err) {
-    console.error('❌ E2E tests failed:', err);
+    console.error('Failed to run tests:', err);
     process.exit(1);
   }
 }

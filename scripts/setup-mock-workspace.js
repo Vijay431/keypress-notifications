@@ -2,7 +2,7 @@
 
 /**
  * Mock Workspace Setup Script
- * 
+ *
  * This script sets up or refreshes the mock workspace with sample data
  * for manual testing of the Keypress Notifications extension.
  */
@@ -35,26 +35,38 @@ function writeFile(filePath, content, description) {
  */
 function generateRandomCodeSnippets() {
   const functions = [
-    'calculateTotal', 'processData', 'validateInput', 'formatOutput', 
-    'handleError', 'initializeApp', 'connectDatabase', 'parseJSON'
+    'calculateTotal',
+    'processData',
+    'validateInput',
+    'formatOutput',
+    'handleError',
+    'initializeApp',
+    'connectDatabase',
+    'parseJSON',
   ];
-  
+
   const variables = [
-    'userInput', 'apiResponse', 'configData', 'tempValue',
-    'resultSet', 'errorMessage', 'statusCode', 'timestamp'
+    'userInput',
+    'apiResponse',
+    'configData',
+    'tempValue',
+    'resultSet',
+    'errorMessage',
+    'statusCode',
+    'timestamp',
   ];
-  
+
   const comments = [
     '// TODO: Implement error handling',
     '// FIXME: Optimize this function',
     '// NOTE: This is a temporary solution',
-    '// WARNING: Deprecated method - use alternative'
+    '// WARNING: Deprecated method - use alternative',
   ];
-  
+
   return {
     randomFunction: functions[Math.floor(Math.random() * functions.length)],
     randomVariable: variables[Math.floor(Math.random() * variables.length)],
-    randomComment: comments[Math.floor(Math.random() * comments.length)]
+    randomComment: comments[Math.floor(Math.random() * comments.length)],
   };
 }
 
@@ -64,7 +76,7 @@ function generateRandomCodeSnippets() {
 function generateDynamicContent() {
   const { randomFunction, randomVariable, randomComment } = generateRandomCodeSnippets();
   const timestamp = new Date().toISOString();
-  
+
   return `// Generated test content - ${timestamp}
 // This file is regenerated each time you run the setup script
 
@@ -121,22 +133,22 @@ export { ${randomFunction}, testData, configuration, ${randomVariable}Handler };
  */
 function setupMockWorkspace() {
   console.log('🚀 Setting up mock workspace for Keypress Notifications extension...\n');
-  
+
   try {
     // Ensure base directories exist
     ensureDir(MOCK_WORKSPACE_DIR);
     ensureDir(path.join(MOCK_WORKSPACE_DIR, '.vscode'));
     ensureDir(path.join(MOCK_WORKSPACE_DIR, 'src'));
     ensureDir(path.join(MOCK_WORKSPACE_DIR, 'docs'));
-    
+
     // Generate dynamic test file
     const dynamicContent = generateDynamicContent();
     writeFile(
       path.join(MOCK_WORKSPACE_DIR, 'dynamic-test.js'),
       dynamicContent,
-      'Dynamic test file with random content'
+      'Dynamic test file with random content',
     );
-    
+
     // Create additional test files if they don't exist
     const testFiles = [
       {
@@ -152,10 +164,10 @@ console.log('Result:', result);
 export default function main() {
   return 'Hello from main function';
 }`,
-        description: 'Source index file'
+        description: 'Source index file',
       },
       {
-        path: 'src/utils.js', 
+        path: 'src/utils.js',
         content: `// Utility functions for testing copy/cut/paste
 export function calculateSum(a, b) {
   return a + b;
@@ -170,7 +182,7 @@ export const constants = {
   TIMEOUT: 5000,
   API_VERSION: 'v1'
 };`,
-        description: 'Utility functions file'
+        description: 'Utility functions file',
       },
       {
         path: 'docs/TESTING.md',
@@ -188,42 +200,41 @@ export const constants = {
 ## Notes
 
 Add your testing notes here...`,
-        description: 'Testing documentation'
-      }
+        description: 'Testing documentation',
+      },
     ];
-    
-    testFiles.forEach(file => {
+
+    testFiles.forEach((file) => {
       const fullPath = path.join(MOCK_WORKSPACE_DIR, file.path);
       ensureDir(path.dirname(fullPath));
-      
+
       if (!fs.existsSync(fullPath)) {
         writeFile(fullPath, file.content, file.description);
       }
     });
-    
+
     // Update workspace settings
     const workspaceSettings = {
-      "keypress-notifications.enabled": true,
-      "keypress-notifications.logLevel": "debug",
-      "editor.wordWrap": "on",
-      "editor.minimap.enabled": true,
-      "files.autoSave": "off",
-      "workbench.startupEditor": "readme"
+      'keypress-notifications.enabled': true,
+      'keypress-notifications.logLevel': 'debug',
+      'editor.wordWrap': 'on',
+      'editor.minimap.enabled': true,
+      'files.autoSave': 'off',
+      'workbench.startupEditor': 'readme',
     };
-    
+
     writeFile(
       path.join(MOCK_WORKSPACE_DIR, '.vscode', 'settings.json'),
       JSON.stringify(workspaceSettings, null, 2),
-      'Workspace settings'
+      'Workspace settings',
     );
-    
+
     console.log('\n✅ Mock workspace setup completed successfully!');
     console.log(`📁 Workspace location: ${MOCK_WORKSPACE_DIR}`);
     console.log('\n🧪 To start manual testing:');
     console.log('   npm run test:manual');
     console.log('\n🔧 To launch with debugging:');
     console.log('   Use "Launch Extension with Mock Workspace" from VS Code Debug view');
-    
   } catch (error) {
     console.error('❌ Error setting up mock workspace:', error);
     process.exit(1);
