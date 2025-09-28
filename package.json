@@ -2,7 +2,7 @@
   "name": "keypress-notifications",
   "displayName": "Keypress Notifications",
   "description": "Shows notifications for multi-key combinations and command executions in VS Code.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": "Proprietary",
   "publisher": "VijayGangatharan",
   "icon": "logo.png",
