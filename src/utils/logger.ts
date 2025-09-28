@@ -1,4 +1,5 @@
 import { OutputChannel, window } from 'vscode';
+
 import { ILogger } from '../types/extension';
 
 /**

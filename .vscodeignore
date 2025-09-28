@@ -1,15 +1,23 @@
-.vscode/**
-.vscode-test/**
-out/test/**
-test/**
-src/**
-**/*.map
-.gitignore
-tsconfig.json
-tsconfig.test.json
+# Directories
+.claude/
+.github/
+.vscode/
+.vscode-test/
+blogs/
+docs/
+node_modules/
+scripts/
+src/
+test/
+
+# Files
 .editorconfig
-.prettierrc
+.gitignore
+.mcp.json
+.prettier*
+eslint*
 .vscode-test.mjs
-eslint.config.mjs
-scripts/**
-.github/**
+.vscodeignore
+CLAUDE.md
+esbuild*
+tsconfig*.json
