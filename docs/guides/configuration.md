@@ -173,4 +173,4 @@ To reset all settings to defaults:
 
 ---
 
-_Need help with configuration? [Open an issue](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues)!_
+_Need help with configuration? [Open an issue](https://github.com/Vijay431/keypress-notifications/issues)!_

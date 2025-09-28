@@ -1,11 +1,11 @@
 # Site settings
-title: 'Keypress Notifications Documentation'
-description: 'Complete documentation for the Keypress Notifications VS Code extension'
-url: 'https://vijay431.github.io'
-baseurl: '/vscode-keypress_snackbar_notification-extension'
+title: "Keypress Notifications Documentation"
+description: "Complete documentation for the Keypress Notifications VS Code extension"
+url: "https://vijay431.github.io"
+baseurl: "/keypress-notifications"
 
 # Repository settings
-repository: 'Vijay431/vscode-keypress_snackbar_notification-extension'
+repository: "Vijay431/keypress-notifications"
 
 # Build settings
 markdown: kramdown
@@ -37,14 +37,14 @@ heading_anchors: true
 
 # Aux links for the upper right navigation
 aux_links:
-  'View on GitHub': 'https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension'
-  'VS Code Marketplace': 'https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications'
+  "View on GitHub": "https://github.com/Vijay431/keypress-notifications"
+  "VS Code Marketplace": "https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications"
 
 # Makes aux links open in a new tab
 aux_links_new_tab: true
 
 # Footer content
-footer_content: 'Copyright &copy; 2025 Vijay Gangatharan. Made with ❤️ for the VS Code community.'
+footer_content: "Copyright &copy; 2025 Vijay Gangatharan. Made with ❤️ for the VS Code community."
 
 # Color scheme supports "light" (default) and "dark"
 
@@ -55,8 +55,8 @@ footer_content: 'Copyright &copy; 2025 Vijay Gangatharan. Made with ❤️ for t
 # Exclude from processing
 exclude:
   - node_modules/
-  - '*.gemspec'
-  - '*.gem'
+  - "*.gemspec"
+  - "*.gem"
   - Gemfile
   - Gemfile.lock
   - package.json
@@ -83,28 +83,28 @@ collections:
 # Default layouts
 defaults:
   - scope:
-      path: ''
-      type: 'pages'
+      path: ""
+      type: "pages"
     values:
-      layout: 'default'
+      layout: "default"
   - scope:
-      path: ''
-      type: 'guides'
+      path: ""
+      type: "guides"
     values:
-      layout: 'default'
-      parent: 'Guides'
+      layout: "default"
+      parent: "Guides"
   - scope:
-      path: ''
-      type: 'api'
+      path: ""
+      type: "api"
     values:
-      layout: 'default'
-      parent: 'API Reference'
+      layout: "default"
+      parent: "API Reference"
   - scope:
-      path: ''
-      type: 'examples'
+      path: ""
+      type: "examples"
     values:
-      layout: 'default'
-      parent: 'Examples'
+      layout: "default"
+      parent: "Examples"
 
 # Navigation structure
 nav_sort: case_insensitive
@@ -114,22 +114,22 @@ enable_copy_code_button: true
 
 # Back to top link
 back_to_top: true
-back_to_top_text: 'Back to top'
+back_to_top_text: "Back to top"
 
 # Footer last edit timestamp
 last_edit_timestamp: true
-last_edit_time_format: '%b %e %Y at %I:%M %p'
+last_edit_time_format: "%b %e %Y at %I:%M %p"
 
 # Footer "Edit this page on GitHub" link text
 gh_edit_link: true
-gh_edit_link_text: 'Edit this page on GitHub'
-gh_edit_repository: 'https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension'
-gh_edit_branch: 'master'
+gh_edit_link_text: "Edit this page on GitHub"
+gh_edit_repository: "https://github.com/Vijay431/keypress-notifications"
+gh_edit_branch: "master"
 gh_edit_source: docs
-gh_edit_view_mode: 'tree'
+gh_edit_view_mode: "tree"
 
 # Site logo
-logo: '/assets/images/logo.png'
+logo: "/assets/images/logo.png"
 
 # Callouts
 callouts_level: quiet
@@ -151,7 +151,7 @@ callouts:
 
 # Mermaid diagrams
 mermaid:
-  version: '9.1.6'
+  version: "9.1.6"
 
 # Compress HTML
 compress_html:

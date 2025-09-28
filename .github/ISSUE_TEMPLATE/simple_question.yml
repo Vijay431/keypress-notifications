@@ -1,0 +1,59 @@
+name: ❓ Question
+description: Have a question? Ask away!
+title: "[Question]: "
+labels: ["question", "needs-response"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # ❓ Question
+
+        Have a question about **Keypress Notifications**? We're here to help! 🎯
+
+        **Before asking:** Please check the [README](https://github.com/Vijay431/keypress-notifications#readme) and [existing discussions](https://github.com/Vijay431/keypress-notifications/discussions).
+
+  - type: textarea
+    id: question
+    attributes:
+      label: 🤔 Your Question
+      description: What would you like to know?
+      placeholder: |
+        Example: How do I change the minimum number of keys needed to trigger notifications?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 📋 Question Category
+      options:
+        - Configuration/Settings
+        - Usage/How-to
+        - Troubleshooting
+        - Feature clarification
+        - Development/Contributing
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 📝 Additional Context
+      description: Any additional details that might help us answer your question
+      placeholder: |
+        Example:
+        - VS Code version: 1.95.0
+        - Extension version: 1.0.0
+        - What you've already tried
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: acknowledgment
+    attributes:
+      label: ✅ Acknowledgment
+      options:
+        - label: I have searched existing issues and discussions before asking
+          required: true
