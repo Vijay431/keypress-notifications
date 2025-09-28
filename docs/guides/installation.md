@@ -1,246 +1,288 @@
+---
+layout: default
+title: Installation Guide
+parent: Guides
+nav_order: 1
+description: 'Complete installation instructions for Keypress Notifications'
+---
+
 # 📦 Installation Guide
 
-## 🚀 Quick Start
+Complete installation instructions for the Keypress Notifications VS Code extension.
 
-Getting **Keypress Notifications** up and running is super easy! Follow these simple steps:
+{: .fs-6 .fw-300 }
 
-### 1️⃣ Install from VS Code Marketplace
+---
 
-#### 🖱️ GUI Installation (Recommended)
-1. Open VS Code
-2. Click the Extensions icon in the sidebar (or press `Ctrl+Shift+X`)
-3. Search for "**Keypress Notifications**"
-4. Click **Install** on the extension by `VijayGangatharan`
-5. 🎉 You're done! The extension will activate automatically.
+## 🚀 Quick Installation
 
-#### ⌨️ Command Line Installation
+### Method 1: VS Code Marketplace (Recommended)
+
+The easiest way to install Keypress Notifications:
+
+1. **Open VS Code**
+2. **Open Extensions panel** (`Ctrl+Shift+X` / `Cmd+Shift+X`)
+3. **Search** for "Keypress Notifications"
+4. **Click Install** on the extension by VijayGangatharan
+5. **Reload VS Code** if prompted
+
+### Method 2: Command Line
+
+Install directly from the command line:
+
 ```bash
-# Quick one-liner installation
 code --install-extension VijayGangatharan.keypress-notifications
 ```
 
-### 2️⃣ Verify Installation
+### Method 3: Extensions View Command
 
-After installation, verify everything is working:
-
-1. **Check Status**: Look for the extension in your Extensions panel
-2. **Test Functionality**: 
-   - Select some text in any file
-   - Press `Ctrl+C` (copy)
-   - You should see a notification: "Copy detected! 📄✨"
-3. **Access Commands**: Press `Ctrl+Shift+P` and search for "Keypress Notifications"
+1. **Open Command Palette** (`Ctrl+Shift+P` / `Cmd+Shift+P`)
+2. **Type:** `Extensions: Install Extensions`
+3. **Search** for "Keypress Notifications"
+4. **Click Install**
 
 ---
 
-## 🔧 Node.js Compatibility Matrix
+## 📋 System Requirements
 
-Our extension is tested across multiple Node.js versions to ensure broad compatibility:
+### ✅ Supported Platforms
 
-| Node.js Version | Support Status | Notes |
-|---|---|---|
-| **22.x** | ✅ Fully Supported | Latest features, recommended for new setups |
-| **20.x LTS** | ✅ Fully Supported | **Recommended** - Most stable |
-| **18.x LTS** | ✅ Fully Supported | Great for enterprise environments |
-| **16.x** | ✅ Supported | Minimum version, basic functionality |
-| **14.x** | ❌ Not Supported | End of life, please upgrade |
+- **🪟 Windows**: Windows 10/11 (x64)
+- **🍎 macOS**: macOS 10.15+ (Intel & Apple Silicon)
+- **🐧 Linux**: Ubuntu 18.04+, Debian 10+, RHEL 8+, Fedora 32+
 
-### 🎯 Recommended Setup
-- **Development**: Node.js 20.x LTS
-- **Production**: Node.js 20.x LTS  
-- **CI/CD**: Node.js 20.x LTS
-- **Minimum**: Node.js 16.x
+### 🔧 Software Requirements
 
----
+| Requirement    | Minimum    | Recommended   |
+| -------------- | ---------- | ------------- |
+| **VS Code**    | 1.90.0+    | Latest stable |
+| **Node.js**    | 16.x       | 20.x LTS      |
+| **Memory**     | 512MB free | 1GB+ free     |
+| **Disk Space** | 5MB        | 10MB          |
 
-## 💻 Platform Support
+### 🌐 Network Requirements
 
-### ✅ Fully Supported Platforms
-
-| Platform | Version | Architecture | Status |
-|---|---|---|---|
-| **Windows** | 10, 11 | x64, ARM64 | ✅ Full Support |
-| **macOS** | 12+, 13+, 14+ | Intel, Apple Silicon | ✅ Full Support |
-| **Linux** | Ubuntu 20.04+, Debian 11+ | x64, ARM64 | ✅ Full Support |
-
-### 🛠️ Development Environments
-
-| Environment | Support Status | Notes |
-|---|---|---|
-| **VS Code Desktop** | ✅ Primary Target | Full feature set |
-| **VS Code Insiders** | ✅ Supported | May have early features |
-| **WSL/WSL2** | ✅ Supported | Windows Subsystem for Linux |
-| **Remote Development** | ✅ Supported | SSH, Containers, WSL |
-| **GitHub Codespaces** | ✅ Supported | Cloud development |
-| **Docker Containers** | ✅ Supported | Containerized development |
+- **Internet connection** for initial download (1.5MB)
+- **No ongoing network access** required after installation
+- **Firewall friendly** - no external connections needed
 
 ---
 
-## 📋 VS Code Requirements
+## 🔍 Installation Verification
 
-### Minimum Requirements
-- **VS Code Version**: 1.90.0 or higher
-- **Node.js**: 16.0.0 or higher (see compatibility matrix above)
-- **Memory**: 100MB available RAM
-- **Storage**: 5MB disk space
+### 1. Check Extension is Installed
 
-### Recommended Requirements  
-- **VS Code Version**: Latest stable release
-- **Node.js**: 20.x LTS
-- **Memory**: 200MB available RAM
-- **Storage**: 10MB disk space
+After installation, verify the extension is loaded:
+
+1. **Open Extensions panel** (`Ctrl+Shift+X`)
+2. **Search** for "Keypress Notifications"
+3. **Verify** it shows as "Installed"
+
+### 2. Test Basic Functionality
+
+1. **Open any file** in VS Code
+2. **Press** `Ctrl+C` (copy)
+3. **Look for notification** saying "Copy detected! 📄✨"
+
+### 3. Check Extension Commands
+
+1. **Open Command Palette** (`Ctrl+Shift+P`)
+2. **Type** "Keypress"
+3. **Verify** you see commands like:
+   - `🟢 Keypress Notifications: Activate`
+   - `🔴 Keypress Notifications: Deactivate`
+   - `📊 Keypress Notifications: Show Output Channel`
 
 ---
 
-## 🔧 Advanced Installation Options
+## 🏢 Enterprise Installation
 
-### 📦 Manual Installation (VSIX)
+### Group Policy Deployment (Windows)
 
-If you need to install manually or in offline environments:
+For enterprise environments with Group Policy:
 
-1. **Download VSIX**: Get the latest `.vsix` file from [GitHub Releases](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/releases)
-2. **Install via Command**:
-   ```bash
-   code --install-extension keypress-notifications-0.1.0.vsix
-   ```
-3. **Install via GUI**:
-   - Open Extensions panel (`Ctrl+Shift+X`)
-   - Click the `...` menu → "Install from VSIX..."
-   - Select your downloaded `.vsix` file
+1. **Download VSIX** from marketplace
+2. **Deploy via GPO** using VS Code extension deployment
+3. **Configure settings** via Group Policy preferences
 
-### 🏢 Enterprise Installation
+### Mass Deployment Script
 
-For organizations deploying to multiple machines:
+For multiple machines:
 
-#### Group Policy (Windows)
-```json
-{
-  "recommendations": [
-    "VijayGangatharan.keypress-notifications"
-  ]
-}
+```bash
+#!/bin/bash
+# mass-install.sh
+
+# Install for all users (requires admin)
+for user in $(ls /home/); do
+  sudo -u $user code --install-extension VijayGangatharan.keypress-notifications
+done
+
+echo "Installation complete for all users"
 ```
 
-#### Settings Sync
-Enable VS Code Settings Sync to automatically install on new machines.
+### Docker/Container Environments
 
-#### Dockerfile Example
+For containerized VS Code environments:
+
 ```dockerfile
-FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu
+# Add to your VS Code Docker image
 RUN code --install-extension VijayGangatharan.keypress-notifications
 ```
 
 ---
 
-## 🔍 Troubleshooting Installation
+## 🛠️ Manual Installation
 
-### Common Issues & Solutions
+### From VSIX File
 
-#### ❌ Extension Won't Install
-**Problem**: "Extension not found" or installation fails
-**Solutions**:
-1. Update VS Code to latest version
-2. Check your internet connection
-3. Try installing via command line
-4. Restart VS Code and try again
+If you need to install from a VSIX file:
 
-#### ❌ Extension Won't Activate
-**Problem**: Extension installed but not working
-**Solutions**:
-1. Check Node.js version: `node --version`
-2. Reload VS Code window: `Ctrl+Shift+P` → "Developer: Reload Window"
-3. Check Developer Console for errors: `Help` → `Toggle Developer Tools`
-4. Disable other extensions temporarily to check for conflicts
+1. **Download VSIX** from [GitHub Releases](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/releases)
+2. **Open Command Palette** (`Ctrl+Shift+P`)
+3. **Run:** `Extensions: Install from VSIX...`
+4. **Select** the downloaded VSIX file
+5. **Reload VS Code** when prompted
 
-#### ❌ Notifications Not Showing
-**Problem**: Extension active but no notifications appear
-**Solutions**:
-1. Check extension settings: `Ctrl+,` → search "keypress-notifications"
-2. Ensure `enabled` is set to `true`
-3. Test with different keybindings
-4. Check VS Code notification settings
+### Offline Installation
 
-#### ❌ Performance Issues
-**Problem**: VS Code slow after installation
-**Solutions**:
-1. Check Node.js version compatibility
-2. Adjust log level: Set `logLevel` to `"error"` instead of `"debug"`
-3. Add frequently used commands to `excludedCommands`
-4. Restart VS Code
+For environments without internet access:
 
-### 🔍 Debug Information
-
-To help with troubleshooting, gather this information:
-
-```bash
-# System info
-code --version
-node --version
-npm --version
-
-# OS info (Linux/macOS)
-uname -a
-
-# OS info (Windows)
-systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
-```
-
-### 📞 Getting Help
-
-If you're still having issues:
-
-1. 🔍 **Search Issues**: Check [GitHub Issues](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues)
-2. 🐛 **Report Bug**: Use our [Bug Report Template](./../.github/ISSUE_TEMPLATE/bug_report.yml)
-3. 💬 **Ask Community**: Start a [GitHub Discussion](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/discussions)
-4. 📧 **Contact**: Email [vijayanand431@gmail.com](mailto:vijayanand431@gmail.com)
+1. **Download VSIX** on connected machine
+2. **Transfer VSIX** to target machine
+3. **Install via VSIX** method above
+4. **Configure settings** manually if needed
 
 ---
 
 ## ⚙️ Post-Installation Setup
 
-### Quick Configuration
+### Initial Configuration
 
-After installation, you might want to customize the extension:
-
-1. **Open Settings**: `Ctrl+,` or `File` → `Preferences` → `Settings`
-2. **Search**: Type "keypress-notifications"
-3. **Configure**: Adjust settings to your preferences
-
-### Essential Settings
+After installation, the extension works with default settings. Optionally customize:
 
 ```json
 {
   "keypress-notifications.enabled": true,
-  "keypress-notifications.logLevel": "info",
   "keypress-notifications.minimumKeys": 2,
-  "keypress-notifications.showCommandName": true
+  "keypress-notifications.showCommandName": true,
+  "keypress-notifications.logLevel": "info"
 }
 ```
 
-### 🎯 Next Steps
+### First-Time Usage
 
-- 📖 **Read Configuration Guide**: Learn about all available settings
-- 🎨 **Customize Experience**: Adjust notifications to your workflow  
-- 🧪 **Test Features**: Try different keybindings and commands
-- ⭐ **Star Repository**: Show your support on GitHub!
+1. **No setup required** - extension auto-activates
+2. **Try basic shortcuts**:
+   - `Ctrl+C` (copy)
+   - `Ctrl+V` (paste)
+   - `Ctrl+Shift+P` (command palette)
+3. **See notifications** appear for multi-key combinations
 
 ---
 
-## 🔄 Updating the Extension
+## 🔄 Updates
 
-### Automatic Updates (Default)
-VS Code automatically updates extensions by default. The extension will update in the background.
+### Automatic Updates
+
+VS Code automatically updates extensions by default:
+
+- **Check for updates** daily
+- **Auto-install** patch updates
+- **Prompt for** major updates
 
 ### Manual Updates
-1. Open Extensions panel (`Ctrl+Shift+X`)
-2. Find "Keypress Notifications"
-3. Click **Update** if available
-4. Restart VS Code if prompted
 
-### 📦 Version Information
-Check your current version: Extensions panel → Keypress Notifications → Version number
+To manually check for updates:
+
+1. **Open Extensions panel**
+2. **Look for** update badge on Keypress Notifications
+3. **Click Update** if available
+
+### Update Notifications
+
+You'll be notified of updates via:
+
+- **VS Code notification** when update is available
+- **Extension description** shows latest changes
+- **Changelog** available in extension details
 
 ---
 
-**🎉 That's it! You're ready to enhance your VS Code experience with visual keybinding feedback!**
+## 🔧 Troubleshooting Installation
 
-💡 **Pro Tip**: Give this repository a ⭐ if you find the extension useful!
+### Common Issues
+
+#### ❌ "Extension not found"
+
+**Solution**: Ensure you're searching for the exact name "Keypress Notifications" by VijayGangatharan.
+
+#### ❌ "Installation failed"
+
+**Possible causes**:
+
+- Insufficient disk space
+- VS Code not running as administrator (Windows)
+- Network connectivity issues
+
+**Solutions**:
+
+1. Free up disk space (5MB minimum)
+2. Run VS Code as administrator
+3. Check internet connection
+4. Try manual VSIX installation
+
+#### ❌ "Extension not loading"
+
+**Solutions**:
+
+1. Reload VS Code window (`Ctrl+Shift+P` → "Reload Window")
+2. Restart VS Code completely
+3. Check VS Code output panel for errors
+4. Disable other extensions to test for conflicts
+
+### Getting Help
+
+If installation issues persist:
+
+1. **Check our** [Troubleshooting Guide](troubleshooting)
+2. **Search** [GitHub Issues](https://github.com/Vijay431/vscode-keypress_snackbar_notification-extension/issues)
+3. **Create new issue** with:
+   - OS and VS Code version
+   - Installation method attempted
+   - Error messages received
+   - Steps to reproduce
+
+---
+
+## 🚀 Next Steps
+
+After successful installation:
+
+1. **📖 [Read Configuration Guide](configuration)** - Customize the extension
+2. **🎯 [Try Basic Examples](../examples/basic-usage)** - See it in action
+3. **⚡ [Explore Advanced Features](../examples/advanced-configuration)** - Power user setup
+
+---
+
+## 📋 Installation Checklist
+
+Use this checklist to verify complete installation:
+
+- [ ] ✅ Extension appears in Extensions panel
+- [ ] ✅ Extension commands available in Command Palette
+- [ ] ✅ Basic keybinding notifications work (try `Ctrl+C`)
+- [ ] ✅ Extension settings accessible in VS Code settings
+- [ ] ✅ No error messages in VS Code output panel
+
+**All checked?** You're ready to use Keypress Notifications! 🎉
+
+---
+
+<div align="center">
+
+**Installation complete!** 🎊
+
+[⚙️ Configure Extension](configuration){: .btn .btn-primary } [🎯 See Examples](../examples/basic-usage){: .btn .btn-outline }
+
+</div>

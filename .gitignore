@@ -1,8 +1,29 @@
-dist
-node_modules
-
 *.vsix
 .vscode-test
+.vscode-test-web
 
-.claude
+coverage
+dist
+node_modules
+out
+
+# Compiled files - prevent TypeScript output in source directories
+src/**/*.js
+src/**/*.js.map
+test/**/*.js
+test/**/*.js.map
+
+# Debug files
+*.map
+debug.log
+meta.json
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
 CLAUDE.md
+.claude
+TODO.md
+
+.mcp.json

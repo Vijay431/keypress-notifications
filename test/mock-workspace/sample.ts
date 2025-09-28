@@ -40,7 +40,7 @@ class UserService implements Repository<User> {
   
   // Method with destructuring - good for selection testing
   async save(user: User): Promise<User> {
-    const { id, name, email, preferences } = user;
+    const { id, name } = user;
     
     if (!name.trim()) {
       throw new Error('Name is required');
@@ -89,10 +89,10 @@ type ApiResponse<T> = {
   timestamp: Date;
 };
 
-// Utility types testing
-type PartialUser = Partial<User>;      // Try copying utility types
-type RequiredUser = Required<User>;    // Test with different utilities
-type UserEmail = Pick<User, 'email'>;  // Pick specific properties
+// Utility types testing - commented out to avoid unused type errors
+// type PartialUser = Partial<User>;      // Try copying utility types
+// type RequiredUser = Required<User>;    // Test with different utilities
+// type UserEmail = Pick<User, 'email'>;  // Pick specific properties
 
 // Sample data for testing - try copying these objects
 const sampleUser: User = {
@@ -126,17 +126,20 @@ namespace Utils {
   };
 }
 
-// Decorator example (experimental)
-function log(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+// Decorator example (experimental) - commented out for compatibility
+/*
+function log(_target: any, _propertyName: string, descriptor: PropertyDescriptor) {
   const method = descriptor.value;
   descriptor.value = function (...args: any[]) {
-    console.log(`Calling ${propertyName} with`, args);
+    console.log(`Calling ${_propertyName} with`, args);
     return method.apply(this, args);
   };
+  return descriptor;
 }
+*/
 
 class TestService {
-  @log  // Try copying decorators
+  // @log  // Try copying decorators (commented for compatibility)
   process(data: string): string {
     return data.toUpperCase();
   }

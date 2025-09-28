@@ -1,7 +1,7 @@
 name: 📚 Documentation Improvement
 description: Help us improve our documentation! 📖
-title: "[Docs]: "
-labels: ["documentation", "good-first-issue", "needs-triage"]
+title: '[Docs]: '
+labels: ['documentation', 'good-first-issue', 'needs-triage']
 assignees: []
 
 body:

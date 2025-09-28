@@ -1,7 +1,7 @@
 name: ✨ Feature Request
 description: Got a brilliant idea? We'd love to hear it! 🚀
-title: "[Feature]: "
-labels: ["enhancement", "feature-request", "needs-triage"]
+title: '[Feature]: '
+labels: ['enhancement', 'feature-request', 'needs-triage']
 assignees: []
 
 body:
@@ -35,11 +35,9 @@ body:
         - ⚙️ Configuration & Settings
         - 🎨 Customization & Themes
         - 🔧 Developer Experience
-        - 📊 Analytics & Reporting
         - 🔌 Integration & Compatibility
         - 🚀 Performance & Optimization
         - 📱 Accessibility
-        - 🌍 Internationalization
         - Other (please specify in description)
     validations:
       required: true
@@ -63,9 +61,8 @@ body:
       placeholder: |
         Example:
         - Add a new setting "keypress-notifications.enableSounds"
-        - Provide different sound files for copy, cut, paste, save operations
-        - Allow users to upload custom sound files
-        - Include volume control slider
+        - Provide simple sound feedback for notifications
+        - Allow users to enable/disable sounds
         - Respect system "Do Not Disturb" mode
     validations:
       required: true

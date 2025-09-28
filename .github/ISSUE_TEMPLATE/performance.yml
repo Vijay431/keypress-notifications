@@ -1,7 +1,7 @@
 name: 🚀 Performance Issue
 description: Report performance problems or optimization suggestions 📈
-title: "[Performance]: "
-labels: ["performance", "needs-triage"]
+title: '[Performance]: '
+labels: ['performance', 'needs-triage']
 assignees: []
 
 body:
@@ -125,7 +125,7 @@ body:
     attributes:
       label: 📦 Extension Version
       description: What version of Keypress Notifications are you using?
-      placeholder: "e.g., 0.1.0"
+      placeholder: 'e.g., 0.1.0'
     validations:
       required: true
 

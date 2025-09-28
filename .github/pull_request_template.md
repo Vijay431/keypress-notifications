@@ -1,9 +1,11 @@
 # 🔄 Pull Request
 
 ## 📋 Summary
+
 <!-- Provide a brief description of the changes in this PR -->
 
 ## 🎯 Type of Change
+
 <!-- Mark the relevant option with an 'x' -->
 
 - [ ] 🐛 **Bug fix** (non-breaking change that fixes an issue)
@@ -18,6 +20,7 @@
 - [ ] 🔒 **Security** (security-related improvements or fixes)
 
 ## 🔗 Related Issues
+
 <!-- Link any related issues using # (e.g., #123) -->
 
 - Fixes #
@@ -25,6 +28,7 @@
 - Implements #
 
 ## 🧪 Testing
+
 <!-- Describe the tests you ran and how to reproduce them -->
 
 ### ✅ Test Cases Covered
@@ -32,8 +36,7 @@
 - [ ] Manual testing performed
 - [ ] Automated tests added/updated
 - [ ] Cross-platform testing (Windows/macOS/Linux)
-- [ ] Node.js compatibility testing (16, 18, 20, 22)
-- [ ] VS Code version compatibility testing
+- [ ] VS Code version compatibility testing (1.102.0+)
 - [ ] Performance impact assessment
 
 ### 🔧 Manual Testing Steps
@@ -43,18 +46,21 @@
 3.
 
 ### 📊 Test Results
+
 <!-- Provide test results, screenshots, or performance measurements -->
 
-## 🔄 Node.js Compatibility
-<!-- Check all Node.js versions this change has been tested with -->
+## 🔄 Node.js Compatibility (for development)
+
+<!-- Check Node.js versions if making build/development changes -->
 
 - [ ] ✅ Node.js 16.x
-- [ ] ✅ Node.js 18.x  
+- [ ] ✅ Node.js 18.x
 - [ ] ✅ Node.js 20.x (LTS)
 - [ ] ✅ Node.js 22.x
-- [ ] ✅ Node.js latest
+- [ ] N/A - No development changes
 
 ## 💻 Platform Testing
+
 <!-- Check all platforms this change has been tested on -->
 
 - [ ] 🪟 Windows 10/11
@@ -64,6 +70,7 @@
 - [ ] 🐳 Docker/Containerized environments
 
 ## 📝 Changes Made
+
 <!-- Provide a detailed list of what was changed -->
 
 ### 🔧 Core Changes
@@ -74,12 +81,14 @@
 
 ### 📁 Files Modified
 
-- `src/` -
+- `src/extension.ts` -
+- `src/services/KeypressService.ts` -
+- `src/types/` -
 - `test/` -
-- `docs/` -
 - Other:
 
 ## ⚠️ Breaking Changes
+
 <!-- If this is a breaking change, describe what breaks and how to migrate -->
 
 **Are there any breaking changes?**
@@ -88,9 +97,11 @@
 - [ ] ⚠️ Yes, breaking changes (describe below)
 
 ### Migration Guide
+
 <!-- If breaking changes exist, provide migration instructions -->
 
 ## 📊 Performance Impact
+
 <!-- Describe any performance implications -->
 
 - [ ] 🟢 **No performance impact**
@@ -98,9 +109,11 @@
 - [ ] 🟠 **Significant performance impact** (describe below and justify)
 
 ### Performance Details
+
 <!-- If there's performance impact, provide details -->
 
 ## 🔒 Security Considerations
+
 <!-- Describe any security implications of this change -->
 
 - [ ] ✅ No security implications
@@ -108,6 +121,7 @@
 - [ ] 🔍 Security review requested
 
 ## 📚 Documentation
+
 <!-- Check all that apply -->
 
 - [ ] 📖 **Code is self-documenting** with clear variable/function names
@@ -118,6 +132,7 @@
 - [ ] 🎯 **JSDoc/TypeScript types updated** (if applicable)
 
 ## ✅ Code Quality Checklist
+
 <!-- Ensure all items are checked before requesting review -->
 
 ### 🧹 Code Standards
@@ -139,12 +154,13 @@
 
 ### 📦 Build & Deployment
 
-- [ ] Project builds successfully (`pnpm run compile`)
-- [ ] Production build works (`pnpm run package`)
+- [ ] Project builds successfully (`npm run build`)
+- [ ] Production build works (`npm run package`)
 - [ ] No new dependencies added without justification
 - [ ] Package.json version updated (if releasing)
 
 ## 🎯 Reviewer Focus Areas
+
 <!-- Help reviewers focus on specific areas that need attention -->
 
 **Please pay special attention to:**
@@ -159,37 +175,46 @@
 - [ ] Code maintainability
 
 ## 📸 Screenshots/GIFs
+
 <!-- Add screenshots or GIFs to demonstrate visual changes -->
 
 ### Before
+
 <!-- Screenshots of current behavior -->
 
 ### After
+
 <!-- Screenshots of new behavior -->
 
 ## 🔄 Migration Instructions
+
 <!-- If this change affects existing users, provide migration steps -->
 
 **For Users:**
+
 1.
 2.
 
 **For Developers:**
+
 1.
 2.
 
 ## 🤔 Questions for Reviewers
+
 <!-- Any specific questions you'd like reviewers to consider -->
 
 1.
 2.
 
 ## 📋 Additional Notes
+
 <!-- Any additional context, concerns, or discussion points -->
 
 ---
 
 ## ✅ Final Checklist
+
 <!-- Complete this checklist before marking the PR as ready for review -->
 
 - [ ] 🎯 **PR title clearly describes the change**
@@ -211,7 +236,7 @@
 ### 📋 Review Process
 
 1. **🔍 Automated Checks** - CI pipeline runs automatically
-2. **👥 Code Review** - Team members review your changes  
+2. **👥 Code Review** - Team members review your changes
 3. **🧪 Testing** - Verify functionality across platforms
 4. **✅ Approval** - Required approvals before merge
 5. **🚀 Merge** - Squash merge to master branch

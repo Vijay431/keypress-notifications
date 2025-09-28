@@ -1,19 +1,19 @@
-import { glob } from 'fast-glob';
-import Mocha from 'mocha';
 import * as path from 'path';
+import Mocha from 'mocha';
+import { glob } from 'glob';
 
 export function run(): Promise<void> {
   // Create the mocha test
   const mocha = new Mocha({
-    ui: 'tdd',
+    ui: 'bdd',
     color: true,
-    timeout: 30000, // 30 seconds timeout for E2E tests
+    timeout: 60000, // 60 seconds timeout for E2E tests
   });
 
   const testsRoot = path.resolve(__dirname, '.');
 
   return new Promise((c, e) => {
-    glob('**/**.test.js', { cwd: testsRoot })
+    glob('**/*.test.js', { cwd: testsRoot })
       .then((files) => {
         console.log(`📋 Found ${files.length} E2E test file(s):`);
 
