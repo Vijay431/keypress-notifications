@@ -1,5 +1,5 @@
 /**
- * Enterprise-grade ESLint configuration for VS Code Extension
+ * Enterprise-grade ESLint configuration for Keypress Notifications VS Code Extension
  *
  * Comprehensive linting rules covering:
  * - Security vulnerabilities
@@ -41,8 +41,8 @@ export default tseslint.config(
       'src/**/*.js.map',
       'test/**/*.js',
       'test/**/*.js.map',
-      'srcipts/**/*.js',
-      'srcipts/**/*.js.map',
+      'scripts/**/*.js',
+      'scripts/**/*.js.map',
     ],
   },
 
@@ -214,15 +214,6 @@ export default tseslint.config(
       'no-useless-constructor': 'error',
       'no-useless-rename': 'error',
       'no-useless-computed-key': 'error',
-    },
-  },
-
-  // Babel AST service exception (requires any for AST operations)
-  {
-    files: ['src/services/codeAnalysisService.ts'],
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-      'security/detect-object-injection': 'off', // AST manipulation requires dynamic access
     },
   },
 

@@ -10,5 +10,10 @@
     "allowSyntheticDefaultImports": true
   },
   "include": ["test/**/*.ts"],
-  "exclude": ["test/fixtures/**/*.ts", "node_modules"]
+  "exclude": ["test/fixtures/**/*.ts", "node_modules"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
 }
