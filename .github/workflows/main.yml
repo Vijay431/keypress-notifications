@@ -28,6 +28,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -35,6 +44,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Validate Package Lock
@@ -160,7 +170,7 @@ jobs:
           retention-days: 30
 
   # ====================================================================
-  # STAGE 3: Build and Test (Parallel matrix execution)
+  # STAGE 2: Build and Test (Parallel matrix execution)
   # ====================================================================
   build-and-test:
     name: Build & Test
@@ -174,6 +184,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
@@ -185,6 +204,7 @@ jobs:
         run: sudo apt-get install -y xvfb
 
       - name: Install NPM Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Build Extension
@@ -202,7 +222,7 @@ jobs:
           fi
 
   # ====================================================================
-  # STAGE 4: Security Audit (Parallel execution)
+  # STAGE 3: Security Audit (Parallel execution)
   # ====================================================================
   security:
     name: Security Audit
@@ -212,6 +232,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -219,6 +248,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Run Security Audit
@@ -228,7 +258,7 @@ jobs:
         run: npm audit --audit-level=moderate
 
   # ====================================================================
-  # STAGE 5: Bundle Analysis (After build completes)
+  # STAGE 4: Bundle Analysis (After build completes)
   # ====================================================================
   bundle-analysis:
     name: Bundle Size Analysis
@@ -239,6 +269,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -246,6 +285,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Package Extension
@@ -286,7 +326,7 @@ jobs:
           retention-days: 30
 
   # ====================================================================
-  # STAGE 6: Quality Report (After all checks complete)
+  # STAGE 5: Quality Report (After all checks complete)
   # ====================================================================
   quality-report:
     name: Generate Quality Report
@@ -388,7 +428,7 @@ jobs:
             }
 
   # ====================================================================
-  # STAGE 7: Dry-run Publish (Non-master branches)
+  # STAGE 6: Dry-run Publish (Non-master branches)
   # ====================================================================
   dry-run-publish:
     name: Validate Publishing (Dry Run)
@@ -400,6 +440,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -407,13 +456,14 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Validate Extension Package
         run: npm run package
 
   # ====================================================================
-  # STAGE 8: Deploy to Marketplace (Master branch only)
+  # STAGE 7: Deploy to Marketplace (Master branch only)
   # ====================================================================
   deploy:
     name: Deploy to VS Code Marketplace
@@ -429,6 +479,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -436,6 +495,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Package Extension
