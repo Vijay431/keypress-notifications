@@ -101,13 +101,18 @@ jobs:
           echo "Analyzing dependencies..."
           npm list --depth=0 > deps-tree.txt 2>&1 || true
 
-          # Check for duplicate dependencies
-          DUPLICATES=$(npm dedupe --dry-run 2>&1 | grep -c "deduped" || echo "0")
+          # Check for duplicate dependencies (count removed packages from dedupe)
+          DEDUPE_OUTPUT=$(npm dedupe --dry-run 2>&1 || true)
+          DUPLICATES=$(echo "$DEDUPE_OUTPUT" | grep -c "^remove " || echo "0")
           echo "duplicates=$DUPLICATES" >> $GITHUB_OUTPUT
 
           # Check for outdated packages
-          npm outdated --json > outdated.json 2>&1 || true
-          OUTDATED=$(jq '. | length' outdated.json 2>/dev/null || echo "0")
+          npm outdated --json 2>&1 > outdated.json || true
+          if [ -s outdated.json ] && jq -e . outdated.json >/dev/null 2>&1; then
+            OUTDATED=$(jq 'length' outdated.json 2>/dev/null || echo "0")
+          else
+            OUTDATED=0
+          fi
           echo "outdated=$OUTDATED" >> $GITHUB_OUTPUT
 
           if [ "$DUPLICATES" -gt 0 ]; then
