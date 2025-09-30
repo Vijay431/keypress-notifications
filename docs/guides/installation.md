@@ -55,7 +55,7 @@ code --install-extension VijayGangatharan.keypress-notifications
 
 | Requirement    | Minimum    | Recommended   |
 | -------------- | ---------- | ------------- |
-| **VS Code**    | 1.90.0+    | Latest stable |
+| **VS Code**    | 1.102.0+   | Latest stable |
 | **Node.js**    | 16.x       | 20.x LTS      |
 | **Memory**     | 512MB free | 1GB+ free     |
 | **Disk Space** | 5MB        | 10MB          |
@@ -89,9 +89,9 @@ After installation, verify the extension is loaded:
 1. **Open Command Palette** (`Ctrl+Shift+P`)
 2. **Type** "Keypress"
 3. **Verify** you see commands like:
-   - `🟢 Keypress Notifications: Activate`
-   - `🔴 Keypress Notifications: Deactivate`
-   - `📊 Keypress Notifications: Show Output Channel`
+   - `Keypress Notifications: Enable`
+   - `Keypress Notifications: Disable`
+   - `Keypress Notifications: Show Status`
 
 ---
 
@@ -165,8 +165,8 @@ After installation, the extension works with default settings. Optionally custom
 {
   "keypress-notifications.enabled": true,
   "keypress-notifications.minimumKeys": 2,
-  "keypress-notifications.showCommandName": true,
-  "keypress-notifications.logLevel": "info"
+  "keypress-notifications.excludedCommands": [],
+  "keypress-notifications.showCommandName": false
 }
 ```
 

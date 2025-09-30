@@ -1,0 +1,337 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: ['**']
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+  statuses: write
+
+jobs:
+  # ====================================================================
+  # STAGE 1: Code Quality Analysis (Parallel execution)
+  # ====================================================================
+  quality:
+    name: Code Quality Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Validate Package Lock
+        run: npm run validate:lockfile
+
+      # TypeScript Analysis
+      - name: TypeScript Strict Mode Check
+        id: typescript
+        run: |
+          echo "Running TypeScript type checking..."
+          npm run check-types > typescript-results.txt 2>&1 || true
+
+          if [ $? -eq 0 ]; then
+            echo "status=✅ Pass" >> $GITHUB_OUTPUT
+            echo "TypeScript type checking passed!"
+          else
+            echo "status=❌ Fail" >> $GITHUB_OUTPUT
+            echo "TypeScript type checking found issues"
+          fi
+
+      # ESLint with detailed reporting
+      - name: ESLint Analysis
+        id: eslint
+        run: |
+          echo "Running ESLint with detailed reporting..."
+          npm run lint -- --format json --output-file eslint-results.json || true
+          npm run lint || true
+
+          if [ -f eslint-results.json ]; then
+            ERROR_COUNT=$(jq '[.[] | .errorCount] | add // 0' eslint-results.json)
+            WARNING_COUNT=$(jq '[.[] | .warningCount] | add // 0' eslint-results.json)
+
+            echo "errors=$ERROR_COUNT" >> $GITHUB_OUTPUT
+            echo "warnings=$WARNING_COUNT" >> $GITHUB_OUTPUT
+
+            if [ "$ERROR_COUNT" -eq 0 ]; then
+              echo "status=✅ Pass ($WARNING_COUNT warnings)" >> $GITHUB_OUTPUT
+            else
+              echo "status=❌ Fail ($ERROR_COUNT errors, $WARNING_COUNT warnings)" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      # Prettier formatting check
+      - name: Code Formatting Check
+        id: prettier
+        run: |
+          echo "Checking code formatting..."
+          npm run format:check > format-results.txt 2>&1 || true
+
+          if [ $? -eq 0 ]; then
+            echo "status=✅ Pass" >> $GITHUB_OUTPUT
+            echo "All files are properly formatted!"
+          else
+            UNFORMATTED=$(grep -c "\.ts$\|\.js$\|\.json$" format-results.txt || echo "0")
+            echo "status=❌ Fail ($UNFORMATTED files)" >> $GITHUB_OUTPUT
+            echo "Found $UNFORMATTED unformatted files"
+            cat format-results.txt
+          fi
+
+      # Dependency analysis
+      - name: Dependency Analysis
+        id: dependencies
+        run: |
+          echo "Analyzing dependencies..."
+          npm list --depth=0 > deps-tree.txt 2>&1 || true
+
+          # Check for duplicate dependencies (count removed packages from dedupe)
+          DEDUPE_OUTPUT=$(npm dedupe --dry-run 2>&1 || true)
+          DUPLICATES=$(echo "$DEDUPE_OUTPUT" | grep -c "^remove " || echo "0")
+          echo "duplicates=$DUPLICATES" >> $GITHUB_OUTPUT
+
+          # Check for outdated packages
+          npm outdated --json 2>&1 > outdated.json || true
+          if [ -s outdated.json ] && jq -e . outdated.json >/dev/null 2>&1; then
+            OUTDATED=$(jq 'length' outdated.json 2>/dev/null || echo "0")
+          else
+            OUTDATED=0
+          fi
+          echo "outdated=$OUTDATED" >> $GITHUB_OUTPUT
+
+          if [ "$DUPLICATES" -gt 0 ]; then
+            echo "status=⚠️ Warning ($DUPLICATES duplicates, $OUTDATED outdated)" >> $GITHUB_OUTPUT
+          else
+            echo "status=✅ Pass ($OUTDATED outdated)" >> $GITHUB_OUTPUT
+          fi
+
+      # Code complexity
+      - name: Code Complexity Analysis
+        id: complexity
+        run: |
+          echo "Analyzing code complexity..."
+
+          TOTAL_LINES=$(find src -name "*.ts" -exec wc -l {} \; | awk '{sum+=$1} END {print sum}')
+          FILE_COUNT=$(find src -name "*.ts" | wc -l)
+          AVG_LINES=$((TOTAL_LINES / FILE_COUNT))
+
+          echo "total_lines=$TOTAL_LINES" >> $GITHUB_OUTPUT
+          echo "file_count=$FILE_COUNT" >> $GITHUB_OUTPUT
+          echo "avg_lines=$AVG_LINES" >> $GITHUB_OUTPUT
+
+          # Find files over 300 lines
+          LARGE_FILES=$(find src -name "*.ts" -exec wc -l {} \; | awk '$1 > 300 {count++} END {print count+0}')
+          echo "large_files=$LARGE_FILES" >> $GITHUB_OUTPUT
+
+          if [ "$LARGE_FILES" -eq 0 ]; then
+            echo "status=✅ Pass" >> $GITHUB_OUTPUT
+          else
+            echo "status=⚠️ Warning ($LARGE_FILES files > 300 lines)" >> $GITHUB_OUTPUT
+          fi
+
+      # Upload quality artifacts
+      - name: Upload Quality Analysis Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-analysis-${{ github.run_number }}
+          path: |
+            eslint-results.json
+            typescript-results.txt
+            format-results.txt
+            outdated.json
+            deps-tree.txt
+          retention-days: 30
+
+  # ====================================================================
+  # STAGE 2: Build and Test (Parallel matrix execution)
+  # ====================================================================
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x, 22.x, 24.x]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      # Install xvfb for headless VS Code testing
+      - name: Install System Dependencies
+        run: sudo apt-get install -y xvfb
+
+      - name: Install NPM Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Build Extension
+        run: npm run build
+
+      - name: Run Extension Tests
+        run: xvfb-run --auto-servernum npm test
+
+      - name: Verify No Uncommitted Changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "❌ Found uncommitted changes after build:"
+            git status --short
+            exit 1
+          fi
+
+  # ====================================================================
+  # STAGE 3: Package Validation & Bundle Analysis
+  # ====================================================================
+  package-validation:
+    name: Package Validation & Bundle Analysis
+    runs-on: ubuntu-latest
+    needs: [build-and-test, quality]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Package Extension
+        run: npm run package
+
+      - name: Analyze Bundle Size
+        id: bundle
+        run: |
+          echo "Analyzing bundle size..."
+
+          VSIX_FILE=$(ls *.vsix)
+          VSIX_SIZE_BYTES=$(stat -c%s "$VSIX_FILE")
+          VSIX_SIZE_MB=$(echo "scale=2; $VSIX_SIZE_BYTES / 1024 / 1024" | bc)
+
+          echo "size_bytes=$VSIX_SIZE_BYTES" >> $GITHUB_OUTPUT
+          echo "size_mb=$VSIX_SIZE_MB" >> $GITHUB_OUTPUT
+          echo "📦 Extension package size: $VSIX_SIZE_MB MB"
+
+          # Extract and analyze
+          unzip -q "$VSIX_FILE" -d vsix-contents
+
+          # Find largest files
+          echo "## Largest Files in Package" > bundle-analysis.txt
+          find vsix-contents -type f -exec ls -lh {} \; | sort -k5 -hr | head -10 >> bundle-analysis.txt
+
+          # Check if size is reasonable (under 10MB)
+          if (( $(echo "$VSIX_SIZE_MB < 10" | bc -l) )); then
+            echo "status=✅ Pass ($VSIX_SIZE_MB MB)" >> $GITHUB_OUTPUT
+          else
+            echo "status=⚠️ Warning ($VSIX_SIZE_MB MB - consider optimization)" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload Bundle Analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-analysis-${{ github.run_number }}
+          path: bundle-analysis.txt
+          retention-days: 30
+
+  # ====================================================================
+  # STAGE 4: Deploy to Marketplace (Master branch only)
+  # ====================================================================
+  deploy:
+    name: Deploy to VS Code Marketplace
+    needs: [build-and-test, quality]
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+
+    environment:
+      name: production
+      url: https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Package Extension
+        run: npm run package
+
+      - name: Publish to VS Code Marketplace
+        run: npm run publish
+        env:
+          VSCE_PAT: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+
+      - name: Create Release Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-package
+          path: 'keypress-notifications-*.vsix'
+          retention-days: 90

@@ -60,7 +60,9 @@ Access settings through VS Code preferences:
 ```json
 {
   "keypress-notifications.enabled": true,
-  "keypress-notifications.minimumKeys": 2
+  "keypress-notifications.minimumKeys": 2,
+  "keypress-notifications.excludedCommands": [],
+  "keypress-notifications.showCommandName": false
 }
 ```
 
@@ -174,10 +176,12 @@ We welcome contributions! Check out our guides:
 
 ### ⚙️ Configuration Quick Reference
 
-| Setting       | Type    | Default | Description                          |
-| ------------- | ------- | ------- | ------------------------------------ |
-| `enabled`     | boolean | `true`  | Enable/disable notifications         |
-| `minimumKeys` | number  | `2`     | Minimum keys to trigger notification |
+| Setting            | Type    | Default | Description                              |
+| ------------------ | ------- | ------- | ---------------------------------------- |
+| `enabled`          | boolean | `true`  | Enable/disable notifications             |
+| `minimumKeys`      | number  | `2`     | Minimum keys to trigger notification     |
+| `excludedCommands` | array   | `[]`    | Commands to exclude from notifications   |
+| `showCommandName`  | boolean | `false` | Show command name in notifications       |
 
 ---
 

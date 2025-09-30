@@ -12,25 +12,41 @@ Updates and improvements to the Keypress Notifications VS Code extension.
 - **⚡ Optimized Scripts**: Streamlined build, test, and development commands
 - **🔒 Enhanced Security**: Using package-lock.json for dependency integrity
 - **📚 Documentation**: Updated all documentation to reflect current implementation
+- **🔄 CI/CD Enhancements**:
+  - Added node_modules caching for faster builds
+  - Improved dependency analysis and validation
+  - Enhanced code quality checks
+  - Package validation and bundle analysis stages
 
 ### 📈 **Testing & Quality**
 
 - **✅ Fixed TypeScript Errors**: Resolved compilation issues for cleaner builds
-- **🎮 Enhanced Test Framework**: Improved E2E test reliability
+- **🎮 Enhanced Test Framework**: Improved E2E test reliability with multiple test modes
 - **📊 Bundle Optimization**: Maintained minimal extension package size
 - **🔧 Developer Tools**: Added development scripts for better workflow
+- **🧪 Test Commands**:
+  - `npm run test:full`: Full tests without optimization
+  - `npm run test:minimal`: Minimal test run
+  - `npm run test:quick`: Fast compile + test for CI
+  - `npm run test:clean`: Clean test artifacts
 
-### 🔄 **Architecture Simplification**
+### 🔄 **Architecture Improvements**
 
-- **🏗️ Simplified Codebase**: Streamlined to essential components only
+- **🏗️ Manager Pattern**: Introduced ExtensionManager for better lifecycle management
+- **📦 Service Architecture**:
+  - `ExtensionManager`: Coordinates extension lifecycle
+  - `KeypressService`: Core keypress detection functionality
+  - `ConfigurationService`: Centralized configuration management
+  - `BaseService`: Abstract base class for consistent service patterns
 - **📖 Accurate Documentation**: Updated all docs to match actual implementation
-- **⚙️ Basic Configuration**: Simple settings for enabled/disabled and minimum keys
+- **⚙️ Configuration**: Four settings (enabled, minimumKeys, excludedCommands, showCommandName)
 
 ### **Migration Notes**
 
 ✅ **Zero Breaking Changes**: All functionality remains identical for end users
 ✅ **Improved Development**: Better build process and testing workflow
-✅ **Accurate Documentation**: All docs now match the actual simple implementation
+✅ **Enhanced Architecture**: Cleaner separation of concerns with manager and service patterns
+✅ **Accurate Documentation**: All docs now match the actual implementation
 
 ---
 

@@ -1,5 +1,5 @@
 /**
- * Core TypeScript interfaces and types for the VS Code extension.
+ * Core TypeScript interfaces and types for the Keypress Notifications VS Code extension.
  *
  * This file contains all the type definitions used throughout the extension,
  * providing a single source of truth for data structures and ensuring
@@ -11,7 +11,10 @@
  */
 export interface IService {
   initialize(): Promise<void>;
+  enable?(): Promise<void>;
+  disable?(): Promise<void>;
   dispose(): void;
+  isInitialized(): boolean;
 }
 
 /**
@@ -35,6 +38,17 @@ export interface ILogger {
   debug(message: string, ...args: unknown[]): void;
   show(): void;
   dispose(): void;
+  setLogLevel?(level: LogLevel): void;
+}
+
+/**
+ * Log levels enumeration
+ */
+export enum LogLevel {
+  DEBUG = 0,
+  INFO = 1,
+  WARN = 2,
+  ERROR = 3,
 }
 
 /**
@@ -74,6 +88,53 @@ export interface KeybindingEvent {
   keyCombination: KeyCombination;
   timestamp: Date;
   context?: string;
+}
+
+/**
+ * Extension state for management and testing
+ */
+export interface ExtensionState {
+  isActive: boolean;
+  activatedAt?: Date;
+  configuration: ExtensionConfig;
+  services: string[];
+}
+
+/**
+ * Service initialization result
+ */
+export interface ServiceInitializationResult {
+  success: boolean;
+  error?: string;
+  service: string;
+}
+
+/**
+ * Command registration result
+ */
+export interface CommandRegistrationResult {
+  success: boolean;
+  command: string;
+  error?: string;
+}
+
+/**
+ * Notification display options
+ */
+export interface NotificationOptions {
+  message: string;
+  showCommandName?: boolean;
+  duration?: number;
+  type?: 'info' | 'warn' | 'error';
+}
+
+/**
+ * Keypress service state for debugging and testing
+ */
+export interface KeypressServiceState {
+  enabled: boolean;
+  actionBufferLength: number;
+  lastActionTime: number;
 }
 
 /**

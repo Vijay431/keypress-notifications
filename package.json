@@ -2,7 +2,7 @@
   "name": "keypress-notifications",
   "displayName": "Keypress Notifications",
   "description": "Simple VS Code extension that shows notifications when you execute common multi-key combinations (Ctrl+C, Ctrl+Shift+P, etc.).",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "Proprietary",
   "publisher": "VijayGangatharan",
   "icon": "logo.png",
@@ -41,22 +41,20 @@
   "contributes": {
     "commands": [
       {
-        "command": "keypress-notifications.activate",
-        "title": "Keypress Notifications: Activate",
-        "category": "Keypress Notifications",
-        "icon": "$(check)"
-      },
-      {
-        "command": "keypress-notifications.deactivate",
-        "title": "Keypress Notifications: Deactivate",
-        "category": "Keypress Notifications",
-        "icon": "$(x)"
-      },
-      {
         "command": "keypress-notifications.showOutputChannel",
-        "title": "Keypress Notifications: Show Output Channel",
+        "title": "Show Status",
         "category": "Keypress Notifications",
         "icon": "$(output)"
+      },
+      {
+        "command": "keypress-notifications.enable",
+        "title": "Enable",
+        "category": "Keypress Notifications"
+      },
+      {
+        "command": "keypress-notifications.disable",
+        "title": "Disable",
+        "category": "Keypress Notifications"
       }
     ],
     "configuration": {
@@ -65,14 +63,23 @@
         "keypress-notifications.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable or disable keypress notifications"
+          "description": "Enable or disable Keypress Notifications extension"
         },
         "keypress-notifications.minimumKeys": {
           "type": "number",
           "default": 2,
           "minimum": 1,
-          "maximum": 5,
-          "description": "Minimum number of keys in combination to show notification (e.g., 2 for Ctrl+C, 3 for Ctrl+Shift+P)"
+          "description": "Minimum number of keys in combination to show notification"
+        },
+        "keypress-notifications.excludedCommands": {
+          "type": "array",
+          "default": [],
+          "description": "Commands to exclude from notifications"
+        },
+        "keypress-notifications.showCommandName": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to show the command name in notifications"
         }
       }
     },
@@ -80,8 +87,8 @@
       "editor/context": [
         {
           "when": "editorTextFocus && keypress-notifications.enabled",
-          "command": "keypress-notifications.activate",
-          "group": "1_modification@1"
+          "command": "keypress-notifications.showOutputChannel",
+          "group": "9_cutcopypaste@3"
         }
       ]
     }
@@ -95,27 +102,34 @@
   "scripts": {
     "vscode:prepublish": "tsx esbuild.config.ts --production",
     "build": "tsx esbuild.config.ts",
+    "compile": "tsx esbuild.config.ts",
     "watch": "tsx esbuild.config.ts --watch",
     "package": "vsce package",
     "publish": "vsce publish",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
+    "check-types": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "validate:lockfile": "npm ci --dry-run",
     "test": "rm -rf dist && npm run build && npm run create-minimal && tsc -p ./tsconfig.test.json && node ./dist/test/e2e/runE2ETest.js",
     "test:full": "rm -rf dist && npm run build && tsc -p ./tsconfig.test.json && SKIP_OPTIMIZATION=true node ./dist/test/e2e/runE2ETest.js",
     "test:minimal": "npm test",
     "test:clean": "rm -rf .vscode-test/minimal-extension .vscode-test/user-data-isolated .vscode-test/user-data-dev",
+    "test:quick": "npm run build && npm test",
     "create-minimal": "tsx scripts/create-minimal-extension.ts",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "clean": "rm -rf dist out"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
     "@stylistic/eslint-plugin": "^5.2.2",
+    "@types/fs-extra": "^11.0.4",
     "@types/mocha": "^10.0.10",
     "@types/node": "^16.18.126",
     "@types/vscode": "^1.102.0",
     "@typescript-eslint/eslint-plugin": "^8.44.1",
     "@typescript-eslint/parser": "^8.44.1",
+    "@vscode/test-cli": "^0.0.11",
     "@vscode/test-electron": "^2.5.2",
     "@vscode/vsce": "^3.6.1",
     "esbuild": "^0.25.8",
@@ -125,12 +139,13 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^7.2.1",
     "eslint-plugin-security": "^3.0.1",
-    "glob": "^10.3.10",
+    "fast-glob": "^3.3.3",
+    "fs-extra": "^11.3.0",
     "mocha": "^11.7.1",
+    "picocolors": "^1.1.1",
     "prettier": "^3.6.2",
     "tsx": "^4.19.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0"
-  },
-  "dependencies": {}
+  }
 }
