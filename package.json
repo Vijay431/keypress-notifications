@@ -2,7 +2,7 @@
   "name": "keypress-notifications",
   "displayName": "Keypress Notifications",
   "description": "Simple VS Code extension that shows notifications when you execute common multi-key combinations (Ctrl+C, Ctrl+Shift+P, etc.).",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "Proprietary",
   "publisher": "VijayGangatharan",
   "icon": "logo.png",
