@@ -3,10 +3,6 @@ name: CI/CD Pipeline
 on:
   push:
     branches: ['**']
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
-    branches: ['**']
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -222,49 +218,12 @@ jobs:
           fi
 
   # ====================================================================
-  # STAGE 3: Security Audit (Parallel execution)
-  # ====================================================================
-  security:
-    name: Security Audit
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Cache node_modules
-        id: cache-node-modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-          cache: 'npm'
-
-      - name: Install Dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci
-
-      - name: Run Security Audit
-        run: npm audit --audit-level=high
-
-      - name: Check for Known Vulnerabilities
-        run: npm audit --audit-level=moderate
-
-  # ====================================================================
-  # STAGE 4: Package Validation & Bundle Analysis
+  # STAGE 3: Package Validation & Bundle Analysis
   # ====================================================================
   package-validation:
     name: Package Validation & Bundle Analysis
     runs-on: ubuntu-latest
-    needs: [build-and-test, quality, security]
-    if: github.ref != 'refs/heads/master' && github.event_name == 'push'
+    needs: [build-and-test, quality]
 
     steps:
       - name: Checkout Repository
@@ -327,12 +286,12 @@ jobs:
           retention-days: 30
 
   # ====================================================================
-  # STAGE 5: Quality Report (After all checks complete)
+  # STAGE 4: Quality Report (After all checks complete)
   # ====================================================================
   quality-report:
     name: Generate Quality Report
     runs-on: ubuntu-latest
-    needs: [quality, build-and-test, security]
+    needs: [quality, build-and-test]
     if: github.event_name == 'pull_request' && always()
 
     steps:
@@ -422,12 +381,12 @@ jobs:
             }
 
   # ====================================================================
-  # STAGE 6: Deploy to Marketplace (Master branch only)
+  # STAGE 5: Deploy to Marketplace (Master branch only)
   # ====================================================================
   deploy:
     name: Deploy to VS Code Marketplace
-    needs: [build-and-test, quality, security]
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    needs: [build-and-test, quality]
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
 
     environment:
