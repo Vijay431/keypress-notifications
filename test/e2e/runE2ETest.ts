@@ -1,46 +1,45 @@
+#!/usr/bin/env node
+
+/**
+ * End-to-End Test Runner for Keypress Notifications VS Code Extension
+ * Optimized testing with minimal extension packages
+ */
+
 import * as path from 'path';
-import * as fs from 'fs';
-import * as os from 'os';
 import { runTests } from '@vscode/test-electron';
 
 async function main() {
   try {
+    // The folder containing the Extension Manifest package.json
     const extensionDevelopmentPath = path.resolve(__dirname, '../../..');
-    const extensionTestsPath = path.resolve(__dirname, './index.js');
 
-    // Create a temporary workspace for testing
-    const tempWorkspace = path.join(os.tmpdir(), 'keypress-notifications-test-workspace');
+    // Use minimal extension if optimization is enabled (default)
+    const useOptimization = process.env['SKIP_OPTIMIZATION'] !== 'true';
+    const testWorkspace = useOptimization
+      ? path.resolve(extensionDevelopmentPath, '.vscode-test/minimal-extension')
+      : extensionDevelopmentPath;
 
-    // Ensure workspace directory exists
-    if (!fs.existsSync(tempWorkspace)) {
-      fs.mkdirSync(tempWorkspace, { recursive: true });
-    }
+    // The path to test runner (compiled test files)
+    const extensionTestsPath = path.resolve(__dirname, './index');
 
-    console.log('Running E2E tests for Keypress Notifications v0.1.0');
-    console.log('Extension development path:', extensionDevelopmentPath);
-    console.log('Extension tests path:', extensionTestsPath);
-    console.log('Test workspace:', tempWorkspace);
+    console.log(`🧪 Running Keypress Notifications E2E tests...`);
+    console.log(`📁 Extension path: ${testWorkspace}`);
+    console.log(`🔧 Using optimization: ${useOptimization}`);
 
+    // Download VS Code, unzip it and run the integration test
     await runTests({
-      extensionDevelopmentPath,
+      extensionDevelopmentPath: testWorkspace,
       extensionTestsPath,
       launchArgs: [
-        tempWorkspace, // Open the temp workspace
         '--disable-extensions',
-        '--no-sandbox',
-        '--disable-dev-shm-usage',
+        '--disable-workspace-trust',
+        '--user-data-dir=' + path.resolve(extensionDevelopmentPath, '.vscode-test/user-data-isolated'),
       ],
     });
 
-    // Clean up temp workspace after tests
-    try {
-      fs.rmSync(tempWorkspace, { recursive: true, force: true });
-      console.log('Cleaned up test workspace');
-    } catch (cleanupError) {
-      console.warn('Failed to cleanup test workspace:', cleanupError);
-    }
+    console.log('✅ All tests passed!');
   } catch (err) {
-    console.error('Failed to run tests:', err);
+    console.error('❌ Failed to run tests:', err);
     process.exit(1);
   }
 }

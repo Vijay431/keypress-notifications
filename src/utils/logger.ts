@@ -1,31 +1,41 @@
-import { OutputChannel, window } from 'vscode';
+import * as vscode from 'vscode';
 
-import { ILogger } from '../types/extension';
+import { ILogger, LogLevel } from '../types/extension';
 
-/**
- * Simple logger for VS Code extension.
- */
 export class Logger implements ILogger {
-  private outputChannel: OutputChannel;
+  private static instance: Logger;
+  private outputChannel: vscode.OutputChannel;
+  private logLevel: LogLevel = LogLevel.INFO;
 
-  constructor(channelName = 'Keypress Notifications') {
-    this.outputChannel = window.createOutputChannel(channelName);
+  private constructor() {
+    this.outputChannel = vscode.window.createOutputChannel('Keypress Notifications');
   }
 
-  public debug(message: string, ...args: unknown[]): void {
-    this.outputChannel.appendLine(`[DEBUG] ${message} ${args.length ? JSON.stringify(args) : ''}`);
+  public static getInstance(): Logger {
+    if (!this.instance) {
+      this.instance = new Logger();
+    }
+    return this.instance;
   }
 
-  public info(message: string, ...args: unknown[]): void {
-    this.outputChannel.appendLine(`[INFO] ${message} ${args.length ? JSON.stringify(args) : ''}`);
+  public setLogLevel(level: LogLevel): void {
+    this.logLevel = level;
   }
 
-  public warn(message: string, ...args: unknown[]): void {
-    this.outputChannel.appendLine(`[WARN] ${message} ${args.length ? JSON.stringify(args) : ''}`);
+  public debug(message: string, data?: unknown): void {
+    this.log(LogLevel.DEBUG, message, data);
   }
 
-  public error(message: string, ...args: unknown[]): void {
-    this.outputChannel.appendLine(`[ERROR] ${message} ${args.length ? JSON.stringify(args) : ''}`);
+  public info(message: string, data?: unknown): void {
+    this.log(LogLevel.INFO, message, data);
+  }
+
+  public warn(message: string, data?: unknown): void {
+    this.log(LogLevel.WARN, message, data);
+  }
+
+  public error(message: string, error?: unknown): void {
+    this.log(LogLevel.ERROR, message, error);
   }
 
   public show(): void {
@@ -34,5 +44,39 @@ export class Logger implements ILogger {
 
   public dispose(): void {
     this.outputChannel.dispose();
+  }
+
+  private log(level: LogLevel, message: string, data?: unknown): void {
+    if (level < this.logLevel) {
+      return;
+    }
+
+    const timestamp = new Date().toISOString();
+    const levelName = LogLevel[level] as string;
+    const logMessage = `[${timestamp}] [${levelName}] ${message}`;
+
+    this.outputChannel.appendLine(logMessage);
+
+    if (data) {
+      this.outputChannel.appendLine(`Data: ${JSON.stringify(data, null, 2)}`);
+    }
+
+    // Also log to console in development
+    if (process.env['NODE_ENV'] === 'development') {
+      switch (level) {
+        case LogLevel.DEBUG:
+          console.debug(logMessage, data);
+          break;
+        case LogLevel.INFO:
+          console.info(logMessage, data);
+          break;
+        case LogLevel.WARN:
+          console.warn(logMessage, data);
+          break;
+        case LogLevel.ERROR:
+          console.error(logMessage, data);
+          break;
+      }
+    }
   }
 }
