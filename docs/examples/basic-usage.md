@@ -91,6 +91,7 @@ Moving around your codebase:
 {
   "keypress-notifications.enabled": true,
   "keypress-notifications.minimumKeys": 2,
+  "keypress-notifications.excludedCommands": [],
   "keypress-notifications.showCommandName": true
 }
 ```
@@ -198,8 +199,8 @@ Moving around your codebase:
 {
   "keypress-notifications.enabled": true,
   "keypress-notifications.minimumKeys": 2,
-  "keypress-notifications.showCommandName": true,
-  "keypress-notifications.logLevel": "info"
+  "keypress-notifications.excludedCommands": [],
+  "keypress-notifications.showCommandName": true
 }
 ```
 
@@ -219,6 +220,7 @@ Moving around your codebase:
 
 ```json
 {
+  "keypress-notifications.enabled": true,
   "keypress-notifications.minimumKeys": 2,
   "keypress-notifications.showCommandName": false,
   "keypress-notifications.excludedCommands": ["editor.action.triggerSuggest"]
@@ -254,7 +256,6 @@ Moving around your codebase:
 **Check list**:
 
 1. **Verify extension is enabled**:
-
    ```json
    { "keypress-notifications.enabled": true }
    ```
@@ -262,7 +263,6 @@ Moving around your codebase:
 2. **Try simple test**: Press `Ctrl+C` in any file
 
 3. **Check minimum keys setting**:
-
    ```json
    { "keypress-notifications.minimumKeys": 2 }
    ```
@@ -271,6 +271,8 @@ Moving around your codebase:
    ```json
    { "keypress-notifications.excludedCommands": [] }
    ```
+
+5. **Reload VS Code**: `Ctrl+Shift+P` → "Reload Window"
 
 ### Issue: Too Many Notifications
 
@@ -355,12 +357,13 @@ Ready to explore more advanced features?
 
 ### Quick Settings
 
-| Setting           | Quick Value | Effect                 |
-| ----------------- | ----------- | ---------------------- |
-| `minimumKeys`     | `1`         | Show all shortcuts     |
-| `minimumKeys`     | `3`         | Only complex shortcuts |
-| `showCommandName` | `false`     | Hide command names     |
-| `enabled`         | `false`     | Disable completely     |
+| Setting            | Quick Value                          | Effect                       |
+| ------------------ | ------------------------------------ | ---------------------------- |
+| `minimumKeys`      | `1`                                  | Show all shortcuts           |
+| `minimumKeys`      | `3`                                  | Only complex shortcuts       |
+| `showCommandName`  | `true`                               | Show command names           |
+| `excludedCommands` | `["editor.action.clipboardCopyAction"]` | Exclude specific commands |
+| `enabled`          | `false`                              | Disable completely           |
 
 ---
 

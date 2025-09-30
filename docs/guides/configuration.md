@@ -29,7 +29,9 @@ Or edit `settings.json` directly:
 ```json
 {
   "keypress-notifications.enabled": true,
-  "keypress-notifications.minimumKeys": 2
+  "keypress-notifications.minimumKeys": 2,
+  "keypress-notifications.excludedCommands": [],
+  "keypress-notifications.showCommandName": false
 }
 ```
 
@@ -75,6 +77,43 @@ Or edit `settings.json` directly:
 - `3`: Shows Ctrl+Shift+P, Ctrl+K S (quieter)
 - `4+`: Only complex multi-key combinations
 
+### `keypress-notifications.excludedCommands`
+
+**Type**: `array`
+**Default**: `[]`
+**Description**: List of command IDs to exclude from showing notifications.
+
+```json
+{
+  "keypress-notifications.excludedCommands": [
+    "editor.action.clipboardCopyAction",
+    "editor.action.clipboardPasteAction"
+  ]
+}
+```
+
+**Use cases**:
+- Exclude specific commands you don't want notifications for
+- Reduce notification noise for frequently used commands
+- Customize which commands trigger notifications
+
+### `keypress-notifications.showCommandName`
+
+**Type**: `boolean`
+**Default**: `false`
+**Description**: Whether to show the actual VS Code command name in notifications.
+
+```json
+{
+  "keypress-notifications.showCommandName": true
+}
+```
+
+**Use cases**:
+- Debug which command is being executed
+- Learn VS Code command IDs
+- Verify correct command detection
+
 ## 🎨 Configuration Examples
 
 ### Default Setup
@@ -82,7 +121,9 @@ Or edit `settings.json` directly:
 ```json
 {
   "keypress-notifications.enabled": true,
-  "keypress-notifications.minimumKeys": 2
+  "keypress-notifications.minimumKeys": 2,
+  "keypress-notifications.excludedCommands": [],
+  "keypress-notifications.showCommandName": false
 }
 ```
 
@@ -93,18 +134,23 @@ For fewer notifications:
 ```json
 {
   "keypress-notifications.enabled": true,
-  "keypress-notifications.minimumKeys": 3
+  "keypress-notifications.minimumKeys": 3,
+  "keypress-notifications.excludedCommands": [
+    "editor.action.clipboardCopyAction",
+    "editor.action.clipboardPasteAction"
+  ]
 }
 ```
 
-### All Keys Mode
+### Learning Mode
 
-For maximum feedback (can be noisy):
+Show command names to learn VS Code:
 
 ```json
 {
   "keypress-notifications.enabled": true,
-  "keypress-notifications.minimumKeys": 1
+  "keypress-notifications.minimumKeys": 2,
+  "keypress-notifications.showCommandName": true
 }
 ```
 
@@ -149,8 +195,9 @@ Share configuration with your team by committing workspace settings:
 
 Control the extension during runtime using the Command Palette (`Ctrl+Shift+P`):
 
-- `Keypress Notifications: Activate`
-- `Keypress Notifications: Deactivate`
+- `Keypress Notifications: Enable` - Enable the extension
+- `Keypress Notifications: Disable` - Disable the extension
+- `Keypress Notifications: Show Status` - Show current status
 
 ---
 

@@ -58,14 +58,15 @@ The extension shows notifications for these common multi-key combinations:
 
 Access via Command Palette (`Ctrl+Shift+P`):
 
-- **Keypress Notifications: Activate** - Enable notifications
-- **Keypress Notifications: Deactivate** - Disable notifications
-- **Keypress Notifications: Show Output Channel** - Show status message
+- **Keypress Notifications: Enable** - Enable notifications
+- **Keypress Notifications: Disable** - Disable notifications
+- **Keypress Notifications: Show Status** - Show status message
 
 ### ⚙️ Configuration
 
 - Automatically enabled on VS Code startup
 - Configurable minimum key count (default: 2)
+- Simple enable/disable toggle
 
 ---
 
@@ -102,10 +103,12 @@ Available settings in VS Code:
 Simple architecture:
 
 - **Extension Entry Point** (`src/extension.ts`): Handles activation and command registration
+- **ExtensionManager** (`src/managers/ExtensionManager.ts`): Coordinates extension lifecycle and services
 - **KeypressService** (`src/services/KeypressService.ts`): Detects and shows notifications for multi-key commands
+- **ConfigurationService** (`src/services/ConfigurationService.ts`): Manages extension settings
 - **Configuration**: Basic settings for enabling/disabling and minimum key count
 
-The extension works by registering wrapper commands for common VS Code operations and showing notifications when they're detected.
+The extension works by tracking common multi-key command executions and displaying notifications when they're detected.
 
 ## 🛠️ Development
 
@@ -120,19 +123,24 @@ npm test        # Run tests
 ### Available Commands
 
 ```bash
-npm run build       # Build TypeScript with esbuild
-npm run watch       # Watch mode for development
-npm run package     # Create VSIX package
-npm run lint        # Run ESLint
-npm run lint:fix    # Fix linting issues
-npm run format      # Format code with Prettier
+npm run build          # Build TypeScript with esbuild
+npm run watch          # Watch mode for development
+npm run package        # Create VSIX package
+npm run lint           # Run ESLint
+npm run lint:fix       # Fix linting issues
+npm run format         # Format code with Prettier
+npm run check-types    # TypeScript type checking
+npm run validate:lockfile  # Validate package-lock.json
 ```
 
 ### Testing
 
 ```bash
 npm test                # Run E2E tests
-npm run test:manual     # Launch extension for manual testing
+npm run test:full       # Run full tests (no optimization)
+npm run test:minimal    # Minimal test run
+npm run test:quick      # Fast compile + test for CI
+npm run test:clean      # Clean test directories
 ```
 
 ## 📋 Requirements
