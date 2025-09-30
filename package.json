@@ -109,14 +109,16 @@
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "check-types": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "validate:lockfile": "npm ci --dry-run",
     "test": "rm -rf dist && npm run build && npm run create-minimal && tsc -p ./tsconfig.test.json && node ./dist/test/e2e/runE2ETest.js",
     "test:full": "rm -rf dist && npm run build && tsc -p ./tsconfig.test.json && SKIP_OPTIMIZATION=true node ./dist/test/e2e/runE2ETest.js",
     "test:minimal": "npm test",
     "test:clean": "rm -rf .vscode-test/minimal-extension .vscode-test/user-data-isolated .vscode-test/user-data-dev",
     "test:quick": "npm run build && npm test",
     "create-minimal": "tsx scripts/create-minimal-extension.ts",
-    "clean": "rm -rf dist out",
-    "format": "prettier --write ."
+    "clean": "rm -rf dist out"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
