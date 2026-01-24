@@ -4,6 +4,10 @@ import { ConfigurationService } from '../services/ConfigurationService';
 import { KeypressService } from '../services/KeypressService';
 import { Logger } from '../utils/logger';
 
+export interface KeypressNotificationsApi {
+  onDidShowNotification: vscode.Event<string>;
+}
+
 export class ExtensionManager {
   private logger: Logger;
   private configService: ConfigurationService;
@@ -160,6 +164,12 @@ export class ExtensionManager {
 
   public getKeypressService(): KeypressService {
     return this.keypressService;
+  }
+
+  public getApi(): KeypressNotificationsApi {
+    return {
+      onDidShowNotification: this.keypressService.onDidShowNotification,
+    };
   }
 
   public isActive(): boolean {

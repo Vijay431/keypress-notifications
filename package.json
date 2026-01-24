@@ -80,6 +80,17 @@
           "type": "boolean",
           "default": false,
           "description": "Whether to show the command name in notifications"
+        },
+        "keypress-notifications.logLevel": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warn",
+            "info",
+            "debug"
+          ],
+          "default": "info",
+          "description": "Log verbosity for Keypress Notifications output"
         }
       }
     },

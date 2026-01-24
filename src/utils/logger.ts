@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import { ILogger, LogLevel } from '../types/extension';
 
 export class Logger implements ILogger {
-  private static instance: Logger;
+  private static instance: Logger | undefined;
   private outputChannel: vscode.OutputChannel;
   private logLevel: LogLevel = LogLevel.INFO;
 
@@ -12,9 +12,7 @@ export class Logger implements ILogger {
   }
 
   public static getInstance(): Logger {
-    if (!this.instance) {
-      this.instance = new Logger();
-    }
+    this.instance ??= new Logger();
     return this.instance;
   }
 
@@ -52,7 +50,7 @@ export class Logger implements ILogger {
     }
 
     const timestamp = new Date().toISOString();
-    const levelName = LogLevel[level] as string;
+    const levelName = this.getLevelName(level);
     const logMessage = `[${timestamp}] [${levelName}] ${message}`;
 
     this.outputChannel.appendLine(logMessage);
@@ -77,6 +75,21 @@ export class Logger implements ILogger {
           console.error(logMessage, data);
           break;
       }
+    }
+  }
+
+  private getLevelName(level: LogLevel): string {
+    switch (level) {
+      case LogLevel.DEBUG:
+        return 'DEBUG';
+      case LogLevel.INFO:
+        return 'INFO';
+      case LogLevel.WARN:
+        return 'WARN';
+      case LogLevel.ERROR:
+        return 'ERROR';
+      default:
+        return 'INFO';
     }
   }
 }
