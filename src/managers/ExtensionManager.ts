@@ -63,7 +63,9 @@ export class ExtensionManager {
       // Listen for configuration changes to enable/disable extension
       this.disposables.push(
         this.configService.onConfigurationChanged(() => {
-          void this.handleConfigurationChanged();
+          this.handleConfigurationChanged().catch((error) => {
+            this.logger.error('Failed to handle configuration change', error);
+          });
         }),
       );
 
