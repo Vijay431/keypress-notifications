@@ -35,6 +35,6 @@ TODO.md
 .worktrees/
 
 # Lint-staged configuration
-.lintstagedrc.json
-.lintstagedrc.js
+# .lintstagedrc.json (tracked but not processed by pre-commit)
+# .lintstagedrc.js (tracked but not processed by pre-commit)
 .lintstagedrc.js
