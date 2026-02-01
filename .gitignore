@@ -31,6 +31,10 @@ TODO.md
 .automaker/
 .worktrees/
 
+.automaker/
+.worktrees/
+
 # Lint-staged configuration
 .lintstagedrc.json
+.lintstagedrc.js
 .lintstagedrc.js
