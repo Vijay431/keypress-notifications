@@ -51,11 +51,8 @@ describe('Keypress Notifications E2E Tests', () => {
         'keypress-notifications.disable',
       ];
 
-      expectedCommands.forEach(command => {
-        assert.ok(
-          commands.includes(command),
-          `Command ${command} should be registered`,
-        );
+      expectedCommands.forEach((command) => {
+        assert.ok(commands.includes(command), `Command ${command} should be registered`);
       });
     });
   });
@@ -74,11 +71,11 @@ describe('Keypress Notifications E2E Tests', () => {
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+C' : 'Ctrl+C';
       assert.ok(
         notification && notification.includes(expectedKeys),
-        `Expected notification with "${expectedKeys}", got: "${notification}"`
+        `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith('You\'ve pressed'),
-        `Expected notification to start with "You've pressed", got: "${notification}"`
+        notification && notification.startsWith("You've pressed"),
+        `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
 
@@ -96,11 +93,11 @@ describe('Keypress Notifications E2E Tests', () => {
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+V' : 'Ctrl+V';
       assert.ok(
         notification && notification.includes(expectedKeys),
-        `Expected notification with "${expectedKeys}", got: "${notification}"`
+        `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith('You\'ve pressed'),
-        `Expected notification to start with "You've pressed", got: "${notification}"`
+        notification && notification.startsWith("You've pressed"),
+        `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
 
@@ -118,11 +115,11 @@ describe('Keypress Notifications E2E Tests', () => {
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+X' : 'Ctrl+X';
       assert.ok(
         notification && notification.includes(expectedKeys),
-        `Expected notification with "${expectedKeys}", got: "${notification}"`
+        `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith('You\'ve pressed'),
-        `Expected notification to start with "You've pressed", got: "${notification}"`
+        notification && notification.startsWith("You've pressed"),
+        `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
 
@@ -140,11 +137,11 @@ describe('Keypress Notifications E2E Tests', () => {
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+P' : 'Ctrl+P';
       assert.ok(
         notification && notification.includes(expectedKeys),
-        `Expected notification with "${expectedKeys}", got: "${notification}"`
+        `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith('You\'ve pressed'),
-        `Expected notification to start with "You've pressed", got: "${notification}"`
+        notification && notification.startsWith("You've pressed"),
+        `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
 
@@ -162,11 +159,11 @@ describe('Keypress Notifications E2E Tests', () => {
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+Shift+P' : 'Ctrl+Shift+P';
       assert.ok(
         notification && notification.includes(expectedKeys),
-        `Expected notification with "${expectedKeys}", got: "${notification}"`
+        `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith('You\'ve pressed'),
-        `Expected notification to start with "You've pressed", got: "${notification}"`
+        notification && notification.startsWith("You've pressed"),
+        `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
 
@@ -186,12 +183,12 @@ describe('Keypress Notifications E2E Tests', () => {
         if (isMac) {
           assert.ok(
             notification && notification.includes('Cmd+C'),
-            `On Mac, should show Cmd+C, got: "${notification}"`
+            `On Mac, should show Cmd+C, got: "${notification}"`,
           );
         } else {
           assert.ok(
             notification && notification.includes('Ctrl+C'),
-            `On non-Mac, should show Ctrl+C, got: "${notification}"`
+            `On non-Mac, should show Ctrl+C, got: "${notification}"`,
           );
         }
       }

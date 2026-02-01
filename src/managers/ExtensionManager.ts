@@ -121,11 +121,7 @@ export class ExtensionManager {
   private async updateEnabledContext(): Promise<void> {
     const isEnabled = this.configService.isEnabled();
 
-    await vscode.commands.executeCommand(
-      'setContext',
-      'keypress-notifications.enabled',
-      isEnabled,
-    );
+    await vscode.commands.executeCommand('setContext', 'keypress-notifications.enabled', isEnabled);
 
     this.logger.debug(`Context variables updated: enabled = ${isEnabled}`);
   }
