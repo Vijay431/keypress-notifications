@@ -157,11 +157,8 @@ export class KeypressService extends BaseService {
       return;
     }
 
-    const {
-      excludedCommands,
-      minimumKeys,
-      showCommandName,
-    } = this.configService.getConfiguration();
+    const { excludedCommands, minimumKeys, showCommandName } =
+      this.configService.getConfiguration();
 
     if (excludedCommands.includes(commandId)) {
       this.logger.debug(`Skipping excluded command: ${commandId}`);
@@ -217,17 +214,17 @@ export class KeypressService extends BaseService {
       return;
     }
 
-    const disposable = vscode.commands.registerCommand(commandId, async (...args: unknown[]) => {
-      disposable.dispose();
-      this.proxyDisposables.delete(commandId);
+    if (this.proxyDisposables.has(commandId)) {
+      this.logger.debug(`Proxy for ${commandId} already registered`);
+      return;
+    }
 
+    const disposable = vscode.commands.registerCommand(commandId, async (...args: unknown[]) => {
       try {
         this.handleCommandExecuted(commandId);
         await vscode.commands.executeCommand(commandId, ...args);
       } catch (error) {
         this.logger.warn(`Proxy command execution failed for ${commandId}`, error);
-      } finally {
-        this.registerProxyForCommand(commandId);
       }
     });
 
@@ -273,9 +270,7 @@ export class KeypressService extends BaseService {
   }
 
   private formatKeySequence(keys: string[]): string {
-    const normalized = keys
-      .map((key) => this.adjustForPlatform(key.trim()))
-      .filter(Boolean);
+    const normalized = keys.map((key) => this.adjustForPlatform(key.trim())).filter(Boolean);
     return normalized.join(' → ');
   }
 

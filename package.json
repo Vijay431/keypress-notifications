@@ -128,6 +128,8 @@
     "test:minimal": "npm test",
     "test:clean": "rm -rf .vscode-test/minimal-extension .vscode-test/user-data-isolated .vscode-test/user-data-dev",
     "test:quick": "npm run build && npm test",
+    "test:unit": "tsc -p ./tsconfig.test.json && mocha dist/test/unit/**/*.test.js",
+    "test:unit:watch": "tsc -p ./tsconfig.test.json && mocha --watch dist/test/unit/**/*.test.js",
     "create-minimal": "tsx scripts/create-minimal-extension.ts",
     "clean": "rm -rf dist out"
   },
