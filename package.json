@@ -32,9 +32,10 @@
     "Other"
   ],
   "engines": {
-    "node": ">=16.0.0 <25.0.0",
-    "vscode": "^1.102.0"
+    "node": ">=20.0.0",
+    "vscode": "^1.108.1"
   },
+  "packageManager": "npm@10.0.0",
   "activationEvents": [
     "onStartupFinished"
   ],

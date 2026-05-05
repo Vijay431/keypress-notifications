@@ -1,7 +1,10 @@
 import * as vscode from 'vscode';
 
+import type { ILogger } from '../di';
+import type { IConfigurationService } from '../di/interfaces/IConfigurationService';
+import type { IKeypressService } from '../di/interfaces/IKeypressService';
+
 import { BaseService } from './BaseService';
-import { ConfigurationService } from './ConfigurationService';
 
 interface CommandExecutionEvent {
   readonly command: string;
@@ -98,9 +101,9 @@ const EXTENSION_PREFIX = 'keypress-notifications';
 /**
  * KeypressService listens to executed commands and displays notifications for multi-key shortcuts.
  */
-export class KeypressService extends BaseService {
+export class KeypressService extends BaseService implements IKeypressService {
   private readonly NOTIFICATION_COOLDOWN = 250;
-  private readonly configService: ConfigurationService;
+  private readonly configService: IConfigurationService;
   private enabled = true;
   private lastNotificationAt = 0;
   private lastCommandNotified: string | undefined;
@@ -108,9 +111,64 @@ export class KeypressService extends BaseService {
   private readonly notificationEmitter = new vscode.EventEmitter<string>();
   public readonly onDidShowNotification = this.notificationEmitter.event;
 
-  constructor() {
-    super();
-    this.configService = ConfigurationService.getInstance();
+  private constructor(logger: ILogger, configService: IConfigurationService) {
+    super(logger);
+    this.configService = configService;
+  }
+
+  /**
+   * Get singleton instance (legacy pattern)
+   *
+   * @description
+   * Returns the singleton KeypressService instance.
+   * Creates one if it doesn't exist using default services.
+   *
+   * @deprecated Use DI injection instead: `container.get<IKeypressService>(TYPES.KeypressService)`
+   *
+   * @example
+   * ```typescript
+   * const service = KeypressService.getInstance();
+   * await service.initialize();
+   * ```
+   *
+   * @category Singleton Pattern
+   */
+  public static getInstance(): KeypressService {
+    // @ts-expect-error - Legacy singleton pattern, deprecated
+    if (!KeypressService.instance) {
+      const { Logger } = require('../utils/logger');
+      const { ConfigurationService } = require('./ConfigurationService');
+      const logger = Logger.getInstance();
+      const configService = ConfigurationService.getInstance();
+      // @ts-expect-error - Legacy singleton pattern, deprecated
+      KeypressService.instance = new KeypressService(logger, configService);
+    }
+    // @ts-expect-error - Legacy singleton pattern, deprecated
+    return KeypressService.instance;
+  }
+
+  /**
+   * Create a new instance (DI pattern)
+   *
+   * @description
+   * Factory method for creating a new KeypressService instance.
+   * Used by the DI container for dependency injection.
+   *
+   * @param logger - Logger instance for diagnostics
+   * @param configService - Configuration service for settings
+   *
+   * @example
+   * ```typescript
+   * container.registerSingleton<IKeypressService>(
+   *   TYPES.KeypressService,
+   *   () => KeypressService.create(logger, configService)
+   * );
+   * ```
+   *
+   * @category Factory Pattern
+   */
+  public static create(logger: ILogger, configService: IConfigurationService): KeypressService {
+    return new KeypressService(logger, configService);
   }
 
   public override async initialize(): Promise<void> {
