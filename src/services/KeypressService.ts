@@ -108,6 +108,7 @@ export class KeypressService extends BaseService implements IKeypressService {
   private lastNotificationAt = 0;
   private lastCommandNotified: string | undefined;
   private proxyDisposables = new Map<string, vscode.Disposable>();
+  private proxyExecuting = new Set<string>();
   private readonly notificationEmitter = new vscode.EventEmitter<string>();
   public readonly onDidShowNotification = this.notificationEmitter.event;
 
@@ -278,11 +279,17 @@ export class KeypressService extends BaseService implements IKeypressService {
     }
 
     const disposable = vscode.commands.registerCommand(commandId, async (...args: unknown[]) => {
+      if (this.proxyExecuting.has(commandId)) {
+        return;
+      }
       try {
         this.handleCommandExecuted(commandId);
+        this.proxyExecuting.add(commandId);
         await vscode.commands.executeCommand(commandId, ...args);
       } catch (error) {
         this.logger.warn(`Proxy command execution failed for ${commandId}`, error);
+      } finally {
+        this.proxyExecuting.delete(commandId);
       }
     });
 
@@ -301,6 +308,7 @@ export class KeypressService extends BaseService implements IKeypressService {
       }
     });
     this.proxyDisposables.clear();
+    this.proxyExecuting.clear();
     this.notificationEmitter.dispose();
   }
 

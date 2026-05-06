@@ -91,7 +91,7 @@ export function validateConfiguration(config: ExtensionConfig): ValidationResult
   }
 
   return {
-    isValid: errors.length === 0,
+    isValid: !errors.some((e) => e.severity === 'error'),
     errors,
     hasErrors: errors.some((e) => e.severity === 'error'),
     hasWarnings: errors.some((e) => e.severity === 'warn'),
@@ -118,16 +118,13 @@ export function validateConfigValue(
   if (rules) {
     for (const rule of rules) {
       const result = rule.validate(value, path);
-      if (!result.isValid) {
-        errors.push(result);
-        if (result.severity) {
-          errors.push({
-            path,
-            message: result.message,
-            value,
-            severity: result.severity,
-          });
-        }
+      if (!result.isValid || result.severity === 'warn') {
+        errors.push({
+          path,
+          message: result.message ?? 'Validation failed',
+          value,
+          severity: result.severity ?? 'error',
+        });
       }
     }
   }
@@ -143,7 +140,7 @@ export function validateConfigValue(
   }
 
   return {
-    isValid: errors.length === 0,
+    isValid: !errors.some((e) => e.severity === 'error'),
     errors,
     hasErrors: errors.some((e) => e.severity === 'error'),
     hasWarnings: errors.some((e) => e.severity === 'warn'),
@@ -171,10 +168,19 @@ export interface ValidationError {
 }
 
 /**
+ * Result from a single validation rule
+ */
+export interface RuleResult {
+  isValid: boolean;
+  message?: string;
+  severity?: 'error' | 'warn';
+}
+
+/**
  * Validation rule interface
  */
 export interface ValidationRule {
-  validate: (value: unknown, path: string) => ValidationResult;
+  validate: (value: unknown, path: string) => RuleResult;
   name?: string;
   message?: string;
   severity?: 'error' | 'warn';
@@ -209,8 +215,8 @@ export const minimumKeysRule: ValidationRule = {
 
     if (num > 5) {
       return {
-        isValid: true, // Warning, not error
-        message: 'Consider using higher value to reduce notification spam',
+        isValid: true,
+        message: 'High threshold may suppress most shortcut notifications',
         severity: 'warn',
       };
     }

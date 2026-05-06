@@ -67,8 +67,8 @@ export interface MigrationResult {
  */
 export class ConfigMigrator {
   private configSection = 'keypress-notifications';
-  private context: vscode.ExtensionContext | undefined;
-  private logger: vscode.Disposable[] = [];
+  private context: vscode.ExtensionContext;
+  private logger: vscode.OutputChannel;
 
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
@@ -149,7 +149,7 @@ export class ConfigMigrator {
         vscode.ConfigurationTarget.Global,
       );
 
-      this.logger[0]?.appendLine(`Configuration restored from ${backupPath}`);
+      this.logger.appendLine(`Configuration restored from ${backupPath}`);
     } catch (error) {
       throw new Error(`Failed to restore configuration from ${backupPath}: ${error}`);
     }
@@ -189,7 +189,7 @@ export class ConfigMigrator {
 
       const backupPath = await this.backupConfig();
       const v1Config = currentConfig as unknown as V1Config;
-      this.logger[0]?.appendLine(`Configuration backed up to ${backupPath}`);
+      this.logger.appendLine(`Configuration backed up to ${backupPath}`);
 
       // Migrate to V2 format
       const migratedConfig = this.migrateToV2(v1Config);
@@ -201,8 +201,8 @@ export class ConfigMigrator {
       await vscode.workspace.getConfiguration(this.configSection).update('showCommandName', migratedConfig.showCommandName);
       await vscode.workspace.getConfiguration(this.configSection).update('logLevel', migratedConfig.logLevel);
 
-      this.logger[0]?.appendLine('Configuration migrated to v2.0.0 from v1.0.0');
-      this.logger[0]?.appendLine(`Backup saved to: ${backupPath}`);
+      this.logger.appendLine('Configuration migrated to v2.0.0 from v1.0.0');
+      this.logger.appendLine(`Backup saved to: ${backupPath}`);
 
       return {
         success: true,
@@ -215,7 +215,7 @@ export class ConfigMigrator {
         ],
       };
     } catch (error) {
-      this.logger[0]?.appendLine(`Migration failed: ${error}`);
+      this.logger.appendLine(`Migration failed: ${error}`);
 
       return {
         success: false,
@@ -265,7 +265,7 @@ export class ConfigMigrator {
    */
   public async rollback(): Promise<void> {
     // Rollback implementation would restore from a backup
-    this.logger[0]?.appendLine('Configuration rollback requested');
+    this.logger.appendLine('Configuration rollback requested');
   }
 
   /**
@@ -284,30 +284,36 @@ export class ConfigMigrator {
     }
 
     const storageUri = this.context.globalStorageUri;
-    const files = await vscode.workspace.fs.readDirectory(storageUri);
-
-    for (const file of files) {
-      if (file[1] === vscode.FileType.File && file[0].startsWith('config-backup-') && file[0].endsWith('.json')) {
-        await vscode.workspace.fs.delete(vscode.Uri.joinPath(storageUri, file[0]));
-      }
+    let files: [string, vscode.FileType][];
+    try {
+      files = await vscode.workspace.fs.readDirectory(storageUri);
+    } catch {
+      return;
     }
 
-    this.logger[0]?.appendLine('Old backups cleaned up');
+    const backups = files
+      .filter(([name, type]) => type === vscode.FileType.File && name.startsWith('config-backup-') && name.endsWith('.json'))
+      .sort((a, b) => b[0].localeCompare(a[0]));
+
+    const toDelete = backups.slice(3);
+    for (const [name] of toDelete) {
+      await vscode.workspace.fs.delete(vscode.Uri.joinPath(storageUri, name));
+    }
+
+    this.logger.appendLine(`Cleaned up ${toDelete.length} old backups`);
   }
 
   /**
    * Dispose migrator
    */
   public dispose(): void {
-    for (const disposable of this.logger) {
-      disposable.dispose();
-    }
+    this.logger.dispose();
   }
 
   /**
    * Initialize migrator
    */
   public async initialize(): Promise<void> {
-    this.logger[0]?.appendLine('Configuration migrator initialized');
+    this.logger.appendLine('Configuration migrator initialized');
   }
 }

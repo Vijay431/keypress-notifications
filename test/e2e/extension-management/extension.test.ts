@@ -70,7 +70,7 @@ describe('Keypress Notifications E2E Tests', () => {
 	describe('Extension Activation', () => {
 		it('should activate without errors', async () => {
 			// Extension is already activated by test setup
-			assert.ok(managerApi, 'Extension manager API should be available');
+			assert.ok(context.managerApi, 'Extension manager API should be available');
 			assert.ok(context, 'Extension context should be available');
 		});
 
