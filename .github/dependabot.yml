@@ -19,7 +19,6 @@ updates:
       - security
     allow:
       - dependency-type: direct
-      - update-types: [version-update:semver-patch, version-update:semver-minor]
     ignore:
       - dependency-name: eslint
       - dependency-name: typescript
@@ -28,80 +27,13 @@ updates:
       eslint:
         patterns:
           - '@typescript-eslint/*'
-        excludes:
+        exclude-patterns:
           - '@typescript-eslint/eslint-plugin'
-      update-types: ['version-update:semver-patch']
-      group-name: eslint-typescript-eslint
+        update-types:
+          - 'version-update:semver-patch'
     reviewers:
       - Vijay431
-    versioning-strategy: increase
     rebase-strategy: disabled
-    suppress-commits: false
-    pull-request-branch-name:
-      separator: /
-      prefix: dependabot
-    - package-ecosystem: github-actions
-    directory: /
-    schedule:
-      interval: weekly
-      day: monday
-      time: 02:00
-      timezone: UTC
-    groups:
-      github-actions:
-        patterns:
-          - '@actions/*'
-        exclude:
-          - '@actions/checkout'
-          - '@actions/setup-node'
-        update-types: ['version-update:semver-minor']
-      group-name: github-actions-group
-    reviewers:
-      - Vijay431
-    versioning-strategy: increase
-    rebase-strategy: disabled
-    suppress-commits: false
-    pull-request-branch-name:
-      separator: /
-      prefix: dependabot
-    commit-message:
-      prefix: chore(deps-ga)
-      include: scope
-    labels:
-      - dependencies
-      - ci-cd
-      - github-actions
-    open-pull-requests-limit: 5
-    ignore:
-      - dependency-name: actions-checkout
-      - dependency-name: actions-setup-node
-      - dependency-name: actions-upload-artifact
-      - dependency-name: actions/cache
-      - dependency-name: '@vscode/*'
-      - dependency-name: eslint-plugin-import
-      - dependency-name: eslint-plugin-mocha
-      - dependency-name: eslint-plugin-node
-      - dependency-name: eslint-plugin-promise
-      - dependency-name: '@stylistic/eslint-plugin'
-      - dependency-name: '@types/*'
-      - dependency-name: esbuild
-      - dependency-name: typescript
-      - dependency-name: mocha
-      - dependency-name: '@types/mocha'
-      - dependency-name: '@vscode/test-cli'
-      - dependency-name: '@vscode/test-electron'
-      - dependency-name: '@vscode/vsce'
-      - dependency-name: fs-extra
-      - dependency-name: fast-glob
-      - dependency-name: picocolors
-      - dependency-name: prettier
-      - dependency-name: tsx
-      - dependency-name: typescript-eslint
-    reviewers:
-      - Vijay431
-    versioning-strategy: increase
-    rebase-strategy: disabled
-    suppress-commits: false
     pull-request-branch-name:
       separator: /
       prefix: dependabot
@@ -115,17 +47,15 @@ updates:
     groups:
       github-actions:
         patterns:
-          - '@actions/*'
-        exclude:
-          - '@actions/checkout'
-          - '@actions/setup-node'
-        update-types: ['version-update:semver-minor']
-      group-name: github-actions-group
+          - '*'
+        exclude-patterns:
+          - 'actions/checkout'
+          - 'actions/setup-node'
+        update-types:
+          - 'version-update:semver-minor'
     reviewers:
       - Vijay431
-    versioning-strategy: increase
     rebase-strategy: disabled
-    suppress-commits: false
     pull-request-branch-name:
       separator: /
       prefix: dependabot
@@ -138,29 +68,8 @@ updates:
       - github-actions
     open-pull-requests-limit: 5
     ignore:
-      - dependency-name: actions-checkout
-      - dependency-name: actions-setup-node
+      - dependency-name: actions/checkout
+      - dependency-name: actions/setup-node
       - dependency-name: actions/upload-artifact
       - dependency-name: actions/cache
       - dependency-name: actions/download-artifact
-      - dependency-name: '@vscode/*'
-      - dependency-name: eslint-plugin-import
-      - dependency-name: eslint-plugin-mocha
-      - dependency-name: eslint-plugin-node
-      - dependency-name: eslint-plugin-promise
-      - dependency-name: eslint-plugin-security
-      - dependency-name: @stylistic/eslint-plugin
-      - dependency-name: '@types/*'
-      - dependency-name: esbuild
-      - dependency-name: typescript
-      - dependency-name: mocha
-      - dependency-name: @types/mocha
-      - dependency-name: @vscode/test-cli
-      - dependency-name: @vscode/test-electron
-      - dependency-name: @vscode/vsce
-      - dependency-name: fs-extra
-      - dependency-name: fast-glob
-      - dependency-name: picocolors
-      - dependency-name: prettier
-      - dependency-name: tsx
-      - dependency-name: typescript-eslint
