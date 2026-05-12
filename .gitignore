@@ -27,3 +27,14 @@ CLAUDE.md
 TODO.md
 
 .mcp.json
+
+.automaker/
+.worktrees/
+
+.automaker/
+.worktrees/
+
+# Lint-staged configuration
+# .lintstagedrc.json (tracked but not processed by pre-commit)
+# .lintstagedrc.js (tracked but not processed by pre-commit)
+.lintstagedrc.js

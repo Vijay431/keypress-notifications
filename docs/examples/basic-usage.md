@@ -256,6 +256,7 @@ Moving around your codebase:
 **Check list**:
 
 1. **Verify extension is enabled**:
+
    ```json
    { "keypress-notifications.enabled": true }
    ```
@@ -263,11 +264,13 @@ Moving around your codebase:
 2. **Try simple test**: Press `Ctrl+C` in any file
 
 3. **Check minimum keys setting**:
+
    ```json
    { "keypress-notifications.minimumKeys": 2 }
    ```
 
 4. **Verify command not excluded**:
+
    ```json
    { "keypress-notifications.excludedCommands": [] }
    ```
@@ -357,13 +360,13 @@ Ready to explore more advanced features?
 
 ### Quick Settings
 
-| Setting            | Quick Value                          | Effect                       |
-| ------------------ | ------------------------------------ | ---------------------------- |
-| `minimumKeys`      | `1`                                  | Show all shortcuts           |
-| `minimumKeys`      | `3`                                  | Only complex shortcuts       |
-| `showCommandName`  | `true`                               | Show command names           |
+| Setting            | Quick Value                             | Effect                    |
+| ------------------ | --------------------------------------- | ------------------------- |
+| `minimumKeys`      | `1`                                     | Show all shortcuts        |
+| `minimumKeys`      | `3`                                     | Only complex shortcuts    |
+| `showCommandName`  | `true`                                  | Show command names        |
 | `excludedCommands` | `["editor.action.clipboardCopyAction"]` | Exclude specific commands |
-| `enabled`          | `false`                              | Disable completely           |
+| `enabled`          | `false`                                 | Disable completely        |
 
 ---
 
