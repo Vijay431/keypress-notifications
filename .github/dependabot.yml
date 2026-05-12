@@ -1,0 +1,75 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: 02:00
+      timezone: UTC
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    commit-message:
+      prefix: chore(deps)
+      include: scope
+    assignees:
+      - Vijay431
+    labels:
+      - dependencies
+      - security
+    allow:
+      - dependency-type: direct
+    ignore:
+      - dependency-name: eslint
+      - dependency-name: typescript
+      - dependency-name: esbuild
+    groups:
+      eslint:
+        patterns:
+          - '@typescript-eslint/*'
+        exclude-patterns:
+          - '@typescript-eslint/eslint-plugin'
+        update-types:
+          - 'version-update:semver-patch'
+    reviewers:
+      - Vijay431
+    rebase-strategy: disabled
+    pull-request-branch-name:
+      separator: /
+      prefix: dependabot
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: 02:00
+      timezone: UTC
+    groups:
+      github-actions:
+        patterns:
+          - '*'
+        exclude-patterns:
+          - 'actions/checkout'
+          - 'actions/setup-node'
+        update-types:
+          - 'version-update:semver-minor'
+    reviewers:
+      - Vijay431
+    rebase-strategy: disabled
+    pull-request-branch-name:
+      separator: /
+      prefix: dependabot
+    commit-message:
+      prefix: chore(deps-ga)
+      include: scope
+    labels:
+      - dependencies
+      - ci-cd
+      - github-actions
+    open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: actions/checkout
+      - dependency-name: actions/setup-node
+      - dependency-name: actions/upload-artifact
+      - dependency-name: actions/cache
+      - dependency-name: actions/download-artifact

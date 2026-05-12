@@ -23,9 +23,9 @@ This project and everyone participating in it is governed by our Code of Conduct
 
 ### Prerequisites
 
-- **Node.js**: Version 16.0.0 or higher
+- **Node.js**: Version 20.0.0 or higher
 - **npm**: Latest version (comes with Node.js)
-- **VS Code**: Version 1.102.0 or higher
+- **VS Code**: Version 1.108.1 or higher
 - **Git**: For version control
 
 ### Quick Setup
@@ -41,11 +41,14 @@ npm install
 # Build the project
 npm run build
 
-# Run tests
+# Run unit tests
+npm run test:unit
+
+# Run E2E tests (requires xvfb on Linux)
 npm test
 
-# Start development
-npm run test:dev
+# Start watch mode for development
+npm run watch
 ```
 
 ## 🛠️ Development Setup
@@ -71,21 +74,33 @@ npm install
 # Build the extension
 npm run build
 
-# Run all tests
+# Run unit tests (no VS Code needed)
+npm run test:unit
+
+# Run unit tests with coverage
+npm run test:unit:coverage
+
+# Run all E2E tests (downloads VS Code, requires xvfb on Linux)
 npm test
 
-# Manual testing with extension host
-npm run test:manual
+# Fast build + test for CI
+npm run test:quick
 ```
 
 ### 4. Development Workflow
 
 ```bash
-# Watch mode for development
+# Watch mode for development (auto-rebuilds on file changes)
 npm run watch
 
-# Combined development workflow
-npm run test:dev  # Watch + manual testing
+# Type check without building
+npm run check-types
+
+# Lint and auto-fix
+npm run lint:fix
+
+# Format code
+npm run format
 ```
 
 ## 🎯 How to Contribute
@@ -132,11 +147,11 @@ git checkout -b bugfix/issue-number-description
 ### 3. Test Your Changes
 
 ```bash
-# Run all tests
-npm test
+# Run unit tests (fast, no VS Code needed)
+npm run test:unit
 
-# Test manually
-npm run test:manual
+# Run E2E tests (downloads VS Code, requires xvfb on Linux)
+npm test
 
 # Check code quality
 npm run lint
@@ -242,9 +257,10 @@ src/
 ### Writing Tests
 
 ```bash
-# Run tests
-npm test                 # End-to-end tests
-npm run test:manual      # Manual testing environment
+npm run test:unit          # Unit tests (no VS Code needed)
+npm run test:unit:coverage # Unit tests with coverage report
+npm test                   # E2E tests (full VS Code instance)
+npm run test:quick         # Fast build + E2E (for CI)
 ```
 
 ### Test Guidelines

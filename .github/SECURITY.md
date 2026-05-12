@@ -35,7 +35,8 @@ When reporting a security vulnerability, please include:
 
 | Version | Supported |
 | ------- | --------- |
-| 1.0.x   | ✅ Yes    |
+| 2.x.x   | ✅ Yes    |
+| 1.0.x   | ❌ No     |
 | 0.x.x   | ❌ No     |
 
 ## 🛡️ Security Measures
