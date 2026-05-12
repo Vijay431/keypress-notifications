@@ -93,6 +93,7 @@ Or edit `settings.json` directly:
 ```
 
 **Use cases**:
+
 - Exclude specific commands you don't want notifications for
 - Reduce notification noise for frequently used commands
 - Customize which commands trigger notifications
@@ -110,6 +111,7 @@ Or edit `settings.json` directly:
 ```
 
 **Use cases**:
+
 - Debug which command is being executed
 - Learn VS Code command IDs
 - Verify correct command detection

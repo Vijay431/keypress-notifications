@@ -33,7 +33,8 @@ async function main() {
       launchArgs: [
         '--disable-extensions',
         '--disable-workspace-trust',
-        '--user-data-dir=' + path.resolve(extensionDevelopmentPath, '.vscode-test/user-data-isolated'),
+        '--user-data-dir=' +
+          path.resolve(extensionDevelopmentPath, '.vscode-test/user-data-isolated'),
       ],
     });
 
