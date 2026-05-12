@@ -1,0 +1,53 @@
+name: Mark Stale Issues and PRs
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Runs daily at midnight UTC
+  workflow_dispatch: # Allow manual triggering for dry-run testing
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    name: Stale Issue / PR Cleanup
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/stale@v9
+        with:
+          # Issues
+          days-before-issue-stale: 60
+          days-before-issue-close: 14
+          stale-issue-label: "stale"
+          stale-issue-message: >
+            This issue has been automatically marked as stale because it has not had
+            any activity in the last 60 days. It will be closed in 14 days if no
+            further activity occurs. If you believe this issue is still relevant,
+            please leave a comment or remove the `stale` label.
+          close-issue-message: >
+            This issue was closed automatically because it has been inactive for
+            74 days. If this is still an issue, please open a new report with
+            updated information.
+
+          # Pull Requests
+          days-before-pr-stale: 30
+          days-before-pr-close: 14
+          stale-pr-label: "stale"
+          stale-pr-message: >
+            This pull request has been automatically marked as stale because it has
+            not had any activity in the last 30 days. It will be closed in 14 days
+            if no further activity occurs. If you are still working on this PR,
+            please leave a comment or push a new commit.
+          close-pr-message: >
+            This pull request was closed automatically because it has been inactive
+            for 44 days. If you would like to continue this work, please reopen the
+            PR or open a new one.
+
+          # Exemptions — these labels prevent stale marking
+          exempt-issue-labels: "pinned,security,good first issue,help wanted"
+          exempt-pr-labels: "pinned,security"
+
+          # Operations limit (GitHub API)
+          operations-per-run: 100

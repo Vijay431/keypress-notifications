@@ -18,7 +18,8 @@
  * ```
  */
 
-import type { ICache, CacheConfig, CacheStats } from '../di';
+import type { ICache } from '../di';
+import type { CacheConfig, CacheStats } from '../di/interfaces/ICache';
 
 /**
  * Cache entry with metadata
@@ -87,18 +88,18 @@ export class Cache<T> implements ICache<T> {
   private cleanupTimer?: NodeJS.Timeout;
 
   /**
-	 * Create a new cache instance
-	 *
-	 * @description
-	 * Initializes cache with configuration and starts periodic cleanup.
-	 *
-	 * @param config - Partial configuration overriding defaults
-	 *
-	 * @example
-	 * ```typescript
-	 * const cache = new Cache<string>({ defaultTTL: 60000 });
-	 * ```
-	 */
+   * Create a new cache instance
+   *
+   * @description
+   * Initializes cache with configuration and starts periodic cleanup.
+   *
+   * @param config - Partial configuration overriding defaults
+   *
+   * @example
+   * ```typescript
+   * const cache = new Cache<string>({ defaultTTL: 60000 });
+   * ```
+   */
   constructor(config: Partial<CacheConfig> = {}) {
     this.config = { ...DEFAULT_CACHE_CONFIG, ...config };
 
@@ -112,27 +113,27 @@ export class Cache<T> implements ICache<T> {
   }
 
   /**
-	 * Set a value in the cache
-	 *
-	 * @description
-	 * Stores a value with an optional time-to-live.
-	 * If cache is at maxSize, evicts LRU entry first.
-	 *
-	 * @param key - Unique key for the value
-	 * @param value - Value to cache
-	 * @param ttl - Optional TTL in milliseconds (uses default if not specified)
-	 *
-	 * @example
-	 * ```typescript
-	 * // Cache for 5 minutes (default)
-	 * cache.set('user', userData);
-	 *
-	 * // Cache for 30 seconds
-	 * cache.set('session', sessionData, 30000);
-	 * ```
-	 *
-	 * @category Cache Operations
-	 */
+   * Set a value in the cache
+   *
+   * @description
+   * Stores a value with an optional time-to-live.
+   * If cache is at maxSize, evicts LRU entry first.
+   *
+   * @param key - Unique key for the value
+   * @param value - Value to cache
+   * @param ttl - Optional TTL in milliseconds (uses default if not specified)
+   *
+   * @example
+   * ```typescript
+   * // Cache for 5 minutes (default)
+   * cache.set('user', userData);
+   *
+   * // Cache for 30 seconds
+   * cache.set('session', sessionData, 30000);
+   * ```
+   *
+   * @category Cache Operations
+   */
   public set(key: string, value: T, ttl?: number): void {
     const now = Date.now();
     const entryTTL = ttl ?? this.config.defaultTTL;
@@ -152,27 +153,27 @@ export class Cache<T> implements ICache<T> {
   }
 
   /**
-	 * Get a value from the cache
-	 *
-	 * @description
-	 * Retrieves a cached value if it exists and hasn't expired.
-	 * Updates access statistics and timestamp for LRU tracking.
-	 *
-	 * @param key - Key of the value to retrieve
-	 * @returns The cached value, or undefined if not found or expired
-	 *
-	 * @example
-	 * ```typescript
-	 * const value = cache.get('key');
-	 * if (value !== undefined) {
-	 *   // Use cached value
-	 * } else {
-	 *   // Compute and cache
-	 * }
-	 * ```
-	 *
-	 * @category Cache Operations
-	 */
+   * Get a value from the cache
+   *
+   * @description
+   * Retrieves a cached value if it exists and hasn't expired.
+   * Updates access statistics and timestamp for LRU tracking.
+   *
+   * @param key - Key of the value to retrieve
+   * @returns The cached value, or undefined if not found or expired
+   *
+   * @example
+   * ```typescript
+   * const value = cache.get('key');
+   * if (value !== undefined) {
+   *   // Use cached value
+   * } else {
+   *   // Compute and cache
+   * }
+   * ```
+   *
+   * @category Cache Operations
+   */
   public get(key: string): T | undefined {
     const entry = this.cache.get(key);
 
@@ -198,27 +199,29 @@ export class Cache<T> implements ICache<T> {
   }
 
   /**
-	 * Check if a key exists in the cache
-	 *
-	 * @description
-	 * Returns true if the key exists and hasn't expired.
-	 * Does not update access statistics.
-	 *
-	 * @param key - Key to check
-	 * @returns Whether the key exists and is valid
-	 *
-	 * @example
-	 * ```typescript
-	 * if (cache.has('config')) {
-	 *   // Key exists
-	 * }
-	 * ```
-	 *
-	 * @category Cache Operations
-	 */
+   * Check if a key exists in the cache
+   *
+   * @description
+   * Returns true if the key exists and hasn't expired.
+   * Does not update access statistics.
+   *
+   * @param key - Key to check
+   * @returns Whether the key exists and is valid
+   *
+   * @example
+   * ```typescript
+   * if (cache.has('config')) {
+   *   // Key exists
+   * }
+   * ```
+   *
+   * @category Cache Operations
+   */
   public has(key: string): boolean {
     const entry = this.cache.get(key);
-    if (!entry) {return false;}
+    if (!entry) {
+      return false;
+    }
     if (Date.now() > entry.expiresAt) {
       this.cache.delete(key);
       this.stats.expired++;
@@ -228,61 +231,61 @@ export class Cache<T> implements ICache<T> {
   }
 
   /**
-	 * Delete a key from the cache
-	 *
-	 * @description
-	 * Removes a key from the cache regardless of expiration.
-	 *
-	 * @param key - Key to delete
-	 * @returns Whether the key was found and deleted
-	 *
-	 * @example
-	 * ```typescript
-	 * cache.delete('old-data');
-	 * ```
-	 *
-	 * @category Cache Operations
-	 */
+   * Delete a key from the cache
+   *
+   * @description
+   * Removes a key from the cache regardless of expiration.
+   *
+   * @param key - Key to delete
+   * @returns Whether the key was found and deleted
+   *
+   * @example
+   * ```typescript
+   * cache.delete('old-data');
+   * ```
+   *
+   * @category Cache Operations
+   */
   public delete(key: string): boolean {
     return this.cache.delete(key);
   }
 
   /**
-	 * Clear all entries from the cache
-	 *
-	 * @description
-	 * Removes all cached entries and resets statistics.
-	 *
-	 * @example
-	 * ```typescript
-	 * cache.clear();
-	 * ```
-	 *
-	 * @category Cache Operations
-	 */
+   * Clear all entries from the cache
+   *
+   * @description
+   * Removes all cached entries and resets statistics.
+   *
+   * @example
+   * ```typescript
+   * cache.clear();
+   * ```
+   *
+   * @category Cache Operations
+   */
   public clear(): void {
     this.cache.clear();
     this.stats = { hits: 0, misses: 0, expired: 0, evicted: 0 };
   }
 
   /**
-	 * Get cache statistics
-	 *
-	 * @description
-	 * Returns performance metrics for the cache.
-	 * Only includes statistics if trackStats is enabled in config.
-	 *
-	 * @returns Current cache statistics
-	 *
-	 * @example
-	 * ```typescript
-	 * const stats = cache.getStats();
-	 * console.log(`Cache hit rate: ${(stats.hitRate * 100).toFixed(1)}%`);
-	 * console.log(`Cached entries: ${stats.size}`);
-	 * ```
-	 *
-	 * @category Cache Statistics
-	 */
+   * Get cache statistics
+   *
+   * @description
+   * Returns performance metrics for the cache.
+   * Only includes statistics if trackStats is enabled in config.
+   *
+   * @returns Current cache statistics
+   *
+   * @example
+   * ```typescript
+   * const stats = cache.getStats();
+   * console.log(`Cache hit rate: ${(stats.hitRate * 100).toFixed(1)}%`);
+   * console.log(`Cached entries: ${stats.size}`);
+   * ```
+   *
+   * @category Cache Statistics
+   */
   public getStats(): CacheStats {
     const total = this.stats.hits + this.stats.misses;
     return {
@@ -296,22 +299,22 @@ export class Cache<T> implements ICache<T> {
   }
 
   /**
-	 * Clean up expired entries
-	 *
-	 * @description
-	 * Removes all entries that have exceeded their TTL.
-	 * Normally called automatically by a periodic timer.
-	 *
-	 * @returns Number of entries removed
-	 *
-	 * @example
-	 * ```typescript
-	 * const removed = cache.cleanup();
-	 * console.log(`Cleaned up ${removed} expired entries`);
-	 * ```
-	 *
-	 * @category Cache Maintenance
-	 */
+   * Clean up expired entries
+   *
+   * @description
+   * Removes all entries that have exceeded their TTL.
+   * Normally called automatically by a periodic timer.
+   *
+   * @returns Number of entries removed
+   *
+   * @example
+   * ```typescript
+   * const removed = cache.cleanup();
+   * console.log(`Cleaned up ${removed} expired entries`);
+   * ```
+   *
+   * @category Cache Maintenance
+   */
   public cleanup(): number {
     const now = Date.now();
     let removed = 0;
@@ -326,37 +329,37 @@ export class Cache<T> implements ICache<T> {
   }
 
   /**
-	 * Dispose of cache resources
-	 *
-	 * @description
-	 * Clears all entries and stops the periodic cleanup timer.
-	 * Called automatically during extension deactivation.
-	 *
-	 * @example
-	 * ```typescript
-	 * cache.dispose();
-	 * ```
-	 *
-	 * @category Lifecycle
-	 */
+   * Dispose of cache resources
+   *
+   * @description
+   * Clears all entries and stops the periodic cleanup timer.
+   * Called automatically during extension deactivation.
+   *
+   * @example
+   * ```typescript
+   * cache.dispose();
+   * ```
+   *
+   * @category Lifecycle
+   */
   public dispose(): void {
     if (this.cleanupTimer) {
       clearInterval(this.cleanupTimer);
-      this.cleanupTimer = undefined;
+      delete this.cleanupTimer;
     }
     this.clear();
   }
 
   /**
-	 * Evict least-recently-used entry
-	 *
-	 * @description
-	 * Finds and removes the entry with the oldest last access time.
-	 * Called automatically when cache reaches maxSize.
-	 *
-	 * @category Cache Maintenance
-	 * @private
-	 */
+   * Evict least-recently-used entry
+   *
+   * @description
+   * Finds and removes the entry with the oldest last access time.
+   * Called automatically when cache reaches maxSize.
+   *
+   * @category Cache Maintenance
+   * @private
+   */
   private evictLRU(): void {
     let lruKey: string | undefined;
     let lruTime = Number.MAX_SAFE_INTEGER;
@@ -428,16 +431,12 @@ export function memoize(
 
     descriptor.value = function (this: unknown, ...args: unknown[]): unknown {
       // Lazy initialization of cache
-      if (!methodCache) {
-        methodCache = new Cache<unknown>({ defaultTTL: ttl });
-      }
+      methodCache ??= new Cache<unknown>(ttl !== undefined ? { defaultTTL: ttl } : {});
 
       // Generate cache key
       const className = typeof target === 'function' ? target.name : 'Unknown';
       const methodName = String(propertyKey);
-      const argsKey = keyGenerator
-        ? keyGenerator(...args)
-        : JSON.stringify(args);
+      const argsKey = keyGenerator ? keyGenerator(...args) : JSON.stringify(args);
       const cacheKey = `${className}.${methodName}:${argsKey}`;
 
       // Check cache

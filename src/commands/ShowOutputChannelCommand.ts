@@ -19,8 +19,8 @@
 import type { ILogger } from '../di';
 import type { IAccessibilityService } from '../di/interfaces/IAccessibilityService';
 
-import { BaseCommandHandler  } from './BaseCommandHandler';
-import type {CommandResult} from './BaseCommandHandler';
+import { BaseCommandHandler } from './BaseCommandHandler';
+import type { CommandResult } from './BaseCommandHandler';
 
 /**
  * Show Output Channel Command
@@ -33,48 +33,45 @@ import type {CommandResult} from './BaseCommandHandler';
  */
 export class ShowOutputChannelCommand extends BaseCommandHandler {
   /**
-	 * Create a new ShowOutputChannelCommand instance
-	 *
-	 * @description
-	 * Creates command with injected dependencies from DI container.
-	 *
-	 * @param logger - Logger instance for diagnostics
-	 * @param accessibilityService - Accessibility service for screen reader support
-	 *
-	 * @example
-	 * ```typescript
-	 * const command = ShowOutputChannelCommand.create(logger, accessibilityService);
-	 * ```
-	 *
-	 * @category Construction
-	 */
-  constructor(
-    logger: ILogger,
-    accessibilityService: IAccessibilityService,
-  ) {
+   * Create a new ShowOutputChannelCommand instance
+   *
+   * @description
+   * Creates command with injected dependencies from DI container.
+   *
+   * @param logger - Logger instance for diagnostics
+   * @param accessibilityService - Accessibility service for screen reader support
+   *
+   * @example
+   * ```typescript
+   * const command = ShowOutputChannelCommand.create(logger, accessibilityService);
+   * ```
+   *
+   * @category Construction
+   */
+  constructor(logger: ILogger, accessibilityService: IAccessibilityService) {
     super('ShowOutputChannelCommand', logger, accessibilityService);
   }
 
   /**
-	 * Create a new instance (factory pattern)
-	 *
-	 * @description
-	 * Factory method for creating a new ShowOutputChannelCommand instance.
-	 * Used by the DI container for dependency injection.
-	 *
-	 * @param logger - Logger instance for diagnostics
-	 * @param accessibilityService - Accessibility service for screen reader support
-	 *
-	 * @example
-	 * ```typescript
-	 * container.registerSingleton(
-	 *   TYPES.ShowOutputChannelCommand,
-	 *   () => ShowOutputChannelCommand.create(logger, accessibilityService)
-	 * );
-	 * ```
-	 *
-	 * @category Factory Pattern
-	 */
+   * Create a new instance (factory pattern)
+   *
+   * @description
+   * Factory method for creating a new ShowOutputChannelCommand instance.
+   * Used by the DI container for dependency injection.
+   *
+   * @param logger - Logger instance for diagnostics
+   * @param accessibilityService - Accessibility service for screen reader support
+   *
+   * @example
+   * ```typescript
+   * container.registerSingleton(
+   *   TYPES.ShowOutputChannelCommand,
+   *   () => ShowOutputChannelCommand.create(logger, accessibilityService)
+   * );
+   * ```
+   *
+   * @category Factory Pattern
+   */
   public static create(
     logger: ILogger,
     accessibilityService: IAccessibilityService,
@@ -83,23 +80,23 @@ export class ShowOutputChannelCommand extends BaseCommandHandler {
   }
 
   /**
-	 * Execute the command
-	 *
-	 * @description
-	 * Shows the output channel and displays an information message.
-	 *
-	 * @returns Result of command execution
-	 *
-	 * @example
-	 * ```typescript
-	 * const result = await command.execute();
-	 * if (result.success) {
-	 *   console.log(result.message);
-	 * }
-	 * ```
-	 *
-	 * @category Command Execution
-	 */
+   * Execute the command
+   *
+   * @description
+   * Shows the output channel and displays an information message.
+   *
+   * @returns Result of command execution
+   *
+   * @example
+   * ```typescript
+   * const result = await command.execute();
+   * if (result.success) {
+   *   console.log(result.message);
+   * }
+   * ```
+   *
+   * @category Command Execution
+   */
   public async execute(): Promise<CommandResult> {
     this.logInfo('Showing output channel');
 

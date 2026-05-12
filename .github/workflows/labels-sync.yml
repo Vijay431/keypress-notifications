@@ -1,0 +1,29 @@
+name: Sync Labels
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - ".github/labels.yml"
+  workflow_dispatch: # Allow manual triggering
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  labels:
+    name: Sync Issue Labels
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Sync Labels to GitHub
+        uses: EndBug/label-sync@v2
+        with:
+          config-file: .github/labels.yml
+          delete-other-labels: false # Keep any manually created labels
+          token: ${{ secrets.GITHUB_TOKEN }}

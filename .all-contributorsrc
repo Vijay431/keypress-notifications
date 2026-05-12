@@ -1,0 +1,21 @@
+{
+  "projectName": "keypress-notifications",
+  "projectOwner": "Vijay431",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": ["README.md"],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "Vijay431",
+      "name": "Vijay Gangatharan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/Vijay431?v=4",
+      "profile": "https://github.com/Vijay431",
+      "contributions": ["code", "doc", "maintenance", "infra", "ideas"]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true
+}

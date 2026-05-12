@@ -9,10 +9,7 @@ import {
   assertNotificationCount,
   delay,
 } from './helpers/test-context';
-import {
-  getConfiguration,
-  updateConfiguration,
-} from './helpers/command-helpers';
+import { getConfiguration, updateConfiguration } from './helpers/command-helpers';
 
 interface KeypressNotificationsApi {
   onDidShowNotification: vscode.Event<string>;
@@ -50,19 +47,14 @@ describe('Extension Management E2E Tests', () => {
       ];
 
       for (const command of expectedCommands) {
-        assert.ok(
-          commands.includes(command),
-          `Command "${command}" should be registered`,
-        );
+        assert.ok(commands.includes(command), `Command "${command}" should be registered`);
       }
     });
 
     it('should have exactly 3 extension commands registered', async () => {
       const commands = await vscode.commands.getCommands();
 
-      const extensionCommands = commands.filter((cmd) =>
-        cmd.startsWith('keypress-notifications.'),
-      );
+      const extensionCommands = commands.filter((cmd) => cmd.startsWith('keypress-notifications.'));
 
       assert.strictEqual(
         extensionCommands.length,
@@ -161,7 +153,11 @@ describe('Extension Management E2E Tests', () => {
       }
 
       // Should not have received any keypress notification
-      assertNotificationCount(context, 0, 'Should not show notifications when extension is disabled');
+      assertNotificationCount(
+        context,
+        0,
+        'Should not show notifications when extension is disabled',
+      );
     });
   });
 

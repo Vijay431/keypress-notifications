@@ -57,13 +57,13 @@ describe('Configuration Validator', () => {
 
   describe('validateConfigValue()', () => {
     it('should return valid result for boolean enabled', () => {
-      const result = validateConfigValue('enabled', true, 'enabled');
+      const result = validateConfigValue('enabled', true);
       assert.ok(result.isValid, 'Should return valid result for boolean enabled');
       assert.strictEqual(result.errors.length, 0, 'Should have no errors');
     });
 
     it('should return valid result for minimumKeys', () => {
-      const result = validateConfigValue('minimumKeys', 2, 'minimumKeys');
+      const result = validateConfigValue('minimumKeys', 2);
       assert.ok(result.isValid, 'Should return valid result for minimumKeys');
       assert.strictEqual(result.errors.length, 0, 'Should have no errors');
     });
@@ -71,7 +71,7 @@ describe('Configuration Validator', () => {
     it('should return valid result for logLevel', () => {
       const validValues = ['error', 'warn', 'info', 'debug'];
       for (const value of validValues) {
-        const result = validateConfigValue('logLevel', value, 'logLevel');
+        const result = validateConfigValue('logLevel', value);
 
         assert.ok(result.isValid, `Should be valid for logLevel: ${value}`);
         assert.strictEqual(result.errors.length, 0, 'Should have no errors');
@@ -79,32 +79,32 @@ describe('Configuration Validator', () => {
     });
 
     it('should return invalid result for invalid boolean enabled', () => {
-      const result = validateConfigValue('enabled', 'invalid' as unknown as boolean, 'enabled');
-      assert.notOk(result.isValid, 'Should not be valid for invalid enabled');
+      const result = validateConfigValue('enabled', 'invalid' as unknown as boolean);
+      assert.ok(!result.isValid, 'Should not be valid for invalid enabled');
       assert.ok(result.errors.length > 0, 'Should have errors for invalid boolean enabled');
     });
 
     it('should return invalid result for minimumKeys below range', () => {
-      const result = validateConfigValue('minimumKeys', 0, 'minimumKeys');
-      assert.notOk(result.isValid, 'Should not be valid for minimumKeys below range');
+      const result = validateConfigValue('minimumKeys', 0);
+      assert.ok(!result.isValid, 'Should not be valid for minimumKeys below range');
       assert.ok(result.errors.length > 0, 'Should have errors for minimumKeys below range');
     });
 
     it('should return invalid result for negative minimumKeys', () => {
-      const result = validateConfigValue('minimumKeys', -5, 'minimumKeys');
-      assert.notOk(result.isValid, 'Should not be valid for negative minimumKeys');
+      const result = validateConfigValue('minimumKeys', -5);
+      assert.ok(!result.isValid, 'Should not be valid for negative minimumKeys');
       assert.ok(result.errors.length > 0, 'Should have errors for negative minimumKeys');
     });
 
     it('should return invalid result for logLevel', () => {
-      const result = validateConfigValue('logLevel', 'invalid', 'logLevel');
-      assert.notOk(result.isValid, 'Should not be valid for invalid logLevel');
+      const result = validateConfigValue('logLevel', 'invalid');
+      assert.ok(!result.isValid, 'Should not be valid for invalid logLevel');
       assert.ok(result.errors.length > 0, 'Should have errors for invalid logLevel');
     });
 
     it('should return invalid result for invalid excludedCommands array', () => {
-      const result = validateConfigValue('excludedCommands', ['invalid'], 'excludedCommands');
-      assert.notOk(result.isValid, 'Should not be valid for invalid excludedCommands');
+      const result = validateConfigValue('excludedCommands', ['invalid']);
+      assert.ok(!result.isValid, 'Should not be valid for invalid excludedCommands');
       assert.ok(result.errors.length > 0, 'Should have errors for invalid excludedCommands');
     });
   });
@@ -119,13 +119,15 @@ describe('Configuration Service', () => {
       subscriptions: [],
       globalState: {
         get: (key: string) => undefined,
-        update: (key: string, value: unknown, target?: vscode.ConfigurationTarget) => Promise.resolve(undefined),
+        update: (key: string, value: unknown, target?: vscode.ConfigurationTarget) =>
+          Promise.resolve(undefined),
         keys: () => [],
         setKeysForSync: () => Promise.resolve(undefined),
       },
       workspaceState: {
         get: (key: string) => undefined,
-        update: (key: string, value: unknown, target?: vscode.ConfigurationTarget) => Promise.resolve(undefined),
+        update: (key: string, value: unknown, target?: vscode.ConfigurationTarget) =>
+          Promise.resolve(undefined),
         keys: () => [],
         setKeysForSync: () => Promise.resolve(undefined),
       },
@@ -167,7 +169,11 @@ describe('Configuration Service', () => {
       assert.ok(config, 'Configuration should exist');
       assert.strictEqual(typeof config.enabled, 'boolean', 'Enabled should be boolean');
       assert.strictEqual(typeof config.minimumKeys, 'number', 'MinimumKeys should be number');
-      assert.strictEqual(typeof config.showCommandName, 'boolean', 'ShowCommandName should be boolean');
+      assert.strictEqual(
+        typeof config.showCommandName,
+        'boolean',
+        'ShowCommandName should be boolean',
+      );
       assert.strictEqual(typeof config.logLevel, 'string', 'LogLevel should be string');
       assert.ok(Array.isArray(config.excludedCommands), 'ExcludedCommands should be array');
     });

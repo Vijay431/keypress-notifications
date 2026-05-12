@@ -1,8 +1,12 @@
-name: CI/CD Pipeline
+name: CI
 
 on:
   push:
-    branches: ['**']
+    branches: ["**"]
+    tags-ignore:
+      - "v*.*.*" # Releases are handled by .github/workflows/release.yml
+  pull_request:
+    branches: [master]
 
 permissions:
   contents: read
@@ -286,17 +290,12 @@ jobs:
           retention-days: 30
 
   # ====================================================================
-  # STAGE 4: Deploy to Marketplace (Master branch only)
+  # STAGE 4: Unit Test Coverage (Node 20 only)
   # ====================================================================
-  deploy:
-    name: Deploy to VS Code Marketplace
-    needs: [build-and-test, quality]
-    if: github.ref == 'refs/heads/master'
+  coverage:
+    name: Unit Test Coverage
     runs-on: ubuntu-latest
-
-    environment:
-      name: production
-      url: https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications
+    needs: [quality]
 
     steps:
       - name: Checkout Repository
@@ -314,24 +313,21 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
-          cache: 'npm'
+          node-version: "20.x"
+          cache: "npm"
 
       - name: Install Dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
-      - name: Package Extension
-        run: npm run package
+      - name: Run Unit Tests with Coverage
+        run: npm run test:unit:coverage
 
-      - name: Publish to VS Code Marketplace
-        run: npm run publish
-        env:
-          VSCE_PAT: ${{ secrets.VS_MARKETPLACE_TOKEN }}
-
-      - name: Create Release Artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4
         with:
-          name: extension-package
-          path: 'keypress-notifications-*.vsix'
-          retention-days: 90
+          files: coverage/lcov.info
+          flags: unit
+          fail_ci_if_error: false # Non-blocking — don't fail CI on Codecov issues
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

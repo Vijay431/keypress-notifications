@@ -1,0 +1,62 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for Keypress Notifications
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Please describe your idea clearly so we can evaluate it.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? What is the motivation?
+      placeholder: I find it frustrating when... / It would be helpful if...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the feature you'd like to see. Be as specific as possible.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions or workarounds?
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Feature Area
+      description: Which part of the extension does this affect?
+      options:
+        - Notifications / Visual feedback
+        - Keybinding detection
+        - Configuration / Settings
+        - Performance
+        - Accessibility
+        - Developer experience
+        - Other
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: breaking
+    attributes:
+      label: Breaking Change?
+      description: Would this feature require a breaking change to existing behaviour?
+      options:
+        - label: This feature would introduce a breaking change
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any mockups, references, or other context that would help illustrate the request.
