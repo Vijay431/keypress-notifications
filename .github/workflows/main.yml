@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: ["**"]
+    branches: ['**']
     tags-ignore:
-      - "v*.*.*" # Releases are handled by .github/workflows/release.yml
+      - 'v*.*.*' # Releases are handled by .github/workflows/release.yml
   pull_request:
     branches: [master]
 
@@ -55,14 +55,19 @@ jobs:
         id: typescript
         run: |
           echo "Running TypeScript type checking..."
-          npm run check-types > typescript-results.txt 2>&1 || true
+          set +e
+          npm run check-types > typescript-results.txt 2>&1
+          TYPECHECK_EXIT_CODE=$?
+          set -e
 
-          if [ $? -eq 0 ]; then
+          if [ "$TYPECHECK_EXIT_CODE" -eq 0 ]; then
             echo "status=✅ Pass" >> $GITHUB_OUTPUT
             echo "TypeScript type checking passed!"
           else
             echo "status=❌ Fail" >> $GITHUB_OUTPUT
             echo "TypeScript type checking found issues"
+            cat typescript-results.txt
+            exit "$TYPECHECK_EXIT_CODE"
           fi
 
       # ESLint with detailed reporting
@@ -70,8 +75,10 @@ jobs:
         id: eslint
         run: |
           echo "Running ESLint with detailed reporting..."
-          npm run lint -- --format json --output-file eslint-results.json || true
-          npm run lint || true
+          set +e
+          npm run lint -- --format json --output-file eslint-results.json
+          ESLINT_EXIT_CODE=$?
+          set -e
 
           if [ -f eslint-results.json ]; then
             ERROR_COUNT=$(jq '[.[] | .errorCount] | add // 0' eslint-results.json)
@@ -87,21 +94,30 @@ jobs:
             fi
           fi
 
+          if [ "$ESLINT_EXIT_CODE" -ne 0 ]; then
+            npm run lint
+            exit "$ESLINT_EXIT_CODE"
+          fi
+
       # Prettier formatting check
       - name: Code Formatting Check
         id: prettier
         run: |
           echo "Checking code formatting..."
-          npm run format:check > format-results.txt 2>&1 || true
+          set +e
+          npm run format:check > format-results.txt 2>&1
+          FORMAT_EXIT_CODE=$?
+          set -e
 
-          if [ $? -eq 0 ]; then
+          if [ "$FORMAT_EXIT_CODE" -eq 0 ]; then
             echo "status=✅ Pass" >> $GITHUB_OUTPUT
             echo "All files are properly formatted!"
           else
-            UNFORMATTED=$(grep -c "\.ts$\|\.js$\|\.json$" format-results.txt || echo "0")
+            UNFORMATTED=$(grep -c '^\[warn\]' format-results.txt || true)
             echo "status=❌ Fail ($UNFORMATTED files)" >> $GITHUB_OUTPUT
             echo "Found $UNFORMATTED unformatted files"
             cat format-results.txt
+            exit "$FORMAT_EXIT_CODE"
           fi
 
       # Dependency analysis
@@ -178,7 +194,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 20.x, 22.x, 24.x]
+        node-version: [20.x, 22.x, 24.x]
 
     steps:
       - name: Checkout Repository
@@ -313,8 +329,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20.x"
-          cache: "npm"
+          node-version: '20.x'
+          cache: 'npm'
 
       - name: Install Dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'

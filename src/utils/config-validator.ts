@@ -76,6 +76,13 @@ export function validateConfiguration(config: ExtensionConfig): ValidationResult
           value: commandId,
           severity: 'error',
         });
+      } else if (!isValidCommandId(commandId)) {
+        errors.push({
+          path: 'excludedCommands',
+          message: `Excluded command "${commandId}" must be a valid VS Code command ID`,
+          value: commandId,
+          severity: 'error',
+        });
       }
     }
   }
@@ -113,19 +120,18 @@ export function validateConfigValue(
   rules?: ValidationRule[],
 ): ValidationResult {
   const errors: ValidationError[] = [];
+  const validationRules = rules ?? getDefaultRulesForPath(path);
 
   // Apply custom rules if provided
-  if (rules) {
-    for (const rule of rules) {
-      const result = rule.validate(value, path);
-      if (!result.isValid || result.severity === 'warn') {
-        errors.push({
-          path,
-          message: result.message ?? 'Validation failed',
-          value,
-          severity: result.severity ?? 'error',
-        });
-      }
+  for (const rule of validationRules) {
+    const result = rule.validate(value, path);
+    if (!result.isValid || result.severity === 'warn') {
+      errors.push({
+        path,
+        message: result.message ?? 'Validation failed',
+        value,
+        severity: result.severity ?? 'error',
+      });
     }
   }
 
@@ -145,6 +151,22 @@ export function validateConfigValue(
     hasErrors: errors.some((e) => e.severity === 'error'),
     hasWarnings: errors.some((e) => e.severity === 'warn'),
   };
+}
+
+function getDefaultRulesForPath(path: string): ValidationRule[] {
+  switch (path) {
+    case 'enabled':
+    case 'showCommandName':
+      return [booleanRule];
+    case 'minimumKeys':
+      return [minimumKeysRule];
+    case 'logLevel':
+      return [logLevelRule];
+    case 'excludedCommands':
+      return [arrayOfStringsRule];
+    default:
+      return [];
+  }
 }
 
 /**
@@ -284,11 +306,41 @@ export const arrayOfStringsRule: ValidationRule = {
           severity: 'error',
         };
       }
+
+      if (!isValidCommandId(item)) {
+        return {
+          isValid: false,
+          message: 'All items must be valid VS Code command IDs',
+          severity: 'error',
+        };
+      }
     }
 
     return { isValid: true };
   },
 };
+
+function isValidCommandId(commandId: string): boolean {
+  const parts = commandId.split('.');
+  return parts.length > 1 && parts.every(isCommandIdPart);
+}
+
+function isCommandIdPart(part: string): boolean {
+  if (!part) {
+    return false;
+  }
+
+  for (const char of part) {
+    const isLowercaseLetter = char >= 'a' && char <= 'z';
+    const isUppercaseLetter = char >= 'A' && char <= 'Z';
+    const isNumber = char >= '0' && char <= '9';
+    if (!isLowercaseLetter && !isUppercaseLetter && !isNumber && char !== '_' && char !== '-') {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 /**
  * Validates configuration and returns a user-friendly error report

@@ -150,6 +150,7 @@ export class ConfigurationService extends BaseService implements IConfigurationS
    * @category Configuration Access
    */
   public getConfiguration(): ExtensionConfig {
+    this.currentConfig = this.readConfiguration();
     return this.currentConfig;
   }
 
@@ -314,7 +315,9 @@ export class ConfigurationService extends BaseService implements IConfigurationS
     value: T,
     target?: vscode.ConfigurationTarget,
   ): Promise<void> {
-    await vscode.workspace.getConfiguration(this.configSection).update(key, value, target);
+    await vscode.workspace
+      .getConfiguration(this.configSection)
+      .update(key, value, target ?? vscode.ConfigurationTarget.Global);
 
     this.currentConfig = this.readConfiguration();
     this.applyLogLevel(this.currentConfig.logLevel);

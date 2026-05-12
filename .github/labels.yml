@@ -3,71 +3,71 @@
 # See: https://github.com/EndBug/label-sync
 
 # Triage
-- name: "needs-triage"
-  color: "ededed"
-  description: "Newly opened — not yet reviewed by a maintainer"
+- name: 'needs-triage'
+  color: 'ededed'
+  description: 'Newly opened — not yet reviewed by a maintainer'
 
 # Type
-- name: "bug"
-  color: "d73a4a"
+- name: 'bug'
+  color: 'd73a4a'
   description: "Something isn't working"
 
-- name: "enhancement"
-  color: "a2eeef"
-  description: "New feature or improvement request"
+- name: 'enhancement'
+  color: 'a2eeef'
+  description: 'New feature or improvement request'
 
-- name: "documentation"
-  color: "0075ca"
-  description: "Improvements or additions to documentation"
+- name: 'documentation'
+  color: '0075ca'
+  description: 'Improvements or additions to documentation'
 
-- name: "question"
-  color: "d876e3"
-  description: "Further information is requested"
+- name: 'question'
+  color: 'd876e3'
+  description: 'Further information is requested'
 
-- name: "breaking-change"
-  color: "b60205"
-  description: "Introduces a breaking change to existing behaviour"
+- name: 'breaking-change'
+  color: 'b60205'
+  description: 'Introduces a breaking change to existing behaviour'
 
-- name: "performance"
-  color: "e4e669"
-  description: "Related to performance or efficiency"
+- name: 'performance'
+  color: 'e4e669'
+  description: 'Related to performance or efficiency'
 
 # Community
-- name: "good first issue"
-  color: "7057ff"
-  description: "Good for newcomers"
+- name: 'good first issue'
+  color: '7057ff'
+  description: 'Good for newcomers'
 
-- name: "help wanted"
-  color: "008672"
-  description: "Extra attention is needed — community contributions welcome"
+- name: 'help wanted'
+  color: '008672'
+  description: 'Extra attention is needed — community contributions welcome'
 
 # Status
-- name: "wontfix"
-  color: "ffffff"
-  description: "This will not be worked on"
+- name: 'wontfix'
+  color: 'ffffff'
+  description: 'This will not be worked on'
 
-- name: "duplicate"
-  color: "cfd3d7"
-  description: "This issue or pull request already exists"
+- name: 'duplicate'
+  color: 'cfd3d7'
+  description: 'This issue or pull request already exists'
 
-- name: "invalid"
-  color: "e4e669"
+- name: 'invalid'
+  color: 'e4e669'
   description: "This doesn't seem right"
 
-- name: "stale"
-  color: "fef2c0"
-  description: "No activity for an extended period"
+- name: 'stale'
+  color: 'fef2c0'
+  description: 'No activity for an extended period'
 
-- name: "ignore-for-release"
-  color: "e6e6e6"
-  description: "Excluded from auto-generated release notes"
+- name: 'ignore-for-release'
+  color: 'e6e6e6'
+  description: 'Excluded from auto-generated release notes'
 
 # Dependencies
-- name: "dependencies"
-  color: "0366d6"
-  description: "Pull requests that update a dependency file"
+- name: 'dependencies'
+  color: '0366d6'
+  description: 'Pull requests that update a dependency file'
 
 # Security
-- name: "security"
-  color: "ee0701"
-  description: "Security-related issue or fix"
+- name: 'security'
+  color: 'ee0701'
+  description: 'Security-related issue or fix'

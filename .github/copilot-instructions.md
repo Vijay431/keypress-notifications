@@ -38,18 +38,21 @@ src/
 ## Key Patterns
 
 ### Adding a New VS Code Command
+
 1. Create `src/commands/MyCommand.ts` extending `BaseCommandHandler`
 2. Implement the `execute()` method; use `this.success()` / `this.error()` for results
 3. Register in `src/managers/CommandRegistry.ts`
 4. Add the command to `package.json` `contributes.commands`
 
 ### Adding a New Service
+
 1. Define the interface in `src/di/interfaces/IMyService.ts`
 2. Add a Symbol token in `src/di/types.ts`
 3. Create `src/services/MyService.ts` extending `BaseService`
 4. Register in `src/di/container.ts` and export from `src/di/index.ts`
 
 ### COMMAND_METADATA Map
+
 `KeypressService.ts` maintains a static map from VS Code command IDs to notification metadata (display name, key count). To add support for a new keybinding, add an entry to this map — no other code changes are needed.
 
 ## Code Rules

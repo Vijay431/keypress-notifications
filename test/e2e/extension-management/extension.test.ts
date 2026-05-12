@@ -15,7 +15,7 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
 
-import { before, after, describe, it } from 'mocha';
+import { before, after, beforeEach, describe, it } from 'mocha';
 import {
   createTestContext,
   setupTestContext,
@@ -28,7 +28,7 @@ import {
   assertNotificationStartsWith,
   getExpectedKeyForPlatform,
 } from './helpers/notification-helpers';
-import { delay } from './helpers/command-helpers';
+import { delay, updateConfiguration } from './helpers/command-helpers';
 import type { KeypressNotificationsApi } from '../../../src/di';
 
 /**
@@ -57,6 +57,14 @@ describe('Keypress Notifications E2E Tests', () => {
    */
   after(async () => {
     await teardownTestContext(context);
+  });
+
+  beforeEach(async () => {
+    clearNotifications(context);
+    await updateConfiguration('minimumKeys', 2);
+    await updateConfiguration('excludedCommands', []);
+    await vscode.commands.executeCommand('keypress-notifications.enable');
+    await delay(300);
   });
 
   /**
@@ -97,7 +105,7 @@ describe('Keypress Notifications E2E Tests', () => {
     it('should show notification for Ctrl+C (Copy)', async () => {
       clearNotifications(context);
 
-      await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.copy');
       await delay(300);
 
       assert.ok(context.notificationMessages.length > 0, 'Should show notification for Copy');
@@ -109,7 +117,7 @@ describe('Keypress Notifications E2E Tests', () => {
     it('should show notification for Ctrl+X (Cut)', async () => {
       clearNotifications(context);
 
-      await vscode.commands.executeCommand('editor.action.clipboardCutAction');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.cut');
       await delay(300);
 
       assert.ok(context.notificationMessages.length > 0, 'Should show notification for Cut');
@@ -121,7 +129,7 @@ describe('Keypress Notifications E2E Tests', () => {
     it('should show notification for Ctrl+V (Paste)', async () => {
       clearNotifications(context);
 
-      await vscode.commands.executeCommand('editor.action.clipboardPasteAction');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.paste');
       await delay(300);
 
       assert.ok(context.notificationMessages.length > 0, 'Should show notification for Paste');
@@ -141,7 +149,7 @@ describe('Keypress Notifications E2E Tests', () => {
     it('should show notification for Ctrl+Shift+P (Command Palette)', async () => {
       clearNotifications(context);
 
-      await vscode.commands.executeCommand('workbench.action.showCommands');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.showCommands');
       await delay(300);
 
       assert.ok(
@@ -156,7 +164,7 @@ describe('Keypress Notifications E2E Tests', () => {
     it('should show notification for Ctrl+P (Quick Open)', async () => {
       clearNotifications(context);
 
-      await vscode.commands.executeCommand('workbench.action.quickOpen');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.quickOpen');
       await delay(300);
 
       assert.ok(context.notificationMessages.length > 0, 'Should show notification for Quick Open');
@@ -176,7 +184,7 @@ describe('Keypress Notifications E2E Tests', () => {
     it('should show notification for Ctrl+S (Save)', async () => {
       clearNotifications(context);
 
-      await vscode.commands.executeCommand('workbench.action.files.save');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.save');
       await delay(300);
 
       assert.ok(context.notificationMessages.length > 0, 'Should show notification for Save');
@@ -188,12 +196,12 @@ describe('Keypress Notifications E2E Tests', () => {
     it('should show notification for Ctrl+K S (Save All)', async () => {
       clearNotifications(context);
 
-      await vscode.commands.executeCommand('workbench.action.files.saveAll');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.saveAll');
       await delay(300);
 
       assert.ok(context.notificationMessages.length > 0, 'Should show notification for Save All');
       const notification = context.notificationMessages[0];
-      const expectedKeys = getExpectedKeyForPlatform('Ctrl+K S');
+      const expectedKeys = getExpectedKeyForPlatform('Ctrl+K → Ctrl+S');
       assertNotificationMatches(notification, expectedKeys);
     });
   });
@@ -208,7 +216,7 @@ describe('Keypress Notifications E2E Tests', () => {
     it('should show notification for Ctrl+B (Toggle Sidebar)', async () => {
       clearNotifications(context);
 
-      await vscode.commands.executeCommand('workbench.action.toggleSidebarVisibility');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.toggleSidebarVisibility');
       await delay(300);
 
       assert.ok(
@@ -223,7 +231,7 @@ describe('Keypress Notifications E2E Tests', () => {
     it('should show notification for Ctrl+J (Toggle Panel)', async () => {
       clearNotifications(context);
 
-      await vscode.commands.executeCommand('workbench.action.togglePanel');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.togglePanel');
       await delay(300);
 
       assert.ok(
@@ -246,7 +254,7 @@ describe('Keypress Notifications E2E Tests', () => {
     it('should show notification for Ctrl+/ (Toggle Line Comment)', async () => {
       clearNotifications(context);
 
-      await vscode.commands.executeCommand('editor.action.commentLine');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.commentLine');
       await delay(300);
 
       assert.ok(
@@ -261,7 +269,7 @@ describe('Keypress Notifications E2E Tests', () => {
     it('should show notification for Shift+Alt+F (Format Document)', async () => {
       clearNotifications(context);
 
-      await vscode.commands.executeCommand('editor.action.formatDocument');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.formatDocument');
       await delay(300);
 
       assert.ok(
@@ -284,7 +292,7 @@ describe('Keypress Notifications E2E Tests', () => {
     it('should adjust key display for macOS', async () => {
       clearNotifications(context);
 
-      await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.copy');
       await delay(300);
 
       assert.ok(context.notificationMessages.length > 0, 'Should show notification on macOS');
@@ -363,7 +371,9 @@ describe('Keypress Notifications E2E Tests', () => {
       }
 
       // Enable the extension
-      await vscode.workspace.getConfiguration('keypress-notifications').update('enabled', true);
+      await vscode.workspace
+        .getConfiguration('keypress-notifications')
+        .update('enabled', true, vscode.ConfigurationTarget.Global);
       await delay(500);
 
       // Verify it's enabled
@@ -384,7 +394,9 @@ describe('Keypress Notifications E2E Tests', () => {
       }
 
       // Disable the extension
-      await vscode.workspace.getConfiguration('keypress-notifications').update('enabled', false);
+      await vscode.workspace
+        .getConfiguration('keypress-notifications')
+        .update('enabled', false, vscode.ConfigurationTarget.Global);
       await delay(500);
 
       // Verify it's disabled
@@ -406,7 +418,7 @@ describe('Keypress Notifications E2E Tests', () => {
       clearNotifications(context);
 
       // Execute commands rapidly
-      const commands = ['editor.action.clipboardCopyAction', 'editor.action.clipboardCutAction'];
+      const commands = ['keypress-notifications.proxy.copy', 'keypress-notifications.proxy.cut'];
       for (const command of commands) {
         await vscode.commands.executeCommand(command);
       }
@@ -419,11 +431,13 @@ describe('Keypress Notifications E2E Tests', () => {
       clearNotifications(context);
 
       // Set minimum keys to a high value
-      await vscode.workspace.getConfiguration('keypress-notifications').update('minimumKeys', 10);
+      await vscode.workspace
+        .getConfiguration('keypress-notifications')
+        .update('minimumKeys', 10, vscode.ConfigurationTarget.Global);
       await delay(200);
 
       // Execute a 2-key command (should not trigger notification)
-      await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.copy');
       await delay(300);
 
       assert.strictEqual(
@@ -439,11 +453,15 @@ describe('Keypress Notifications E2E Tests', () => {
       // Add Copy to excluded commands
       await vscode.workspace
         .getConfiguration('keypress-notifications')
-        .update('excludedCommands', ['editor.action.clipboardCopyAction']);
+        .update(
+          'excludedCommands',
+          ['editor.action.clipboardCopyAction'],
+          vscode.ConfigurationTarget.Global,
+        );
       await delay(200);
 
       // Execute excluded command - should not show notification
-      await vscode.commands.executeCommand('editor.action.clipboardCopyAction');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.copy');
       await delay(300);
 
       assert.strictEqual(

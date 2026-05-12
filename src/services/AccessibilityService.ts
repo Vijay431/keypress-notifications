@@ -23,6 +23,12 @@ import type { ILogger } from '../di';
 import type { IAccessibilityService } from '../di/interfaces/IAccessibilityService';
 import { Logger } from '../utils/logger';
 
+type AccessibilityApi = typeof vscode & {
+  accessibility?: {
+    say(message: string): void;
+  };
+};
+
 /**
  * Accessibility Service
  *
@@ -121,6 +127,12 @@ export class AccessibilityService implements IAccessibilityService {
     verbosity: 'minimal' | 'normal' | 'verbose' = 'normal',
   ): Promise<void> {
     this.logger.debug(`Announcing to screen reader: ${message} (${verbosity})`);
+    const accessibility = (vscode as AccessibilityApi).accessibility;
+    if (accessibility) {
+      accessibility.say(message);
+      return;
+    }
+
     vscode.window.showInformationMessage(message);
   }
 

@@ -20,18 +20,48 @@ type CommandsApi = typeof vscode.commands & {
 interface CommandMetadata {
   keys?: string[];
   label?: string;
+  proxyCommand: string;
 }
 
 const COMMAND_METADATA = new Map<string, CommandMetadata>([
-  ['editor.action.clipboardCopyAction', { keys: ['Ctrl+C'], label: 'Copy' }],
-  ['editor.action.clipboardCutAction', { keys: ['Ctrl+X'], label: 'Cut' }],
-  ['editor.action.clipboardPasteAction', { keys: ['Ctrl+V'], label: 'Paste' }],
-  ['editor.action.commentLine', { keys: ['Ctrl+/'], label: 'Toggle Line Comment' }],
+  [
+    'editor.action.clipboardCopyAction',
+    {
+      keys: ['Ctrl+C'],
+      label: 'Copy',
+      proxyCommand: 'keypress-notifications.proxy.copy',
+    },
+  ],
+  [
+    'editor.action.clipboardCutAction',
+    {
+      keys: ['Ctrl+X'],
+      label: 'Cut',
+      proxyCommand: 'keypress-notifications.proxy.cut',
+    },
+  ],
+  [
+    'editor.action.clipboardPasteAction',
+    {
+      keys: ['Ctrl+V'],
+      label: 'Paste',
+      proxyCommand: 'keypress-notifications.proxy.paste',
+    },
+  ],
+  [
+    'editor.action.commentLine',
+    {
+      keys: ['Ctrl+/'],
+      label: 'Toggle Line Comment',
+      proxyCommand: 'keypress-notifications.proxy.commentLine',
+    },
+  ],
   [
     'editor.action.addSelectionToNextFindMatch',
     {
       keys: ['Ctrl+D'],
       label: 'Add Selection to Next Match',
+      proxyCommand: 'keypress-notifications.proxy.addSelectionToNextFindMatch',
     },
   ],
   [
@@ -39,6 +69,7 @@ const COMMAND_METADATA = new Map<string, CommandMetadata>([
     {
       keys: ['Shift+Alt+F'],
       label: 'Format Document',
+      proxyCommand: 'keypress-notifications.proxy.formatDocument',
     },
   ],
   [
@@ -46,17 +77,47 @@ const COMMAND_METADATA = new Map<string, CommandMetadata>([
     {
       keys: ['Ctrl+Shift+P'],
       label: 'Command Palette',
+      proxyCommand: 'keypress-notifications.proxy.showCommands',
     },
   ],
-  ['workbench.action.quickOpen', { keys: ['Ctrl+P'], label: 'Quick Open' }],
-  ['workbench.action.findInFiles', { keys: ['Ctrl+Shift+F'], label: 'Find in Files' }],
-  ['workbench.action.gotoLine', { keys: ['Ctrl+G'], label: 'Go to Line' }],
-  ['workbench.action.files.save', { keys: ['Ctrl+S'], label: 'Save' }],
+  [
+    'workbench.action.quickOpen',
+    {
+      keys: ['Ctrl+P'],
+      label: 'Quick Open',
+      proxyCommand: 'keypress-notifications.proxy.quickOpen',
+    },
+  ],
+  [
+    'workbench.action.findInFiles',
+    {
+      keys: ['Ctrl+Shift+F'],
+      label: 'Find in Files',
+      proxyCommand: 'keypress-notifications.proxy.findInFiles',
+    },
+  ],
+  [
+    'workbench.action.gotoLine',
+    {
+      keys: ['Ctrl+G'],
+      label: 'Go to Line',
+      proxyCommand: 'keypress-notifications.proxy.gotoLine',
+    },
+  ],
+  [
+    'workbench.action.files.save',
+    {
+      keys: ['Ctrl+S'],
+      label: 'Save',
+      proxyCommand: 'keypress-notifications.proxy.save',
+    },
+  ],
   [
     'workbench.action.files.saveAll',
     {
       keys: ['Ctrl+K', 'Ctrl+S'],
       label: 'Save All',
+      proxyCommand: 'keypress-notifications.proxy.saveAll',
     },
   ],
   [
@@ -64,22 +125,39 @@ const COMMAND_METADATA = new Map<string, CommandMetadata>([
     {
       keys: ['Ctrl+N'],
       label: 'New Untitled File',
+      proxyCommand: 'keypress-notifications.proxy.newUntitledFile',
     },
   ],
-  ['workbench.action.files.openFile', { keys: ['Ctrl+O'], label: 'Open File' }],
+  [
+    'workbench.action.files.openFile',
+    {
+      keys: ['Ctrl+O'],
+      label: 'Open File',
+      proxyCommand: 'keypress-notifications.proxy.openFile',
+    },
+  ],
   [
     'workbench.action.toggleSidebarVisibility',
     {
       keys: ['Ctrl+B'],
       label: 'Toggle Sidebar',
+      proxyCommand: 'keypress-notifications.proxy.toggleSidebarVisibility',
     },
   ],
-  ['workbench.action.togglePanel', { keys: ['Ctrl+J'], label: 'Toggle Panel' }],
+  [
+    'workbench.action.togglePanel',
+    {
+      keys: ['Ctrl+J'],
+      label: 'Toggle Panel',
+      proxyCommand: 'keypress-notifications.proxy.togglePanel',
+    },
+  ],
   [
     'workbench.action.terminal.toggleTerminal',
     {
       keys: ['Ctrl+`'],
       label: 'Toggle Terminal',
+      proxyCommand: 'keypress-notifications.proxy.toggleTerminal',
     },
   ],
   [
@@ -87,6 +165,7 @@ const COMMAND_METADATA = new Map<string, CommandMetadata>([
     {
       keys: ['Ctrl+W'],
       label: 'Close Editor',
+      proxyCommand: 'keypress-notifications.proxy.closeActiveEditor',
     },
   ],
   [
@@ -94,6 +173,7 @@ const COMMAND_METADATA = new Map<string, CommandMetadata>([
     {
       keys: ['Ctrl+Shift+N'],
       label: 'New Window',
+      proxyCommand: 'keypress-notifications.proxy.newWindow',
     },
   ],
 ]);
@@ -111,7 +191,7 @@ export class KeypressService extends BaseService implements IKeypressService {
   private lastNotificationAt = 0;
   private lastCommandNotified: string | undefined;
   private proxyDisposables = new Map<string, vscode.Disposable>();
-  private proxyExecuting = new Set<string>();
+  private proxyExecutingOriginalCommands = new Set<string>();
   private readonly notificationEmitter = new vscode.EventEmitter<string>();
   public readonly onDidShowNotification = this.notificationEmitter.event;
 
@@ -174,17 +254,20 @@ export class KeypressService extends BaseService implements IKeypressService {
     const commandsApi = vscode.commands as CommandsApi;
     const commandEvent = commandsApi.onDidExecuteCommand;
 
+    this.enabled = this.configService.isEnabled();
+    this.registerCommandProxies();
+
     if (!commandEvent) {
-      this.enabled = this.configService.isEnabled();
-      this.registerCommandProxies();
       this.logger.warn('Command execution events unavailable; using proxy command handlers');
       return;
     }
 
-    this.enabled = this.configService.isEnabled();
-
     this.registerDisposable(
       commandEvent((event) => {
+        if (this.proxyExecutingOriginalCommands.has(event.command)) {
+          return;
+        }
+
         this.handleCommandExecuted(event.command);
       }),
     );
@@ -260,37 +343,37 @@ export class KeypressService extends BaseService implements IKeypressService {
   }
 
   private registerCommandProxies(): void {
-    for (const [commandId] of COMMAND_METADATA) {
-      this.registerProxyForCommand(commandId);
+    for (const [commandId, metadata] of COMMAND_METADATA) {
+      this.registerProxyForCommand(commandId, metadata.proxyCommand);
     }
   }
 
-  private registerProxyForCommand(commandId: string): void {
+  private registerProxyForCommand(commandId: string, proxyCommandId: string): void {
     if (!this.initialized) {
       return;
     }
 
-    if (this.proxyDisposables.has(commandId)) {
-      this.logger.debug(`Proxy for ${commandId} already registered`);
+    if (this.proxyDisposables.has(proxyCommandId)) {
+      this.logger.debug(`Proxy ${proxyCommandId} for ${commandId} already registered`);
       return;
     }
 
-    const disposable = vscode.commands.registerCommand(commandId, async (...args: unknown[]) => {
-      if (this.proxyExecuting.has(commandId)) {
-        return;
-      }
-      try {
-        this.handleCommandExecuted(commandId);
-        this.proxyExecuting.add(commandId);
-        await vscode.commands.executeCommand(commandId, ...args);
-      } catch (error) {
-        this.logger.warn(`Proxy command execution failed for ${commandId}`, error);
-      } finally {
-        this.proxyExecuting.delete(commandId);
-      }
-    });
+    const disposable = vscode.commands.registerCommand(
+      proxyCommandId,
+      async (...args: unknown[]) => {
+        try {
+          this.handleCommandExecuted(commandId);
+          this.proxyExecutingOriginalCommands.add(commandId);
+          await vscode.commands.executeCommand(commandId, ...args);
+        } catch (error) {
+          this.logger.warn(`Proxy ${proxyCommandId} failed for ${commandId}`, error);
+        } finally {
+          this.proxyExecutingOriginalCommands.delete(commandId);
+        }
+      },
+    );
 
-    this.proxyDisposables.set(commandId, disposable);
+    this.proxyDisposables.set(proxyCommandId, disposable);
   }
 
   public override dispose(): void {
@@ -305,7 +388,7 @@ export class KeypressService extends BaseService implements IKeypressService {
       }
     });
     this.proxyDisposables.clear();
-    this.proxyExecuting.clear();
+    this.proxyExecutingOriginalCommands.clear();
     this.notificationEmitter.dispose();
   }
 

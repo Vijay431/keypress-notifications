@@ -55,11 +55,14 @@ describe('Extension Management E2E Tests', () => {
       const commands = await vscode.commands.getCommands();
 
       const extensionCommands = commands.filter((cmd) => cmd.startsWith('keypress-notifications.'));
+      const publicCommands = extensionCommands.filter(
+        (cmd) => !cmd.startsWith('keypress-notifications.proxy.'),
+      );
 
       assert.strictEqual(
-        extensionCommands.length,
+        publicCommands.length,
         3,
-        `Expected 3 extension commands, got ${extensionCommands.length}: ${extensionCommands.join(', ')}`,
+        `Expected 3 public extension commands, got ${publicCommands.length}: ${publicCommands.join(', ')}`,
       );
     });
   });
@@ -142,7 +145,7 @@ describe('Extension Management E2E Tests', () => {
       await delay(100);
 
       // Execute a command that normally shows a notification
-      await vscode.commands.executeCommand('workbench.action.quickOpen');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.quickOpen');
       await delay(300);
 
       // Close quick open to clean up
@@ -303,7 +306,7 @@ describe('Extension Management E2E Tests', () => {
 
     it('should not interfere with VS Code core functionality', async () => {
       // Test that VS Code's core functionality still works
-      await vscode.commands.executeCommand('workbench.action.quickOpen');
+      await vscode.commands.executeCommand('keypress-notifications.proxy.quickOpen');
       await delay(100);
       await vscode.commands.executeCommand('workbench.action.closeQuickOpen');
 
