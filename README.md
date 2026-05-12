@@ -4,11 +4,17 @@
 
 **🎯 Get instant visual feedback when you execute multi-key combinations in VS Code.**
 
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg?style=flat-square&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
-[![VS Code](https://img.shields.io/badge/VS%20Code-1.102.0+-blue.svg?style=flat-square&logo=visual-studio-code)](https://code.visualstudio.com/)
-[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg?style=flat-square)](#)
+[![CI](https://github.com/Vijay431/keypress-notifications/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/Vijay431/keypress-notifications/actions/workflows/main.yml)
+[![Version](https://img.shields.io/visual-studio-marketplace/v/VijayGangatharan.keypress-notifications?style=flat-square&logo=visual-studio-code&label=marketplace)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/VijayGangatharan.keypress-notifications?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/VijayGangatharan.keypress-notifications?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
+[![codecov](https://codecov.io/gh/Vijay431/keypress-notifications/branch/master/graph/badge.svg)](https://codecov.io/gh/Vijay431/keypress-notifications)
+[![VS Code](https://img.shields.io/badge/VS%20Code-1.108.1+-blue.svg?style=flat-square&logo=visual-studio-code)](https://code.visualstudio.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 
-[🐛 Report Bug](https://github.com/Vijay431/keypress-notifications/issues) • [💡 Request Feature](https://github.com/Vijay431/keypress-notifications/issues)
+[🐛 Report Bug](https://github.com/Vijay431/keypress-notifications/issues/new?template=bug_report.yml) • [💡 Request Feature](https://github.com/Vijay431/keypress-notifications/issues/new?template=feature_request.yml) • [💬 Discussions](https://github.com/Vijay431/keypress-notifications/discussions)
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Vijay431/keypress-notifications)
 
 </div>
 
@@ -117,44 +123,72 @@ The extension works by tracking common multi-key command executions and displayi
 ```bash
 npm install     # Install dependencies
 npm run build   # Build the extension
-npm test        # Run tests
+npm test        # Run E2E tests
 ```
+
+Or open in GitHub Codespaces for a zero-config development environment:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Vijay431/keypress-notifications)
 
 ### Available Commands
 
 ```bash
-npm run build          # Build TypeScript with esbuild
-npm run watch          # Watch mode for development
-npm run package        # Create VSIX package
-npm run lint           # Run ESLint
-npm run lint:fix       # Fix linting issues
-npm run format         # Format code with Prettier
-npm run check-types    # TypeScript type checking
+npm run build              # Build TypeScript with esbuild
+npm run watch              # Watch mode for development
+npm run package            # Create VSIX package
+npm run lint               # Run ESLint
+npm run lint:fix           # Fix linting issues
+npm run format             # Format code with Prettier
+npm run check-types        # TypeScript type checking
 npm run validate:lockfile  # Validate package-lock.json
 ```
 
 ### Testing
 
 ```bash
-npm test                # Run E2E tests
-npm run test:full       # Run full tests (no optimization)
-npm run test:minimal    # Minimal test run
-npm run test:quick      # Fast compile + test for CI
-npm run test:clean      # Clean test directories
+npm run test:unit          # Unit tests (no VS Code needed)
+npm run test:unit:coverage # Unit tests with coverage report
+npm test                   # Run E2E tests (downloads VS Code)
+npm run test:quick         # Fast build + E2E for CI
+npm run test:clean         # Clean test directories
 ```
 
 ## 📋 Requirements
 
-- **VS Code**: Version 1.102.0 or higher
-- **Node.js**: Version 16.0.0 or higher (for development)
+- **VS Code**: Version 1.108.1 or higher
+- **Node.js**: Version 20.0.0 or higher (for development)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read the [Contributing Guide](.github/CONTRIBUTING.md) and [Code of Conduct](.github/CODE_OF_CONDUCT.md) before submitting a pull request.
 
 ## 🐛 Issues & Support
 
-Found a bug or have a feature request? Please [create an issue](https://github.com/Vijay431/keypress-notifications/issues).
+Found a bug or have a feature request? Please [create an issue](https://github.com/Vijay431/keypress-notifications/issues) using one of our templates. For general questions, use [GitHub Discussions](https://github.com/Vijay431/keypress-notifications/discussions).
+
+## 👥 Contributors
+
+Thanks to all contributors who have helped make this project better!
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Vijay431"><img src="https://avatars.githubusercontent.com/u/Vijay431?v=4" width="100px;" alt="Vijay Gangatharan"/><br /><sub><b>Vijay Gangatharan</b></sub></a><br /><a title="Code">💻</a> <a title="Documentation">📖</a> <a title="Maintenance">🚧</a> <a title="Infrastructure">🚇</a> <a title="Ideas, Planning">🤔</a></td>
+    </tr>
+  </tbody>
+</table>
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
 
 ## 📄 License
 
-This project is licensed under the **Proprietary License**.
+This project is licensed under the **[MIT License](LICENSE)**.
 
 ## 👨‍💻 Author
 

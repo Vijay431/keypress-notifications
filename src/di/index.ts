@@ -33,7 +33,11 @@ export type {
   IAccessibilityService,
   IKeypressService,
   ICache,
+  CacheConfig,
+  CacheStats,
   IMetricsCollector,
+  MetricData,
+  MetricsSummary,
   IExtensionManager,
   KeypressNotificationsApi,
 } from './interfaces';

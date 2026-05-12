@@ -1,0 +1,26 @@
+name: All Contributors
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  all-contributors:
+    name: Add Contributor
+    runs-on: ubuntu-latest
+
+    # Only run when a maintainer uses the @all-contributors bot syntax
+    if: contains(github.event.comment.body, '@all-contributors')
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: All Contributors Bot
+        uses: all-contributors/all-contributors-bot@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

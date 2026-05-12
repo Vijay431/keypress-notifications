@@ -20,8 +20,8 @@ import type { ILogger } from '../di';
 import type { IAccessibilityService } from '../di/interfaces/IAccessibilityService';
 import type { IConfigurationService } from '../di/interfaces/IConfigurationService';
 
-import { BaseCommandHandler  } from './BaseCommandHandler';
-import type {CommandResult} from './BaseCommandHandler';
+import { BaseCommandHandler } from './BaseCommandHandler';
+import type { CommandResult } from './BaseCommandHandler';
 
 /**
  * Disable Extension Command
@@ -34,22 +34,22 @@ import type {CommandResult} from './BaseCommandHandler';
  */
 export class DisableExtensionCommand extends BaseCommandHandler {
   /**
-	 * Create a new DisableExtensionCommand instance
-	 *
-	 * @description
-	 * Creates command with injected dependencies from DI container.
-	 *
-	 * @param configService - Configuration service for settings
-	 * @param logger - Logger instance for diagnostics
-	 * @param accessibilityService - Accessibility service for screen reader support
-	 *
-	 * @example
-	 * ```typescript
-	 * const command = DisableExtensionCommand.create(configService, logger, accessibilityService);
-	 * ```
-	 *
-	 * @category Construction
-	 */
+   * Create a new DisableExtensionCommand instance
+   *
+   * @description
+   * Creates command with injected dependencies from DI container.
+   *
+   * @param configService - Configuration service for settings
+   * @param logger - Logger instance for diagnostics
+   * @param accessibilityService - Accessibility service for screen reader support
+   *
+   * @example
+   * ```typescript
+   * const command = DisableExtensionCommand.create(configService, logger, accessibilityService);
+   * ```
+   *
+   * @category Construction
+   */
   constructor(
     private readonly configService: IConfigurationService,
     logger: ILogger,
@@ -59,26 +59,26 @@ export class DisableExtensionCommand extends BaseCommandHandler {
   }
 
   /**
-	 * Create a new instance (factory pattern)
-	 *
-	 * @description
-	 * Factory method for creating a new DisableExtensionCommand instance.
-	 * Used by the DI container for dependency injection.
-	 *
-	 * @param configService - Configuration service for settings
-	 * @param logger - Logger instance for diagnostics
-	 * @param accessibilityService - Accessibility service for screen reader support
-	 *
-	 * @example
-	 * ```typescript
-	 * container.registerSingleton(
-	 *   TYPES.DisableExtensionCommand,
-	 *   () => DisableExtensionCommand.create(configService, logger, accessibilityService)
-	 * );
-	 * ```
-	 *
-	 * @category Factory Pattern
-	 */
+   * Create a new instance (factory pattern)
+   *
+   * @description
+   * Factory method for creating a new DisableExtensionCommand instance.
+   * Used by the DI container for dependency injection.
+   *
+   * @param configService - Configuration service for settings
+   * @param logger - Logger instance for diagnostics
+   * @param accessibilityService - Accessibility service for screen reader support
+   *
+   * @example
+   * ```typescript
+   * container.registerSingleton(
+   *   TYPES.DisableExtensionCommand,
+   *   () => DisableExtensionCommand.create(configService, logger, accessibilityService)
+   * );
+   * ```
+   *
+   * @category Factory Pattern
+   */
   public static create(
     configService: IConfigurationService,
     logger: ILogger,
@@ -88,23 +88,23 @@ export class DisableExtensionCommand extends BaseCommandHandler {
   }
 
   /**
-	 * Execute the command
-	 *
-	 * @description
-	 * Updates the configuration to disable the extension.
-	 *
-	 * @returns Result of command execution
-	 *
-	 * @example
-	 * ```typescript
-	 * const result = await command.execute();
-	 * if (result.success) {
-	 *   console.log(result.message);
-	 * }
-	 * ```
-	 *
-	 * @category Command Execution
-	 */
+   * Execute the command
+   *
+   * @description
+   * Updates the configuration to disable the extension.
+   *
+   * @returns Result of command execution
+   *
+   * @example
+   * ```typescript
+   * const result = await command.execute();
+   * if (result.success) {
+   *   console.log(result.message);
+   * }
+   * ```
+   *
+   * @category Command Execution
+   */
   public async execute(): Promise<CommandResult> {
     this.logInfo('Disabling extension');
 
@@ -116,7 +116,10 @@ export class DisableExtensionCommand extends BaseCommandHandler {
       this.showInfo('Keypress Notifications extension disabled');
 
       // Announce to screen readers
-      await this.announceSuccess('Disable Extension', 'Keypress Notifications extension is now disabled');
+      await this.announceSuccess(
+        'Disable Extension',
+        'Keypress Notifications extension is now disabled',
+      );
 
       return this.success('Extension disabled');
     } catch (error) {

@@ -83,71 +83,71 @@ export interface MetricsSummary {
  */
 export interface IMetricsCollector {
   /**
-	 * Record a metric data point
-	 *
-	 * @description
-	 * Stores a single operation's metrics.
-	 * Automatically tracks summary statistics.
-	 *
-	 * @param data - The metric data to record
-	 *
-	 * @example
-	 * ```typescript
-	 * metrics.record({
-	 *   operation: 'saveFile',
-	 *   duration: 125,
-	 *   success: true,
-	 *   metadata: { fileSize: 1024 }
-	 * });
-	 * ```
-	 */
+   * Record a metric data point
+   *
+   * @description
+   * Stores a single operation's metrics.
+   * Automatically tracks summary statistics.
+   *
+   * @param data - The metric data to record
+   *
+   * @example
+   * ```typescript
+   * metrics.record({
+   *   operation: 'saveFile',
+   *   duration: 125,
+   *   success: true,
+   *   metadata: { fileSize: 1024 }
+   * });
+   * ```
+   */
   record(data: MetricData): void;
 
   /**
-	 * Get all recorded metrics
-	 *
-	 * @description
-	 * Returns all metric data points currently recorded.
-	 *
-	 * @returns Array of all recorded metrics
-	 *
-	 * @example
-	 * ```typescript
-	 * const allMetrics = metrics.getMetrics();
-	 * console.log(`Total operations: ${allMetrics.length}`);
-	 * ```
-	 */
+   * Get all recorded metrics
+   *
+   * @description
+   * Returns all metric data points currently recorded.
+   *
+   * @returns Array of all recorded metrics
+   *
+   * @example
+   * ```typescript
+   * const allMetrics = metrics.getMetrics();
+   * console.log(`Total operations: ${allMetrics.length}`);
+   * ```
+   */
   getMetrics(): MetricData[];
 
   /**
-	 * Clear all recorded metrics
-	 *
-	 * @description
-	 * Removes all metric data and resets summary statistics.
-	 * Useful for starting fresh measurement periods.
-	 *
-	 * @example
-	 * ```typescript
-	 * metrics.clear();
-	 * ```
-	 */
+   * Clear all recorded metrics
+   *
+   * @description
+   * Removes all metric data and resets summary statistics.
+   * Useful for starting fresh measurement periods.
+   *
+   * @example
+   * ```typescript
+   * metrics.clear();
+   * ```
+   */
   clear(): void;
 
   /**
-	 * Get summary statistics
-	 *
-	 * @description
-	 * Returns aggregated statistics across all recorded metrics.
-	 * Includes count, average duration, and success rate.
-	 *
-	 * @returns Summary of all metrics
-	 *
-	 * @example
-	 * ```typescript
-	 * const summary = metrics.getSummary();
-	 * console.log(`Average: ${summary.averageDuration}ms`);
-	 * console.log(`Success rate: ${(summary.successRate * 100).toFixed(1)}%`);
-	 * ```
-	 */
+   * Get summary statistics
+   *
+   * @description
+   * Returns aggregated statistics across all recorded metrics.
+   * Includes count, average duration, and success rate.
+   *
+   * @returns Summary of all metrics
+   *
+   * @example
+   * ```typescript
+   * const summary = metrics.getSummary();
+   * console.log(`Average: ${summary.averageDuration}ms`);
+   * console.log(`Success rate: ${(summary.successRate * 100).toFixed(1)}%`);
+   * ```
+   */
   getSummary(): MetricsSummary;
 }

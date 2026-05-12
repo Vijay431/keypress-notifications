@@ -49,61 +49,61 @@ export interface KeypressNotificationsApi {
  */
 export interface IExtensionManager {
   /**
-	 * Activate the extension
-	 *
-	 * @description
-	 * Initializes all services, registers commands, and sets up context variables.
-	 *
-	 * @param context - VS Code extension context
-	 */
+   * Activate the extension
+   *
+   * @description
+   * Initializes all services, registers commands, and sets up context variables.
+   *
+   * @param context - VS Code extension context
+   */
   activate(context: vscode.ExtensionContext): Promise<void>;
 
   /**
-	 * Deactivate the extension
-	 *
-	 * @description
-	 * Cleans up all resources and services.
-	 */
+   * Deactivate the extension
+   *
+   * @description
+   * Cleans up all resources and services.
+   */
   deactivate(): void;
 
   /**
-	 * Get configuration service
-	 *
-	 * @description
-	 * Returns the configuration service instance for external access.
-	 *
-	 * @returns The configuration service
-	 */
+   * Get configuration service
+   *
+   * @description
+   * Returns the configuration service instance for external access.
+   *
+   * @returns The configuration service
+   */
   getConfigurationService(): IConfigurationService;
 
   /**
-	 * Get keypress service
-	 *
-	 * @description
-	 * Returns the keypress service instance for external access.
-	 *
-	 * @returns The keypress service
-	 */
+   * Get keypress service
+   *
+   * @description
+   * Returns the keypress service instance for external access.
+   *
+   * @returns The keypress service
+   */
   getKeypressService(): IKeypressService;
 
   /**
-	 * Get public API
-	 *
-	 * @description
-	 * Returns the public API interface for the extension.
-	 * Provides access to events for testing and integration.
-	 *
-	 * @returns The public API interface
-	 */
+   * Get public API
+   *
+   * @description
+   * Returns the public API interface for the extension.
+   * Provides access to events for testing and integration.
+   *
+   * @returns The public API interface
+   */
   getApi(): KeypressNotificationsApi;
 
   /**
-	 * Check if extension is active
-	 *
-	 * @description
-	 * Returns whether the extension is currently enabled.
-	 *
-	 * @returns Whether the extension is active
-	 */
+   * Check if extension is active
+   *
+   * @description
+   * Returns whether the extension is currently enabled.
+   *
+   * @returns Whether the extension is active
+   */
   isActive(): boolean;
 }

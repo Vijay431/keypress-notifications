@@ -39,164 +39,160 @@ import type { ExtensionConfig, LogLevel } from '../../types/extension';
  */
 export interface IConfigurationService {
   /**
-	 * Get the complete extension configuration
-	 *
-	 * @description
-	 * Returns the current configuration object with all settings.
-	 *
-	 * @returns The extension configuration
-	 *
-	 * @example
-	 * ```typescript
-	 * const config = configService.getConfiguration();
-	 * console.log(`Minimum keys: ${config.minimumKeys}`);
-	 * ```
-	 */
+   * Get the complete extension configuration
+   *
+   * @description
+   * Returns the current configuration object with all settings.
+   *
+   * @returns The extension configuration
+   *
+   * @example
+   * ```typescript
+   * const config = configService.getConfiguration();
+   * console.log(`Minimum keys: ${config.minimumKeys}`);
+   * ```
+   */
   getConfiguration(): ExtensionConfig;
 
   /**
-	 * Check if the extension is enabled
-	 *
-	 * @description
-	 * Returns true if the extension's enabled setting is true.
-	 *
-	 * @returns Whether the extension is enabled
-	 *
-	 * @example
-	 * ```typescript
-	 * if (configService.isEnabled()) {
-	 *   // Show notifications
-	 * }
-	 * ```
-	 */
+   * Check if the extension is enabled
+   *
+   * @description
+   * Returns true if the extension's enabled setting is true.
+   *
+   * @returns Whether the extension is enabled
+   *
+   * @example
+   * ```typescript
+   * if (configService.isEnabled()) {
+   *   // Show notifications
+   * }
+   * ```
+   */
   isEnabled(): boolean;
 
   /**
-	 * Get the minimum key threshold
-	 *
-	 * @description
-	 * Returns the minimum number of keys required to show a notification.
-	 *
-	 * @returns The minimum key count (default: 2)
-	 *
-	 * @example
-	 * ```typescript
-	 * const minKeys = configService.getMinimumKeys();
-	 * if (keyCount >= minKeys) {
-	 *   showNotification();
-	 * }
-	 * ```
-	 */
+   * Get the minimum key threshold
+   *
+   * @description
+   * Returns the minimum number of keys required to show a notification.
+   *
+   * @returns The minimum key count (default: 2)
+   *
+   * @example
+   * ```typescript
+   * const minKeys = configService.getMinimumKeys();
+   * if (keyCount >= minKeys) {
+   *   showNotification();
+   * }
+   * ```
+   */
   getMinimumKeys(): number;
 
   /**
-	 * Get excluded commands list
-	 *
-	 * @description
-	 * Returns the list of commands that should not trigger notifications.
-	 *
-	 * @returns Array of command IDs to exclude
-	 *
-	 * @example
-	 * ```typescript
-	 * const excluded = configService.getExcludedCommands();
-	 * if (excluded.includes(commandId)) {
-	 *   return; // Skip this command
-	 * }
-	 * ```
-	 */
+   * Get excluded commands list
+   *
+   * @description
+   * Returns the list of commands that should not trigger notifications.
+   *
+   * @returns Array of command IDs to exclude
+   *
+   * @example
+   * ```typescript
+   * const excluded = configService.getExcludedCommands();
+   * if (excluded.includes(commandId)) {
+   *   return; // Skip this command
+   * }
+   * ```
+   */
   getExcludedCommands(): string[];
 
   /**
-	 * Check if command name should be shown
-	 *
-	 * @description
-	 * Returns true if the showCommandName setting is enabled.
-	 *
-	 * @returns Whether to show command names in notifications
-	 *
-	 * @example
-	 * ```typescript
-	 * if (configService.shouldShowCommandName()) {
-	 *   message += ` (${commandName})`;
-	 * }
-	 * ```
-	 */
+   * Check if command name should be shown
+   *
+   * @description
+   * Returns true if the showCommandName setting is enabled.
+   *
+   * @returns Whether to show command names in notifications
+   *
+   * @example
+   * ```typescript
+   * if (configService.shouldShowCommandName()) {
+   *   message += ` (${commandName})`;
+   * }
+   * ```
+   */
   shouldShowCommandName(): boolean;
 
   /**
-	 * Get the current log level
-	 *
-	 * @description
-	 * Returns the configured log level.
-	 *
-	 * @returns The log level setting
-	 *
-	 * @example
-	 * ```typescript
-	 * const level = configService.getLogLevel();
-	 * logger.setLogLevel(level);
-	 * ```
-	 */
+   * Get the current log level
+   *
+   * @description
+   * Returns the configured log level.
+   *
+   * @returns The log level setting
+   *
+   * @example
+   * ```typescript
+   * const level = configService.getLogLevel();
+   * logger.setLogLevel(level);
+   * ```
+   */
   getLogLevel(): LogLevel;
 
   /**
-	 * Listen for configuration changes
-	 *
-	 * @description
-	 * Registers a callback to be invoked when configuration changes.
-	 * The callback is only invoked for changes affecting this extension.
-	 *
-	 * @param callback - Function to call when configuration changes
-	 * @returns Disposable for unregistering the listener
-	 *
-	 * @example
-	 * ```typescript
-	 * const disposable = configService.onConfigurationChanged(() => {
-	 *   // Refresh configuration-dependent behavior
-	 * });
-	 * ```
-	 */
+   * Listen for configuration changes
+   *
+   * @description
+   * Registers a callback to be invoked when configuration changes.
+   * The callback is only invoked for changes affecting this extension.
+   *
+   * @param callback - Function to call when configuration changes
+   * @returns Disposable for unregistering the listener
+   *
+   * @example
+   * ```typescript
+   * const disposable = configService.onConfigurationChanged(() => {
+   *   // Refresh configuration-dependent behavior
+   * });
+   * ```
+   */
   onConfigurationChanged(callback: () => void): vscode.Disposable;
 
   /**
-	 * Update a configuration setting
-	 *
-	 * @description
-	 * Updates a configuration value and applies migrations if needed.
-	 * Triggers configuration change events.
-	 *
-	 * @template T - Type of the configuration value
-	 * @param key - Configuration key to update
-	 * @param value - New value for the setting
-	 * @param target - Configuration target (global, workspace, or workspace folder)
-	 *
-	 * @example
-	 * ```typescript
-	 * // Update minimum keys setting
-	 * await configService.updateConfiguration('minimumKeys', 3);
-	 *
-	 * // Update enabled setting globally
-	 * await configService.updateConfiguration('enabled', false, vscode.ConfigurationTarget.Global);
-	 * ```
-	 */
-  updateConfiguration<T>(
-    key: string,
-    value: T,
-    target?: vscode.ConfigurationTarget,
-  ): Promise<void>;
+   * Update a configuration setting
+   *
+   * @description
+   * Updates a configuration value and applies migrations if needed.
+   * Triggers configuration change events.
+   *
+   * @template T - Type of the configuration value
+   * @param key - Configuration key to update
+   * @param value - New value for the setting
+   * @param target - Configuration target (global, workspace, or workspace folder)
+   *
+   * @example
+   * ```typescript
+   * // Update minimum keys setting
+   * await configService.updateConfiguration('minimumKeys', 3);
+   *
+   * // Update enabled setting globally
+   * await configService.updateConfiguration('enabled', false, vscode.ConfigurationTarget.Global);
+   * ```
+   */
+  updateConfiguration<T>(key: string, value: T, target?: vscode.ConfigurationTarget): Promise<void>;
 
   /**
-	 * Reset configuration to defaults
-	 *
-	 * @description
-	 * Reverts all configuration settings to their default values.
-	 * Uses the configuration migrator to restore previous state if available.
-	 *
-	 * @example
-	 * ```typescript
-	 * await configService.resetConfig();
-	 * ```
-	 */
+   * Reset configuration to defaults
+   *
+   * @description
+   * Reverts all configuration settings to their default values.
+   * Uses the configuration migrator to restore previous state if available.
+   *
+   * @example
+   * ```typescript
+   * await configService.resetConfig();
+   * ```
+   */
   resetConfig(): Promise<void>;
 }

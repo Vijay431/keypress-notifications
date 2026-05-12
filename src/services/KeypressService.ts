@@ -3,8 +3,10 @@ import * as vscode from 'vscode';
 import type { ILogger } from '../di';
 import type { IConfigurationService } from '../di/interfaces/IConfigurationService';
 import type { IKeypressService } from '../di/interfaces/IKeypressService';
+import { Logger } from '../utils/logger';
 
 import { BaseService } from './BaseService';
+import { ConfigurationService } from './ConfigurationService';
 
 interface CommandExecutionEvent {
   readonly command: string;
@@ -102,6 +104,7 @@ const EXTENSION_PREFIX = 'keypress-notifications';
  * KeypressService listens to executed commands and displays notifications for multi-key shortcuts.
  */
 export class KeypressService extends BaseService implements IKeypressService {
+  private static instance?: KeypressService;
   private readonly NOTIFICATION_COOLDOWN = 250;
   private readonly configService: IConfigurationService;
   private enabled = true;
@@ -135,16 +138,10 @@ export class KeypressService extends BaseService implements IKeypressService {
    * @category Singleton Pattern
    */
   public static getInstance(): KeypressService {
-    // @ts-expect-error - Legacy singleton pattern, deprecated
-    if (!KeypressService.instance) {
-      const { Logger } = require('../utils/logger');
-      const { ConfigurationService } = require('./ConfigurationService');
-      const logger = Logger.getInstance();
-      const configService = ConfigurationService.getInstance();
-      // @ts-expect-error - Legacy singleton pattern, deprecated
-      KeypressService.instance = new KeypressService(logger, configService);
-    }
-    // @ts-expect-error - Legacy singleton pattern, deprecated
+    KeypressService.instance ??= new KeypressService(
+      Logger.getInstance(),
+      ConfigurationService.getInstance(),
+    );
     return KeypressService.instance;
   }
 

@@ -210,7 +210,7 @@ export default tseslint.config(
       'prefer-template': 'error',
       'prefer-spread': 'error',
       'prefer-rest-params': 'error',
-      'no-duplicate-imports': 'error',
+      'no-duplicate-imports': 'off',
       'no-useless-constructor': 'error',
       'no-useless-rename': 'error',
       'no-useless-computed-key': 'error',

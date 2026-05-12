@@ -6,7 +6,7 @@
 
 import * as vscode from 'vscode';
 
-import { ExtensionConfig, LogLevel } from '../types/extension';
+import { ExtensionConfig } from '../types/extension';
 
 /**
  * Configuration version enum
@@ -24,7 +24,7 @@ interface V1Config {
   minimumKeys: number;
   excludedCommands: string[];
   showCommandName: boolean;
-  logLevel: 'error' | 'warn' | 'info' | 'debug';
+  logLevel: ExtensionConfig['logLevel'];
 }
 
 /**
@@ -95,7 +95,7 @@ export class ConfigMigrator {
    */
   private async backupConfig(): Promise<string> {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const backupPath = `${this.context!.globalStorageUri.fsPath}/config-backup-${timestamp}.json`;
+    const backupPath = `${this.context.globalStorageUri.fsPath}/config-backup-${timestamp}.json`;
 
     try {
       const currentConfig = vscode.workspace.getConfiguration(this.configSection);
@@ -111,56 +111,10 @@ export class ConfigMigrator {
   }
 
   /**
-   * Restore configuration from backup
-   */
-  private async restoreFromBackup(backupPath: string): Promise<void> {
-    try {
-      const content = await vscode.workspace.fs.readFile(vscode.Uri.file(backupPath));
-      const decoder = new TextDecoder();
-      const configData = JSON.parse(decoder.decode(content));
-
-      await vscode.workspace.getConfiguration(this.configSection).update(
-        'minimumKeys',
-        configData.minimumKeys,
-        vscode.ConfigurationTarget.Global,
-      );
-
-      await vscode.workspace.getConfiguration(this.configSection).update(
-        'logLevel',
-        configData.logLevel,
-        vscode.ConfigurationTarget.Global,
-      );
-
-      await vscode.workspace.getConfiguration(this.configSection).update(
-        'excludedCommands',
-        configData.excludedCommands,
-        vscode.ConfigurationTarget.Global,
-      );
-
-      await vscode.workspace.getConfiguration(this.configSection).update(
-        'showCommandName',
-        configData.showCommandName,
-        vscode.ConfigurationTarget.Global,
-      );
-
-      await vscode.workspace.getConfiguration(this.configSection).update(
-        'enabled',
-        configData.enabled,
-        vscode.ConfigurationTarget.Global,
-      );
-
-      this.logger.appendLine(`Configuration restored from ${backupPath}`);
-    } catch (error) {
-      throw new Error(`Failed to restore configuration from ${backupPath}: ${error}`);
-    }
-  }
-
-  /**
    * Migrate V1 to V2
    */
   public async migrate(): Promise<MigrationResult> {
     const errors: string[] = [];
-    const warnings: string[] = [];
     let currentVersion: ConfigVersion = ConfigVersion.V2;
 
     try {
@@ -177,16 +131,6 @@ export class ConfigMigrator {
         };
       }
 
-      if (currentVersion !== ConfigVersion.V1) {
-        return {
-          success: false,
-          version: currentVersion,
-          backupPath: null,
-          errors: ['Configuration is not at v1.0.0 format'],
-          warnings: [],
-        };
-      }
-
       const backupPath = await this.backupConfig();
       const v1Config = currentConfig as unknown as V1Config;
       this.logger.appendLine(`Configuration backed up to ${backupPath}`);
@@ -195,11 +139,12 @@ export class ConfigMigrator {
       const migratedConfig = this.migrateToV2(v1Config);
       const version = ConfigVersion.V2;
 
-      await vscode.workspace.getConfiguration(this.configSection).update('enabled', migratedConfig.enabled);
-      await vscode.workspace.getConfiguration(this.configSection).update('minimumKeys', migratedConfig.minimumKeys);
-      await vscode.workspace.getConfiguration(this.configSection).update('excludedCommands', migratedConfig.excludedCommands);
-      await vscode.workspace.getConfiguration(this.configSection).update('showCommandName', migratedConfig.showCommandName);
-      await vscode.workspace.getConfiguration(this.configSection).update('logLevel', migratedConfig.logLevel);
+      const cfg = vscode.workspace.getConfiguration(this.configSection);
+      await cfg.update('enabled', migratedConfig.enabled);
+      await cfg.update('minimumKeys', migratedConfig.minimumKeys);
+      await cfg.update('excludedCommands', migratedConfig.excludedCommands);
+      await cfg.update('showCommandName', migratedConfig.showCommandName);
+      await cfg.update('logLevel', migratedConfig.logLevel);
 
       this.logger.appendLine('Configuration migrated to v2.0.0 from v1.0.0');
       this.logger.appendLine(`Backup saved to: ${backupPath}`);
@@ -236,28 +181,8 @@ export class ConfigMigrator {
       minimumKeys: v1Config.minimumKeys,
       excludedCommands: v1Config.excludedCommands,
       showCommandName: v1Config.showCommandName,
-      logLevel: this.migrateLogLevel(v1Config.logLevel),
-      notificationOptions: undefined,
-      accessibility: undefined,
+      logLevel: v1Config.logLevel,
     };
-  }
-
-  /**
-   * Migrate log level
-   */
-  private migrateLogLevel(v1LogLevel: 'error' | 'warn' | 'info' | 'debug'): LogLevel {
-    switch (v1LogLevel) {
-      case 'error':
-        return LogLevel.ERROR;
-      case 'warn':
-        return LogLevel.WARN;
-      case 'info':
-        return LogLevel.INFO;
-      case 'debug':
-        return LogLevel.DEBUG;
-      default:
-        return LogLevel.INFO;
-    }
   }
 
   /**
@@ -279,10 +204,6 @@ export class ConfigMigrator {
    * Cleanup old backups
    */
   public async cleanupOldBackups(): Promise<void> {
-    if (!this.context) {
-      return;
-    }
-
     const storageUri = this.context.globalStorageUri;
     let files: [string, vscode.FileType][];
     try {
@@ -292,7 +213,12 @@ export class ConfigMigrator {
     }
 
     const backups = files
-      .filter(([name, type]) => type === vscode.FileType.File && name.startsWith('config-backup-') && name.endsWith('.json'))
+      .filter(
+        ([name, type]) =>
+          type === vscode.FileType.File &&
+          name.startsWith('config-backup-') &&
+          name.endsWith('.json'),
+      )
       .sort((a, b) => b[0].localeCompare(a[0]));
 
     const toDelete = backups.slice(3);

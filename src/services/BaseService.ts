@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 
+import type { ILogger } from '../di';
 import { Logger } from '../utils/logger';
 
 /**
@@ -7,12 +8,12 @@ import { Logger } from '../utils/logger';
  * Implements singleton pattern and provides logging capabilities
  */
 export abstract class BaseService implements vscode.Disposable {
-  protected logger: Logger;
+  protected logger: ILogger;
   protected disposables: vscode.Disposable[] = [];
   protected initialized = false;
 
-  constructor() {
-    this.logger = Logger.getInstance();
+  constructor(logger?: ILogger) {
+    this.logger = logger ?? Logger.getInstance();
   }
 
   /**

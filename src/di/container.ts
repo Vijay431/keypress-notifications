@@ -78,31 +78,31 @@ export class DIContainer {
   private parent: DIContainer | undefined;
 
   /**
-	 * Create a new DI container
-	 *
-	 * @param parent - Optional parent container for fallback resolution
-	 */
+   * Create a new DI container
+   *
+   * @param parent - Optional parent container for fallback resolution
+   */
   constructor(parent?: DIContainer) {
     this.parent = parent;
   }
 
   /**
-	 * Register a singleton service
-	 *
-	 * @description
-	 * Registers a service with a factory function. The service will be
-	 * instantiated on first access and cached for subsequent requests.
-	 *
-	 * @template T - The service type
-	 * @param token - Symbol token identifying the service
-	 * @param factory - Factory function to create the service
-	 * @returns This container for chaining
-	 *
-	 * @example
-	 * ```typescript
-	 * container.registerSingleton<ILogger>(TYPES.Logger, () => new Logger());
-	 * ```
-	 */
+   * Register a singleton service
+   *
+   * @description
+   * Registers a service with a factory function. The service will be
+   * instantiated on first access and cached for subsequent requests.
+   *
+   * @template T - The service type
+   * @param token - Symbol token identifying the service
+   * @param factory - Factory function to create the service
+   * @returns This container for chaining
+   *
+   * @example
+   * ```typescript
+   * container.registerSingleton<ILogger>(TYPES.Logger, () => new Logger());
+   * ```
+   */
   registerSingleton<T>(token: symbol, factory: ServiceFactory<T>): this {
     this.services.set(token, {
       factory,
@@ -113,17 +113,17 @@ export class DIContainer {
   }
 
   /**
-	 * Register an instance directly
-	 *
-	 * @description
-	 * Registers an already-created service instance. Useful for testing
-	 * or when you need to share an existing instance.
-	 *
-	 * @template T - The service type
-	 * @param token - Symbol token identifying the service
-	 * @param instance - The service instance to register
-	 * @returns This container for chaining
-	 */
+   * Register an instance directly
+   *
+   * @description
+   * Registers an already-created service instance. Useful for testing
+   * or when you need to share an existing instance.
+   *
+   * @template T - The service type
+   * @param token - Symbol token identifying the service
+   * @param instance - The service instance to register
+   * @returns This container for chaining
+   */
   registerInstance<T>(token: symbol, instance: T): this {
     this.services.set(token, {
       factory: () => instance,
@@ -134,24 +134,24 @@ export class DIContainer {
   }
 
   /**
-	 * Resolve a service by token
-	 *
-	 * @description
-	 * Retrieves a service by its token. Creates the instance on first
-	 * access using the registered factory, then caches it.
-	 *
-	 * Falls back to parent container if service not found locally.
-	 *
-	 * @template T - The service type
-	 * @param token - Symbol token identifying the service
-	 * @returns The service instance
-	 * @throws Error if service not registered in this or parent containers
-	 *
-	 * @example
-	 * ```typescript
-	 * const logger = container.get<ILogger>(TYPES.Logger);
-	 * ```
-	 */
+   * Resolve a service by token
+   *
+   * @description
+   * Retrieves a service by its token. Creates the instance on first
+   * access using the registered factory, then caches it.
+   *
+   * Falls back to parent container if service not found locally.
+   *
+   * @template T - The service type
+   * @param token - Symbol token identifying the service
+   * @returns The service instance
+   * @throws Error if service not registered in this or parent containers
+   *
+   * @example
+   * ```typescript
+   * const logger = container.get<ILogger>(TYPES.Logger);
+   * ```
+   */
   get<T>(token: symbol): T {
     const descriptor = this.services.get(token);
 
@@ -172,39 +172,39 @@ export class DIContainer {
   }
 
   /**
-	 * Check if a service is registered
-	 *
-	 * @description
-	 * Returns true if the service is registered in this container
-	 * or any parent container.
-	 *
-	 * @param token - Symbol token identifying the service
-	 * @returns Whether the service is registered
-	 */
+   * Check if a service is registered
+   *
+   * @description
+   * Returns true if the service is registered in this container
+   * or any parent container.
+   *
+   * @param token - Symbol token identifying the service
+   * @returns Whether the service is registered
+   */
   has(token: symbol): boolean {
     return this.services.has(token) || (this.parent?.has(token) ?? false);
   }
 
   /**
-	 * Clear all registered services
-	 *
-	 * @description
-	 * Removes all service registrations from this container.
-	 * Does not affect parent containers.
-	 */
+   * Clear all registered services
+   *
+   * @description
+   * Removes all service registrations from this container.
+   * Does not affect parent containers.
+   */
   clear(): void {
     this.services.clear();
   }
 
   /**
-	 * Create a child container
-	 *
-	 * @description
-	 * Creates a new container with this container as parent.
-	 * Services registered in the child take precedence over parent services.
-	 *
-	 * @returns A new child container
-	 */
+   * Create a child container
+   *
+   * @description
+   * Creates a new container with this container as parent.
+   * Services registered in the child take precedence over parent services.
+   *
+   * @returns A new child container
+   */
   createChild(): DIContainer {
     return new DIContainer(this);
   }
@@ -252,13 +252,10 @@ export async function initializeContainer(context: {
   });
 
   // Register ConfigurationService (depends on Logger)
-  container.registerSingleton<IConfigurationService>(
-    TYPES.ConfigurationService,
-    () => {
-      const logger = container.get<ILogger>(TYPES.Logger);
-      return ConfigurationService.create(logger);
-    },
-  );
+  container.registerSingleton<IConfigurationService>(TYPES.ConfigurationService, () => {
+    const logger = container.get<ILogger>(TYPES.Logger);
+    return ConfigurationService.create(logger);
+  });
 
   // Register AccessibilityService (depends on Logger)
   container.registerSingleton<IAccessibilityService>(TYPES.AccessibilityService, () => {
@@ -277,7 +274,7 @@ export async function initializeContainer(context: {
 
   // Register Cache utility
   const { Cache } = await import('../utils/cache');
-  container.registerSingleton<ICache<any>>(TYPES.Cache, () => new Cache());
+  container.registerSingleton<ICache<unknown>>(TYPES.Cache, () => new Cache());
 
   // Register MetricsCollector
   const { MetricsCollector } = await import('../utils/metrics');
