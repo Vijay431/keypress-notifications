@@ -129,7 +129,7 @@ jobs:
 
           # Check for duplicate dependencies (count removed packages from dedupe)
           DEDUPE_OUTPUT=$(npm dedupe --dry-run 2>&1 || true)
-          DUPLICATES=$(echo "$DEDUPE_OUTPUT" | grep -c "^remove " || echo "0")
+          DUPLICATES=$(printf '%s\n' "$DEDUPE_OUTPUT" | awk '/^remove / {count++} END {print count+0}')
           echo "duplicates=$DUPLICATES" >> $GITHUB_OUTPUT
 
           # Check for outdated packages

@@ -35,7 +35,6 @@ updates:
     rebase-strategy: disabled
     pull-request-branch-name:
       separator: /
-      prefix: dependabot
   - package-ecosystem: github-actions
     directory: /
     schedule:
@@ -57,7 +56,6 @@ updates:
     rebase-strategy: disabled
     pull-request-branch-name:
       separator: /
-      prefix: dependabot
     commit-message:
       prefix: chore(deps-ga)
       include: scope
