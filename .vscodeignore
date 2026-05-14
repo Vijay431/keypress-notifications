@@ -1,21 +1,34 @@
 # Directories
 .claude/
+.code-review-graph/
+.devcontainer/
 .github/
+.husky/
 .vscode/
 .vscode-test/
+.worktrees/
 blogs/
 docs/
 node_modules/
 scripts/
 src/
 test/
+dist/meta.json
+dist/src/
+dist/test/
 
 # Files
 .editorconfig
+.all-contributorsrc
+AGENTS.md
+TODO.md
 .gitignore
 .mcp.json
 .prettier*
 eslint*
+package-lock.json
+plan.md
+*.vsix
 .vscode-test.mjs
 .vscodeignore
 CLAUDE.md
