@@ -30,6 +30,15 @@ temp/
 *.tmp
 *.temp
 
+# CI-generated reports
+eslint-results.json
+typescript-results.txt
+format-results.txt
+outdated.json
+deps-tree.txt
+bundle-analysis.txt
+vsix-contents/
+
 # Platform & IDE files
 .DS_Store
 Thumbs.db
