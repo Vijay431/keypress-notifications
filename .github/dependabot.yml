@@ -20,7 +20,6 @@ updates:
     allow:
       - dependency-type: direct
     ignore:
-      - dependency-name: eslint
       - dependency-name: typescript
       - dependency-name: esbuild
     groups:
@@ -67,9 +66,3 @@ updates:
       - ci-cd
       - github-actions
     open-pull-requests-limit: 5
-    ignore:
-      - dependency-name: actions/checkout
-      - dependency-name: actions/setup-node
-      - dependency-name: actions/upload-artifact
-      - dependency-name: actions/cache
-      - dependency-name: actions/download-artifact

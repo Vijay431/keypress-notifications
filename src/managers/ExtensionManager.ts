@@ -331,7 +331,7 @@ export class ExtensionManager implements IExtensionManager {
 
     this.disposables = [];
 
-    // Note: Services are disposed by DI container
+    // Note: Services are disposed via context.subscriptions during extension deactivation.
     // We don't dispose them here to avoid double-disposal
   }
 

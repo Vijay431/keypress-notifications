@@ -173,6 +173,13 @@ export class ConfigMigrator {
   }
 
   /**
+   * Migrate to the latest configuration version.
+   */
+  public async migrateToLatest(): Promise<MigrationResult> {
+    return this.migrate();
+  }
+
+  /**
    * Migrate V1 config to V2 format
    */
   private migrateToV2(v1Config: V1Config): V2Config {
