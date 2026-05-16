@@ -4,17 +4,14 @@
 
 **🎯 Get instant visual feedback when you execute multi-key combinations in VS Code.**
 
-[![CI](https://github.com/Vijay431/keypress-notifications/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/Vijay431/keypress-notifications/actions/workflows/main.yml)
-[![Version](https://img.shields.io/visual-studio-marketplace/v/VijayGangatharan.keypress-notifications?style=flat-square&logo=visual-studio-code&label=marketplace)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/VijayGangatharan.keypress-notifications?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/VijayGangatharan.keypress-notifications?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
-[![codecov](https://codecov.io/gh/Vijay431/keypress-notifications/branch/master/graph/badge.svg)](https://codecov.io/gh/Vijay431/keypress-notifications)
-[![VS Code](https://img.shields.io/badge/VS%20Code-1.108.1+-blue.svg?style=flat-square&logo=visual-studio-code)](https://code.visualstudio.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+[CI](https://github.com/Vijay431/keypress-notifications/actions/workflows/main.yml) •
+[Marketplace](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications) •
+[Codecov](https://codecov.io/gh/Vijay431/keypress-notifications) •
+[VS Code 1.108.1+](https://code.visualstudio.com/) • [MIT License](LICENSE)
 
 [🐛 Report Bug](https://github.com/Vijay431/keypress-notifications/issues/new?template=bug_report.yml) • [💡 Request Feature](https://github.com/Vijay431/keypress-notifications/issues/new?template=feature_request.yml) • [💬 Discussions](https://github.com/Vijay431/keypress-notifications/discussions)
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Vijay431/keypress-notifications)
+[Open in GitHub Codespaces](https://codespaces.new/Vijay431/keypress-notifications)
 
 </div>
 
@@ -128,7 +125,7 @@ npm test        # Run E2E tests
 
 Or open in GitHub Codespaces for a zero-config development environment:
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Vijay431/keypress-notifications)
+[Open in GitHub Codespaces](https://codespaces.new/Vijay431/keypress-notifications)
 
 ### Available Commands
 

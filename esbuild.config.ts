@@ -52,6 +52,8 @@ const createConfig = (isProduction = false): esbuild.BuildOptions => ({
  * @category Build Operations
  */
 async function buildLazyServices(isProduction: boolean): Promise<void> {
+  let hadFailures = false;
+
   if (lazyServices.length === 0) {
     console.log('ℹ️  No lazy services configured');
     return;
@@ -95,6 +97,7 @@ async function buildLazyServices(isProduction: boolean): Promise<void> {
       }
     } catch (error) {
       console.error(`❌ Failed to build lazy service ${serviceName}:`, error);
+      hadFailures = true;
     }
   }
 
@@ -109,6 +112,10 @@ async function buildLazyServices(isProduction: boolean): Promise<void> {
       .reduce((a, b) => a + b, 0)
       .toFixed(2);
     console.log(`   Total: ${totalKB} KB`);
+  }
+
+  if (hadFailures) {
+    throw new Error('One or more lazy services failed to build');
   }
 }
 

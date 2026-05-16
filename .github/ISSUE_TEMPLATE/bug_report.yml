@@ -1,7 +1,7 @@
 name: Bug Report
 description: File a bug report to help us improve Keypress Notifications
-title: "[Bug]: "
-labels: ["bug", "needs-triage"]
+title: '[Bug]: '
+labels: ['bug', 'needs-triage']
 body:
   - type: markdown
     attributes:
@@ -13,7 +13,7 @@ body:
     attributes:
       label: Extension Version
       description: What version of Keypress Notifications are you using?
-      placeholder: "e.g. 2.0.0"
+      placeholder: 'e.g. 2.0.0'
     validations:
       required: true
 
@@ -22,7 +22,7 @@ body:
     attributes:
       label: VS Code Version
       description: What version of VS Code are you running? (Help → About)
-      placeholder: "e.g. 1.108.1"
+      placeholder: 'e.g. 1.108.1'
     validations:
       required: true
 

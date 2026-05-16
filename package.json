@@ -58,6 +58,119 @@
         "category": "Keypress Notifications"
       }
     ],
+    "keybindings": [
+      {
+        "command": "keypress-notifications.proxy.copy",
+        "key": "ctrl+c",
+        "mac": "cmd+c",
+        "when": "editorTextFocus && keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.cut",
+        "key": "ctrl+x",
+        "mac": "cmd+x",
+        "when": "editorTextFocus && keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.paste",
+        "key": "ctrl+v",
+        "mac": "cmd+v",
+        "when": "editorTextFocus && keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.commentLine",
+        "key": "ctrl+/",
+        "mac": "cmd+/",
+        "when": "editorTextFocus && keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.addSelectionToNextFindMatch",
+        "key": "ctrl+d",
+        "mac": "cmd+d",
+        "when": "editorTextFocus && keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.formatDocument",
+        "key": "shift+alt+f",
+        "when": "editorTextFocus && keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.showCommands",
+        "key": "ctrl+shift+p",
+        "mac": "cmd+shift+p",
+        "when": "keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.quickOpen",
+        "key": "ctrl+p",
+        "mac": "cmd+p",
+        "when": "keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.findInFiles",
+        "key": "ctrl+shift+f",
+        "mac": "cmd+shift+f",
+        "when": "keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.gotoLine",
+        "key": "ctrl+g",
+        "when": "keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.save",
+        "key": "ctrl+s",
+        "mac": "cmd+s",
+        "when": "keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.saveAll",
+        "key": "ctrl+k ctrl+s",
+        "mac": "cmd+k cmd+s",
+        "when": "keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.newUntitledFile",
+        "key": "ctrl+n",
+        "mac": "cmd+n",
+        "when": "keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.openFile",
+        "key": "ctrl+o",
+        "mac": "cmd+o",
+        "when": "keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.toggleSidebarVisibility",
+        "key": "ctrl+b",
+        "mac": "cmd+b",
+        "when": "keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.togglePanel",
+        "key": "ctrl+j",
+        "mac": "cmd+j",
+        "when": "keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.toggleTerminal",
+        "key": "ctrl+`",
+        "when": "keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.closeActiveEditor",
+        "key": "ctrl+w",
+        "mac": "cmd+w",
+        "when": "keypress-notifications.enabled"
+      },
+      {
+        "command": "keypress-notifications.proxy.newWindow",
+        "key": "ctrl+shift+n",
+        "mac": "cmd+shift+n",
+        "when": "keypress-notifications.enabled"
+      }
+    ],
     "configuration": {
       "title": "Keypress Notifications",
       "properties": {
@@ -74,6 +187,9 @@
         },
         "keypress-notifications.excludedCommands": {
           "type": "array",
+          "items": {
+            "type": "string"
+          },
           "default": [],
           "description": "Commands to exclude from notifications"
         },
@@ -129,9 +245,9 @@
     "test:minimal": "npm test",
     "test:clean": "rm -rf .vscode-test/minimal-extension .vscode-test/user-data-isolated .vscode-test/user-data-dev",
     "test:quick": "npm run build && npm test",
-    "test:unit": "tsc -p ./tsconfig.test.json && mocha dist/test/unit/**/*.test.js",
-    "test:unit:watch": "tsc -p ./tsconfig.test.json && mocha --watch dist/test/unit/**/*.test.js",
-    "test:unit:coverage": "tsc -p ./tsconfig.test.json && c8 --reporter=lcov --reporter=text mocha dist/test/unit/**/*.test.js",
+    "test:unit": "tsc -p ./tsconfig.test.json && mocha --require ./dist/test/unit/setup.js dist/test/unit/**/*.test.js",
+    "test:unit:watch": "tsc -p ./tsconfig.test.json && mocha --require ./dist/test/unit/setup.js --watch dist/test/unit/**/*.test.js",
+    "test:unit:coverage": "tsc -p ./tsconfig.test.json && c8 --reporter=lcov --reporter=text mocha --require ./dist/test/unit/setup.js dist/test/unit/**/*.test.js",
     "create-minimal": "tsx scripts/create-minimal-extension.ts",
     "clean": "rm -rf dist out"
   },
@@ -141,7 +257,7 @@
     "@types/fs-extra": "^11.0.4",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.19.7",
-    "@types/vscode": "^1.102.0",
+    "@types/vscode": "^1.108.1",
     "@typescript-eslint/eslint-plugin": "^8.44.1",
     "@typescript-eslint/parser": "^8.44.1",
     "@vscode/test-cli": "^0.0.11",
