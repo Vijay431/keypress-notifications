@@ -187,6 +187,9 @@
         },
         "keypress-notifications.excludedCommands": {
           "type": "array",
+          "items": {
+            "type": "string"
+          },
           "default": [],
           "description": "Commands to exclude from notifications"
         },
