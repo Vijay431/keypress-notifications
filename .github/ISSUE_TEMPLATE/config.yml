@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: GitHub Discussions
+    url: https://github.com/Vijay431/keypress-notifications/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: Documentation
+    url: https://vijay431.github.io/keypress-notifications/
+    about: Read the official documentation
