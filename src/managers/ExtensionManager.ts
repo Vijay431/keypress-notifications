@@ -1,19 +1,23 @@
 import * as vscode from 'vscode';
 
-import { ConfigurationService } from '../services/ConfigurationService';
-import { KeypressService } from '../services/KeypressService';
-import { Logger } from '../utils/logger';
+import { container, TYPES } from '../di';
+import type { IConfigurationService } from '../di/interfaces/IConfigurationService';
+import type { IKeypressService } from '../di/interfaces/IKeypressService';
+import type { ILogger } from '../di/interfaces/ILogger';
+import { CommandRegistry } from './CommandRegistry';
 
 export class ExtensionManager {
-  private logger: Logger;
-  private configService: ConfigurationService;
-  private keypressService: KeypressService;
+  private logger: ILogger;
+  private configService: IConfigurationService;
+  private keypressService: IKeypressService;
+  private commandRegistry: CommandRegistry;
   private disposables: vscode.Disposable[] = [];
 
   constructor() {
-    this.logger = Logger.getInstance();
-    this.configService = ConfigurationService.getInstance();
-    this.keypressService = new KeypressService();
+    this.logger = container.get<ILogger>(TYPES.Logger);
+    this.configService = container.get<IConfigurationService>(TYPES.ConfigurationService);
+    this.keypressService = container.get<IKeypressService>(TYPES.KeypressService);
+    this.commandRegistry = new CommandRegistry();
   }
 
   public async activate(context: vscode.ExtensionContext): Promise<void> {
@@ -23,8 +27,8 @@ export class ExtensionManager {
       // Initialize components
       await this.initializeComponents();
 
-      // Register commands
-      await this.registerCommands();
+      // Register commands via CommandRegistry
+      this.commandRegistry.register(context);
 
       // Register disposables with VS Code context
       this.disposables.forEach((disposable) => {
@@ -70,33 +74,6 @@ export class ExtensionManager {
     }
   }
 
-  private async registerCommands(): Promise<void> {
-    // Register show output command
-    this.disposables.push(
-      vscode.commands.registerCommand('keypress-notifications.showOutputChannel', () => {
-        this.logger.show();
-        vscode.window.showInformationMessage('Keypress Notifications is active');
-      }),
-    );
-
-    // Register enable/disable commands
-    this.disposables.push(
-      vscode.commands.registerCommand('keypress-notifications.enable', async () => {
-        await this.configService.updateConfiguration('enabled', true);
-        vscode.window.showInformationMessage('Keypress Notifications extension enabled');
-      }),
-    );
-
-    this.disposables.push(
-      vscode.commands.registerCommand('keypress-notifications.disable', async () => {
-        await this.configService.updateConfiguration('enabled', false);
-        vscode.window.showInformationMessage('Keypress Notifications extension disabled');
-      }),
-    );
-
-    this.logger.debug('Commands registered successfully');
-  }
-
   private async handleConfigurationChanged(): Promise<void> {
     const isEnabled = this.configService.isEnabled();
     this.logger.debug(`Configuration changed - enabled: ${isEnabled}`);
@@ -117,11 +94,7 @@ export class ExtensionManager {
   private async updateEnabledContext(): Promise<void> {
     const isEnabled = this.configService.isEnabled();
 
-    await vscode.commands.executeCommand(
-      'setContext',
-      'keypress-notifications.enabled',
-      isEnabled,
-    );
+    await vscode.commands.executeCommand('setContext', 'keypress-notifications.enabled', isEnabled);
 
     this.logger.debug(`Context variables updated: enabled = ${isEnabled}`);
   }
@@ -145,20 +118,18 @@ export class ExtensionManager {
 
     this.disposables = [];
 
-    // Dispose services
-    this.keypressService.dispose();
-    this.configService.dispose();
+    // Dispose command registry
+    this.commandRegistry.dispose();
 
-    // Dispose logger last
-    this.logger.dispose();
+    // Services are disposed via context.subscriptions (registered in container)
   }
 
   // Public API for testing or external access
-  public getConfigurationService(): ConfigurationService {
+  public getConfigurationService(): IConfigurationService {
     return this.configService;
   }
 
-  public getKeypressService(): KeypressService {
+  public getKeypressService(): IKeypressService {
     return this.keypressService;
   }
 
