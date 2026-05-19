@@ -116,6 +116,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "validate:lockfile": "pnpm install --frozen-lockfile --dry-run",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:unit:coverage": "vitest run --coverage",
     "test": "pnpm run clean && pnpm run build && pnpm run create-minimal && tsc -p ./tsconfig.test.json && xvfb-run -a node ./dist/test/e2e/runE2ETest.js",
     "test:full": "pnpm run clean && pnpm run build && tsc -p ./tsconfig.test.json && SKIP_OPTIMIZATION=true xvfb-run -a node ./dist/test/e2e/runE2ETest.js",
     "test:quick": "pnpm run build && pnpm test",
@@ -173,6 +176,7 @@
     "@types/vscode": "^1.102.0",
     "@typescript-eslint/eslint-plugin": "^8.59.3",
     "@typescript-eslint/parser": "^8.59.3",
+    "@vitest/coverage-v8": "^4.1.6",
     "@vscode/test-electron": "2.5.2",
     "@vscode/vsce": "^3.9.1",
     "all-contributors-cli": "^6.26.1",
@@ -197,6 +201,7 @@
     "rimraf": "^6.0.1",
     "tsx": "^4.22.1",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.59.3"
+    "typescript-eslint": "^8.59.3",
+    "vitest": "^4.1.6"
   }
 }
