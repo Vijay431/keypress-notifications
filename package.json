@@ -32,7 +32,7 @@
     "Other"
   ],
   "engines": {
-    "node": ">=16.0.0 <25.0.0",
+    "node": ">=22",
     "vscode": "^1.102.0"
   },
   "activationEvents": [
@@ -102,50 +102,101 @@
   "scripts": {
     "vscode:prepublish": "tsx esbuild.config.ts --production",
     "build": "tsx esbuild.config.ts",
-    "compile": "tsx esbuild.config.ts",
     "watch": "tsx esbuild.config.ts --watch",
+    "clean": "rimraf dist out *.vsix",
+    "rebuild": "pnpm run clean && pnpm run build && vsce package",
     "package": "vsce package",
+    "package:openvsx": "ovsx package",
     "publish": "vsce publish",
+    "publish:openvsx": "ovsx publish",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
+    "lint-staged": "lint-staged",
     "check-types": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "validate:lockfile": "npm ci --dry-run",
-    "test": "rm -rf dist && npm run build && npm run create-minimal && tsc -p ./tsconfig.test.json && node ./dist/test/e2e/runE2ETest.js",
-    "test:full": "rm -rf dist && npm run build && tsc -p ./tsconfig.test.json && SKIP_OPTIMIZATION=true node ./dist/test/e2e/runE2ETest.js",
-    "test:minimal": "npm test",
-    "test:clean": "rm -rf .vscode-test/minimal-extension .vscode-test/user-data-isolated .vscode-test/user-data-dev",
-    "test:quick": "npm run build && npm test",
+    "validate:lockfile": "pnpm install --frozen-lockfile --dry-run",
+    "test": "pnpm run clean && pnpm run build && pnpm run create-minimal && tsc -p ./tsconfig.test.json && xvfb-run -a node ./dist/test/e2e/runE2ETest.js",
+    "test:full": "pnpm run clean && pnpm run build && tsc -p ./tsconfig.test.json && SKIP_OPTIMIZATION=true xvfb-run -a node ./dist/test/e2e/runE2ETest.js",
+    "test:quick": "pnpm run build && pnpm test",
+    "test:clean": "rimraf .vscode-test/minimal-extension .vscode-test/user-data-isolated .vscode-test/user-data-dev",
     "create-minimal": "tsx scripts/create-minimal-extension.ts",
-    "clean": "rm -rf dist out"
+    "docs:serve": "cd docs && bundle exec jekyll serve --baseurl ''",
+    "docs:live": "cd docs && bundle exec jekyll serve --baseurl '' --livereload",
+    "system:verify": "concurrently \"husky\" \"cd docs && bundle config set --local path vendor/bundle && bundle install\""
+  },
+  "prettier": {
+    "printWidth": 100,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "quoteProps": "as-needed",
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "always",
+    "endOfLine": "lf",
+    "proseWrap": "preserve",
+    "htmlWhitespaceSensitivity": "css",
+    "embeddedLanguageFormatting": "auto"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "eslint --no-cache --fix --quiet",
+      "prettier --write"
+    ],
+    "scripts/**/*.{ts,tsx}": [
+      "eslint --no-cache --fix --quiet",
+      "prettier --write"
+    ],
+    "*.{json,yaml,yml}": [
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.0",
+    "@commitlint/cli": "^21.0.1",
+    "@commitlint/config-conventional": "^21.0.1",
+    "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.2.2",
     "@types/fs-extra": "^11.0.4",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "^16.18.126",
+    "@types/mocha": "10.0.10",
+    "@types/node": "^22.0.0",
     "@types/vscode": "^1.102.0",
-    "@typescript-eslint/eslint-plugin": "^8.44.1",
-    "@typescript-eslint/parser": "^8.44.1",
-    "@vscode/test-cli": "^0.0.11",
-    "@vscode/test-electron": "^2.5.2",
-    "@vscode/vsce": "^3.6.1",
-    "esbuild": "^0.25.8",
-    "eslint": "^9.31.0",
+    "@typescript-eslint/eslint-plugin": "^8.59.3",
+    "@typescript-eslint/parser": "^8.59.3",
+    "@vscode/test-electron": "2.5.2",
+    "@vscode/vsce": "^3.9.1",
+    "all-contributors-cli": "^6.26.1",
+    "concurrently": "^9.1.2",
+    "esbuild": "^0.28.0",
+    "eslint": "^10.4.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-mocha": "^11.1.0",
-    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-n": "^18.0.1",
+    "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-promise": "^7.2.1",
-    "eslint-plugin-security": "^3.0.1",
+    "eslint-plugin-security": "^4.0.0",
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.3.0",
-    "mocha": "^11.7.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "mocha": "11.7.5",
+    "ovsx": "^0.10.12",
     "picocolors": "^1.1.1",
-    "prettier": "^3.6.2",
-    "tsx": "^4.19.2",
+    "prettier": "^3.8.3",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.22.1",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.38.0"
+    "typescript-eslint": "^8.59.3"
   }
 }

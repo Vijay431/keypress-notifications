@@ -243,14 +243,13 @@ export default tseslint.config(
     rules: {
       // Mocha-specific rules
       'mocha/no-exclusive-tests': 'error',
-      'mocha/no-skipped-tests': 'warn',
       'mocha/no-pending-tests': 'warn',
-      'mocha/no-async-describe': 'error',
+      'mocha/no-async-suite': 'error',
       'mocha/no-synchronous-tests': 'off',
       'mocha/no-global-tests': 'error',
       'mocha/no-return-and-callback': 'error',
-      'mocha/valid-test-description': 'warn',
-      'mocha/valid-suite-description': 'warn',
+      'mocha/valid-test-title': 'warn',
+      'mocha/valid-suite-title': 'warn',
       'mocha/no-sibling-hooks': 'error',
       'mocha/no-mocha-arrows': 'error',
       'mocha/no-hooks-for-single-case': 'off',
