@@ -24,34 +24,29 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Cache node_modules
-        id: cache-node-modules
-        uses: actions/cache@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
+          run_install: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install Dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Validate Package Lock
-        run: npm run validate:lockfile
+        run: pnpm run validate:lockfile
 
       # TypeScript Analysis
       - name: TypeScript Strict Mode Check
         id: typescript
         run: |
           echo "Running TypeScript type checking..."
-          npm run check-types > typescript-results.txt 2>&1 || true
+          pnpm run check-types > typescript-results.txt 2>&1 || true
 
           if [ $? -eq 0 ]; then
             echo "status=✅ Pass" >> $GITHUB_OUTPUT
@@ -66,8 +61,8 @@ jobs:
         id: eslint
         run: |
           echo "Running ESLint with detailed reporting..."
-          npm run lint -- --format json --output-file eslint-results.json || true
-          npm run lint || true
+          pnpm run lint -- --format json --output-file eslint-results.json || true
+          pnpm run lint || true
 
           if [ -f eslint-results.json ]; then
             ERROR_COUNT=$(jq '[.[] | .errorCount] | add // 0' eslint-results.json)
@@ -88,7 +83,7 @@ jobs:
         id: prettier
         run: |
           echo "Checking code formatting..."
-          npm run format:check > format-results.txt 2>&1 || true
+          pnpm run format:check > format-results.txt 2>&1 || true
 
           if [ $? -eq 0 ]; then
             echo "status=✅ Pass" >> $GITHUB_OUTPUT
@@ -105,27 +100,17 @@ jobs:
         id: dependencies
         run: |
           echo "Analyzing dependencies..."
-          npm list --depth=0 > deps-tree.txt 2>&1 || true
-
-          # Check for duplicate dependencies (count removed packages from dedupe)
-          DEDUPE_OUTPUT=$(npm dedupe --dry-run 2>&1 || true)
-          DUPLICATES=$(echo "$DEDUPE_OUTPUT" | grep -c "^remove " || echo "0")
-          echo "duplicates=$DUPLICATES" >> $GITHUB_OUTPUT
+          pnpm list --depth=0 > deps-tree.txt 2>&1 || true
 
           # Check for outdated packages
-          npm outdated --json 2>&1 > outdated.json || true
+          pnpm outdated --json 2>&1 > outdated.json || true
           if [ -s outdated.json ] && jq -e . outdated.json >/dev/null 2>&1; then
             OUTDATED=$(jq 'length' outdated.json 2>/dev/null || echo "0")
           else
             OUTDATED=0
           fi
           echo "outdated=$OUTDATED" >> $GITHUB_OUTPUT
-
-          if [ "$DUPLICATES" -gt 0 ]; then
-            echo "status=⚠️ Warning ($DUPLICATES duplicates, $OUTDATED outdated)" >> $GITHUB_OUTPUT
-          else
-            echo "status=✅ Pass ($OUTDATED outdated)" >> $GITHUB_OUTPUT
-          fi
+          echo "status=✅ Pass ($OUTDATED outdated)" >> $GITHUB_OUTPUT
 
       # Code complexity
       - name: Code Complexity Analysis
@@ -174,40 +159,35 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 20.x, 22.x, 24.x]
+        node-version: [18.x, 20.x, 22.x, 24.x]
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Cache node_modules
-        id: cache-node-modules
-        uses: actions/cache@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
+          run_install: false
 
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: 'pnpm'
 
       # Install xvfb for headless VS Code testing
       - name: Install System Dependencies
         run: sudo apt-get install -y xvfb
 
-      - name: Install NPM Dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Build Extension
-        run: npm run build
+        run: pnpm run build
 
       - name: Run Extension Tests
-        run: xvfb-run --auto-servernum npm test
+        run: xvfb-run --auto-servernum pnpm test
 
       - name: Verify No Uncommitted Changes
         run: |
@@ -229,27 +209,22 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Cache node_modules
-        id: cache-node-modules
-        uses: actions/cache@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
+          run_install: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install Dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Package Extension
-        run: npm run package
+        run: pnpm run package
 
       - name: Analyze Bundle Size
         id: bundle
@@ -302,30 +277,25 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Cache node_modules
-        id: cache-node-modules
-        uses: actions/cache@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
+          run_install: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install Dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Package Extension
-        run: npm run package
+        run: pnpm run package
 
       - name: Publish to VS Code Marketplace
-        run: npm run publish
+        run: pnpm run publish
         env:
           VSCE_PAT: ${{ secrets.VS_MARKETPLACE_TOKEN }}
 
