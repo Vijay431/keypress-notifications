@@ -4,6 +4,4 @@ export { ShowOutputChannelCommand } from './ShowOutputChannelCommand';
 export { EnableCommand } from './EnableCommand';
 export { DisableCommand } from './DisableCommand';
 
-export type CommandHandlerFactory = () => {
-  execute: () => Promise<unknown>;
-};
+export type CommandHandlerFactory = () => ICommandHandler;
