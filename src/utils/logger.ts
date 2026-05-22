@@ -18,6 +18,10 @@ export class Logger implements ILogger {
     return this.instance;
   }
 
+  public static create(): Logger {
+    return new Logger();
+  }
+
   public setLogLevel(level: LogLevel): void {
     this.logLevel = level;
   }
