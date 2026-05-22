@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { ExtensionConfig } from '../types/extension';
+import { ExtensionConfig, LogLevel } from '../types/extension';
 import { Logger } from '../utils/logger';
 
 export class ConfigurationService implements vscode.Disposable {
@@ -31,10 +31,10 @@ export class ConfigurationService implements vscode.Disposable {
 
     return {
       enabled: config.get<boolean>('enabled', true),
-      logLevel: config.get<'error' | 'warn' | 'info' | 'debug'>('logLevel', 'info'),
       minimumKeys: config.get<number>('minimumKeys', 2),
       excludedCommands: config.get<string[]>('excludedCommands', []),
       showCommandName: config.get<boolean>('showCommandName', false),
+      logLevel: config.get<LogLevel>('logLevel', LogLevel.INFO),
     };
   }
 
@@ -54,7 +54,7 @@ export class ConfigurationService implements vscode.Disposable {
     return this.getConfiguration().showCommandName;
   }
 
-  public getLogLevel(): 'error' | 'warn' | 'info' | 'debug' {
+  public getLogLevel(): LogLevel {
     return this.getConfiguration().logLevel;
   }
 
