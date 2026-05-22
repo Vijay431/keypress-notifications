@@ -13,7 +13,7 @@ export class ExtensionManager {
   constructor() {
     this.logger = Logger.getInstance();
     this.configService = ConfigurationService.getInstance();
-    this.keypressService = new KeypressService();
+    this.keypressService = KeypressService.getInstance();
   }
 
   public async activate(context: vscode.ExtensionContext): Promise<void> {
@@ -53,7 +53,6 @@ export class ExtensionManager {
   private async initializeComponents(): Promise<void> {
     try {
       // Initialize services
-      await this.configService.initialize();
       await this.keypressService.initialize();
 
       // Listen for configuration changes to enable/disable extension

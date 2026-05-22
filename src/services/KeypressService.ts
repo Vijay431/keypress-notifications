@@ -1,29 +1,53 @@
 import * as vscode from 'vscode';
 
-import { BaseService } from './BaseService';
+import type { IAccessibilityService } from '../di/interfaces/IAccessibilityService';
+import type { IConfigurationService } from '../di/interfaces/IConfigurationService';
+import type { IKeypressService } from '../di/interfaces/IKeypressService';
+import type { ILogger } from '../di/interfaces/ILogger';
+import { Logger } from '../utils/logger';
+import { AccessibilityService } from './AccessibilityService';
 import { ConfigurationService } from './ConfigurationService';
 
 /**
  * KeypressService class that dynamically detects multi-key combinations
  * without hardcoding specific shortcuts. Shows notifications like "You've pressed Ctrl+C".
  */
-export class KeypressService extends BaseService {
+export class KeypressService implements IKeypressService {
+  private static instance: KeypressService | undefined;
   private lastActionTime = 0;
   private actionBuffer: string[] = [];
   private readonly MULTI_KEY_THRESHOLD = 150; // ms between keys to consider multi-key sequence
-  private configService: ConfigurationService;
   private enabled = true;
+  private readonly disposables: vscode.Disposable[] = [];
 
-  constructor() {
-    super();
-    this.configService = ConfigurationService.getInstance();
+  private constructor(
+    private readonly logger: ILogger,
+    private readonly configService: IConfigurationService,
+    private readonly accessibilityService: IAccessibilityService,
+  ) {}
+
+  /** @deprecated Use DI injection instead */
+  public static getInstance(): KeypressService {
+    KeypressService.instance ??= new KeypressService(
+      Logger.getInstance(),
+      ConfigurationService.getInstance(),
+      AccessibilityService.getInstance(),
+    );
+    return KeypressService.instance;
+  }
+
+  public static create(
+    logger: ILogger,
+    configService: IConfigurationService,
+    accessibilityService: IAccessibilityService,
+  ): KeypressService {
+    return new KeypressService(logger, configService, accessibilityService);
   }
 
   /**
    * Initialize the KeypressService and discover available VS Code commands
    */
-  public override async initialize(): Promise<void> {
-    await super.initialize();
+  public async initialize(): Promise<void> {
     this.logger.info('Initializing KeypressService');
     await this.discoverAndWrapCommands();
   }
@@ -31,8 +55,7 @@ export class KeypressService extends BaseService {
   /**
    * Enable keypress detection
    */
-  public override async enable(): Promise<void> {
-    await super.enable();
+  public async enable(): Promise<void> {
     this.enabled = true;
     this.logger.info('KeypressService enabled');
   }
@@ -40,8 +63,7 @@ export class KeypressService extends BaseService {
   /**
    * Disable keypress detection
    */
-  public override async disable(): Promise<void> {
-    await super.disable();
+  public async disable(): Promise<void> {
     this.enabled = false;
     this.logger.info('KeypressService disabled');
   }
@@ -53,21 +75,21 @@ export class KeypressService extends BaseService {
     const allCommands = await vscode.commands.getCommands();
 
     // Filter for common keyboard shortcut commands
-    const shortcutCommands = allCommands.filter(cmd =>
-      cmd.startsWith('editor.action.') ||
-      cmd.startsWith('workbench.action.') ||
-      cmd.includes('clipboard') ||
-      cmd.includes('save') ||
-      cmd.includes('format') ||
-      cmd.includes('comment'),
+    const shortcutCommands = allCommands.filter(
+      (cmd) =>
+        cmd.startsWith('editor.action.') ||
+        cmd.startsWith('workbench.action.') ||
+        cmd.includes('clipboard') ||
+        cmd.includes('save') ||
+        cmd.includes('format') ||
+        cmd.includes('comment'),
     );
 
     this.logger.debug(`Found ${shortcutCommands.length} shortcut commands to wrap`);
 
     // Create wrapper for each discovered command
-    shortcutCommands.forEach(originalCommand => {
-      const wrapperCommand =
-        `keypress-notifications.wrapper.${originalCommand.replace(/\./g, '_')}`;
+    shortcutCommands.forEach((originalCommand) => {
+      const wrapperCommand = `keypress-notifications.wrapper.${originalCommand.replace(/\./g, '_')}`;
 
       const disposable = vscode.commands.registerCommand(
         wrapperCommand,
@@ -77,9 +99,10 @@ export class KeypressService extends BaseService {
           }
           // Execute the original command
           await vscode.commands.executeCommand(originalCommand, ...args);
-        });
+        },
+      );
 
-      this.registerDisposable(disposable);
+      this.disposables.push(disposable);
     });
 
     this.logger.debug('Command wrappers registered successfully');
@@ -88,7 +111,7 @@ export class KeypressService extends BaseService {
   /**
    * Detect key press and show notification if multi-key combination
    */
-  detectKeyPress(commandId: string): void {
+  public detectKeyPress(commandId: string): void {
     const currentTime = Date.now();
     const timeSinceLastAction = currentTime - this.lastActionTime;
     const keyCombo = this.inferKeysFromCommand(commandId);
@@ -195,6 +218,7 @@ export class KeypressService extends BaseService {
       }
 
       vscode.window.showInformationMessage(message);
+      void this.accessibilityService.announce(message);
       this.actionBuffer = []; // Clear buffer after showing
 
       this.logger.debug(`Notification shown: ${message}`);
@@ -204,11 +228,22 @@ export class KeypressService extends BaseService {
   /**
    * Get current state for testing or debugging
    */
-  public getState() {
+  public getState(): { enabled: boolean; actionBufferLength: number; lastActionTime: number } {
     return {
       enabled: this.enabled,
       actionBufferLength: this.actionBuffer.length,
       lastActionTime: this.lastActionTime,
     };
+  }
+
+  public dispose(): void {
+    this.disposables.forEach((d) => {
+      try {
+        d.dispose();
+      } catch {
+        // ignore
+      }
+    });
+    this.disposables.length = 0;
   }
 }

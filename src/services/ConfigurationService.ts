@@ -1,34 +1,29 @@
 import * as vscode from 'vscode';
 
+import type { IConfigurationService } from '../di/interfaces/IConfigurationService';
+import type { ILogger } from '../di/interfaces/ILogger';
 import { ExtensionConfig, LogLevel } from '../types/extension';
 import { Logger } from '../utils/logger';
 
-export class ConfigurationService implements vscode.Disposable {
-  private static instance: ConfigurationService;
-  private logger: Logger;
+export class ConfigurationService implements IConfigurationService {
+  private static instance: ConfigurationService | undefined;
   private readonly configSection = 'keypress-notifications';
-  private disposables: vscode.Disposable[] = [];
-  private initialized = false;
+  private readonly disposables: vscode.Disposable[] = [];
 
-  private constructor() {
-    this.logger = Logger.getInstance();
-  }
+  private constructor(private readonly logger: ILogger) {}
 
+  /** @deprecated Use DI injection instead */
   public static getInstance(): ConfigurationService {
-    if (!this.instance) {
-      this.instance = new ConfigurationService();
-    }
-    return this.instance;
+    ConfigurationService.instance ??= new ConfigurationService(Logger.getInstance());
+    return ConfigurationService.instance;
   }
 
-  public async initialize(): Promise<void> {
-    this.logger.debug('Initializing ConfigurationService');
-    this.initialized = true;
+  public static create(logger: ILogger): ConfigurationService {
+    return new ConfigurationService(logger);
   }
 
   public getConfiguration(): ExtensionConfig {
     const config = vscode.workspace.getConfiguration(this.configSection);
-
     return {
       enabled: config.get<boolean>('enabled', true),
       minimumKeys: config.get<number>('minimumKeys', 2),
@@ -65,37 +60,24 @@ export class ConfigurationService implements vscode.Disposable {
         callback();
       }
     });
-
     this.disposables.push(disposable);
     return disposable;
   }
 
-  public async updateConfiguration<T>(
-    key: string,
-    value: T,
-    target?: vscode.ConfigurationTarget,
-  ): Promise<void> {
+  public async updateConfiguration<T>(key: string, value: T): Promise<void> {
     const config = vscode.workspace.getConfiguration(this.configSection);
-    await config.update(key, value, target);
+    await config.update(key, value, vscode.ConfigurationTarget.Global);
     this.logger.info(`Configuration updated: ${key} = ${JSON.stringify(value)}`);
   }
 
-  public isInitialized(): boolean {
-    return this.initialized;
-  }
-
   public dispose(): void {
-    this.logger.debug('Disposing ConfigurationService');
-
-    this.disposables.forEach((disposable) => {
+    this.disposables.forEach((d) => {
       try {
-        disposable.dispose();
-      } catch (error) {
-        this.logger.warn('Error disposing resource in ConfigurationService', error);
+        d.dispose();
+      } catch {
+        // ignore
       }
     });
-
-    this.disposables = [];
-    this.initialized = false;
+    this.disposables.length = 0;
   }
 }
