@@ -1,10 +1,11 @@
 import * as vscode from 'vscode';
 
-import type { IAccessibilityService } from '../di/interfaces/IAccessibilityService';
-import type { IConfigurationService } from '../di/interfaces/IConfigurationService';
-import type { IKeypressService } from '../di/interfaces/IKeypressService';
-import type { ILogger } from '../di/interfaces/ILogger';
+import  { type IAccessibilityService } from '../di/interfaces/IAccessibilityService';
+import  { type IConfigurationService } from '../di/interfaces/IConfigurationService';
+import  { type IKeypressService } from '../di/interfaces/IKeypressService';
+import  { type ILogger } from '../di/interfaces/ILogger';
 import { Logger } from '../utils/logger';
+
 import { AccessibilityService } from './AccessibilityService';
 import { ConfigurationService } from './ConfigurationService';
 

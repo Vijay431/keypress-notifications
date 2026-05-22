@@ -1,10 +1,12 @@
 import * as vscode from 'vscode';
 
-import type { IAccessibilityService, VerbosityLevel } from '../di/interfaces/IAccessibilityService';
-import type { ILogger } from '../di/interfaces/ILogger';
+import {
+  type IAccessibilityService,
+  type VerbosityLevel,
+} from '../di/interfaces/IAccessibilityService';
+import { type ILogger } from '../di/interfaces/ILogger';
 
-import type { ICommandHandler } from './ICommandHandler';
-import type { CommandResult } from './ICommandHandler';
+import { type CommandResult, type ICommandHandler } from './ICommandHandler';
 
 export type { CommandResult };
 

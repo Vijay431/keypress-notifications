@@ -1,4 +1,4 @@
-import type { ILogger } from '../types/extension';
+import  { type ILogger } from '../types/extension';
 
 type MigrationFn = (config: Record<string, unknown>) => Record<string, unknown>;
 

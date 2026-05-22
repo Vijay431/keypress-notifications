@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import type { CommandHandlerFactory } from '../commands';
+import  { type CommandHandlerFactory } from '../commands';
 
 export interface CommandMetadata {
   id: string;

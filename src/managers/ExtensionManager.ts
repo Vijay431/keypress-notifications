@@ -1,15 +1,16 @@
 import * as vscode from 'vscode';
 
-import { getService, TYPES } from '../di';
-import type { IAccessibilityService } from '../di/interfaces/IAccessibilityService';
-import type { IConfigurationService } from '../di/interfaces/IConfigurationService';
-import type { IKeypressService } from '../di/interfaces/IKeypressService';
-import type { ILogger } from '../di/interfaces/ILogger';
 import { DisableCommand } from '../commands/DisableCommand';
 import { EnableCommand } from '../commands/EnableCommand';
 import { ShowOutputChannelCommand } from '../commands/ShowOutputChannelCommand';
+import { getService, TYPES } from '../di';
+import  { type IAccessibilityService } from '../di/interfaces/IAccessibilityService';
+import  { type IConfigurationService } from '../di/interfaces/IConfigurationService';
+import  { type IKeypressService } from '../di/interfaces/IKeypressService';
+import  { type ILogger } from '../di/interfaces/ILogger';
 import { ConfigMigrator } from '../utils/config-migrator';
 import { ConfigValidator } from '../utils/config-validator';
+
 import { CommandRegistry } from './CommandRegistry';
 
 export class ExtensionManager {

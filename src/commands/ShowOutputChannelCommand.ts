@@ -1,9 +1,10 @@
-import type { IAccessibilityService } from '../di/interfaces/IAccessibilityService';
-import type { IConfigurationService } from '../di/interfaces/IConfigurationService';
-import type { ILogger } from '../di/interfaces/ILogger';
+import  { type IAccessibilityService } from '../di/interfaces/IAccessibilityService';
+import  { type IConfigurationService } from '../di/interfaces/IConfigurationService';
+import  { type ILogger } from '../di/interfaces/ILogger';
 import { Logger } from '../utils/logger';
 
-import { BaseCommandHandler, type CommandResult } from './BaseCommandHandler';
+import { BaseCommandHandler  } from './BaseCommandHandler';
+import  {type CommandResult} from './BaseCommandHandler';
 
 export class ShowOutputChannelCommand extends BaseCommandHandler {
   constructor(

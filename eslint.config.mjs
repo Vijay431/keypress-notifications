@@ -164,7 +164,7 @@ export default tseslint.config(
       'import/no-self-import': 'off', // Can cause issues with TypeScript
       'import/no-cycle': 'off', // Can cause issues with TypeScript
       'import/no-useless-path-segments': 'error',
-      'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+      'import/consistent-type-specifier-style': ['error', 'prefer-inline'],
       'import/first': 'error',
       'import/newline-after-import': 'error',
       'import/no-duplicates': 'error',
@@ -225,32 +225,36 @@ export default tseslint.config(
     },
     languageOptions: {
       globals: {
+        // Shared: mocha + vitest
         describe: 'readonly',
         it: 'readonly',
         before: 'readonly',
         beforeEach: 'readonly',
         after: 'readonly',
         afterEach: 'readonly',
+        // Mocha-only
         suite: 'readonly',
         test: 'readonly',
         setup: 'readonly',
         teardown: 'readonly',
         suiteSetup: 'readonly',
         suiteTeardown: 'readonly',
+        // Vitest-only
+        expect: 'readonly',
+        vi: 'readonly',
         NodeJS: 'readonly',
       },
     },
     rules: {
       // Mocha-specific rules
       'mocha/no-exclusive-tests': 'error',
-      'mocha/no-skipped-tests': 'warn',
       'mocha/no-pending-tests': 'warn',
-      'mocha/no-async-describe': 'error',
+      'mocha/no-async-suite': 'error',
       'mocha/no-synchronous-tests': 'off',
       'mocha/no-global-tests': 'error',
       'mocha/no-return-and-callback': 'error',
-      'mocha/valid-test-description': 'warn',
-      'mocha/valid-suite-description': 'warn',
+      'mocha/valid-test-title': 'warn',
+      'mocha/valid-suite-title': 'warn',
       'mocha/no-sibling-hooks': 'error',
       'mocha/no-mocha-arrows': 'error',
       'mocha/no-hooks-for-single-case': 'off',
