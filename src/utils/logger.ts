@@ -19,7 +19,7 @@ export class Logger implements ILogger {
   }
 
   public static create(): Logger {
-    return new Logger();
+    return Logger.getInstance();
   }
 
   public setLogLevel(level: LogLevel): void {

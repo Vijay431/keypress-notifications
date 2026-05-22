@@ -20,7 +20,7 @@ export class ConfigMigrator {
     config: Record<string, unknown>,
     logger: ILogger,
   ): Record<string, unknown> {
-    const storedVersion = (config['_configVersion'] as number | undefined) ?? 0;
+    const storedVersion = (config['__kn_migrationVersion'] as number | undefined) ?? 0;
 
     if (storedVersion >= ConfigMigrator.CURRENT_VERSION) {
       return config;
@@ -28,14 +28,15 @@ export class ConfigMigrator {
 
     let migrated = { ...config };
 
-    for (const migration of ConfigMigrator.migrations) {
+    const sortedMigrations = [...ConfigMigrator.migrations].sort((a, b) => a.version - b.version);
+    for (const migration of sortedMigrations) {
       if (storedVersion < migration.version) {
         logger.info(`Migrating config to version ${migration.version}: ${migration.description}`);
         migrated = migration.migrate(migrated);
       }
     }
 
-    migrated['_configVersion'] = ConfigMigrator.CURRENT_VERSION;
+    migrated['__kn_migrationVersion'] = ConfigMigrator.CURRENT_VERSION;
     return migrated;
   }
 

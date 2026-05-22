@@ -42,6 +42,7 @@ export class Cache<T> {
         },
         Math.min(this.config.defaultTTL, 60000),
       );
+      this.cleanupTimer.unref?.();
     }
   }
 
@@ -102,6 +103,7 @@ export class Cache<T> {
     }
     if (entry.expiresAt > 0 && Date.now() > entry.expiresAt) {
       this.cache.delete(key);
+      this.stats.expired++;
       return false;
     }
     return true;
@@ -182,19 +184,24 @@ export function memoize(
   ttl?: number,
   keyGenerator?: (...args: unknown[]) => string,
 ): MethodDecorator {
-  const cache = new Cache<unknown>(ttl !== undefined ? { defaultTTL: ttl } : {});
-
   return function (
-    _target: object,
-    propertyKey: string | symbol,
+    _target: unknown,
+    _propertyKey: string | symbol,
     descriptor: PropertyDescriptor,
-  ): PropertyDescriptor {
+  ) {
     const originalMethod = descriptor.value as (...args: unknown[]) => unknown;
+    const instanceCaches = new WeakMap<object, Cache<unknown>>();
+    const cacheConfig: Partial<CacheConfig> = ttl !== undefined ? { defaultTTL: ttl } : {};
 
-    descriptor.value = function (...args: unknown[]): unknown {
+    descriptor.value = function (this: object, ...args: unknown[]) {
+      if (!instanceCaches.has(this)) {
+        instanceCaches.set(this, new Cache<unknown>(cacheConfig));
+      }
+      const cache = instanceCaches.get(this)!;
+
       const cacheKey = keyGenerator
         ? keyGenerator(...args)
-        : `${String(propertyKey)}:${JSON.stringify(args)}`;
+        : `${_propertyKey.toString()}:${JSON.stringify(args)}`;
 
       const cached = cache.get(cacheKey);
       if (cached !== undefined) {
