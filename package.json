@@ -80,6 +80,12 @@
           "type": "boolean",
           "default": false,
           "description": "Whether to show the command name in notifications"
+        },
+        "keypress-notifications.logLevel": {
+          "type": "string",
+          "default": "info",
+          "enum": ["debug", "info", "warn", "error"],
+          "description": "Log level for Keypress Notifications extension"
         }
       }
     },
@@ -96,13 +102,11 @@
   "main": "./dist/extension.js",
   "vsce": {
     "baseImageUrl": "./logo.png",
-    "dependencies": true,
-    "yarn": false
+    "dependencies": true
   },
   "scripts": {
     "vscode:prepublish": "tsx esbuild.config.ts --production",
     "build": "tsx esbuild.config.ts",
-    "compile": "tsx esbuild.config.ts",
     "watch": "tsx esbuild.config.ts --watch",
     "package": "vsce package",
     "publish": "vsce publish",
@@ -111,17 +115,21 @@
     "check-types": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "validate:lockfile": "npm ci --dry-run",
-    "test": "rm -rf dist && npm run build && npm run create-minimal && tsc -p ./tsconfig.test.json && node ./dist/test/e2e/runE2ETest.js",
-    "test:full": "rm -rf dist && npm run build && tsc -p ./tsconfig.test.json && SKIP_OPTIMIZATION=true node ./dist/test/e2e/runE2ETest.js",
-    "test:minimal": "npm test",
+    "validate:lockfile": "pnpm install --frozen-lockfile --dry-run",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:unit:coverage": "vitest run --coverage",
+    "test": "rm -rf dist && pnpm run build && pnpm run create-minimal && tsc -p ./tsconfig.test.json && node ./dist/test/e2e/runE2ETest.js",
+    "test:full": "rm -rf dist && pnpm run build && tsc -p ./tsconfig.test.json && SKIP_OPTIMIZATION=true node ./dist/test/e2e/runE2ETest.js",
+    "test:minimal": "pnpm test",
     "test:clean": "rm -rf .vscode-test/minimal-extension .vscode-test/user-data-isolated .vscode-test/user-data-dev",
-    "test:quick": "npm run build && npm test",
+    "test:quick": "pnpm run build && pnpm test",
     "create-minimal": "tsx scripts/create-minimal-extension.ts",
     "clean": "rm -rf dist out"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
+    "@vitest/coverage-v8": "^3.2.4",
     "@stylistic/eslint-plugin": "^5.2.2",
     "@types/fs-extra": "^11.0.4",
     "@types/mocha": "^10.0.10",
@@ -146,6 +154,7 @@
     "prettier": "^3.6.2",
     "tsx": "^4.19.2",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.38.0"
+    "typescript-eslint": "^8.38.0",
+    "vitest": "^3.2.4"
   }
 }
