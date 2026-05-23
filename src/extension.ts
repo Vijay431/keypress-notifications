@@ -17,6 +17,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     vscode.window.showErrorMessage(
       'Keypress Notifications failed to activate. See output for details.',
     );
+    throw error;
   }
 }
 

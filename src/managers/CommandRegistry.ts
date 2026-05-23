@@ -11,13 +11,22 @@ export interface CommandMetadata {
 }
 
 export class CommandRegistry {
-  private readonly commands = new Map<string, { metadata: CommandMetadata; disposable: vscode.Disposable }>();
+  private readonly commands = new Map<
+    string,
+    { metadata: CommandMetadata; disposable: vscode.Disposable }
+  >();
 
   public registerCommand(metadata: CommandMetadata): this {
     const handler = metadata.handlerFactory();
     const disposable = vscode.commands.registerCommand(metadata.id, async () => {
       try {
-        await handler.execute();
+        const result = await handler.execute();
+        if (!result.success) {
+          const detail = result.error ? ` (${result.error})` : '';
+          vscode.window.showErrorMessage(
+            `Command '${metadata.title}' failed: ${result.message}${detail}`,
+          );
+        }
       } catch (error) {
         vscode.window.showErrorMessage(`Command '${metadata.title}' failed: ${String(error)}`);
       }

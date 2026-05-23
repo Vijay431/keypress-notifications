@@ -65,6 +65,7 @@ export const container = new DIContainer();
 export async function initializeContainer(context: {
   subscriptions: { dispose(): void }[];
 }): Promise<void> {
+  container.clear();
   // Dynamic imports to avoid circular dependencies
   const { Logger } = await import('../utils/logger');
   const { ConfigurationService } = await import('../services/ConfigurationService');

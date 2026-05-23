@@ -18,10 +18,21 @@ export class ExtensionManager {
   private commandRegistry: CommandRegistry | undefined;
 
   // Lazy getters that pull from DI container
-  private get logger(): ILogger { return getService<ILogger>(TYPES.Logger); }
-  private get configService(): IConfigurationService { return getService<IConfigurationService>(TYPES.ConfigurationService); }
-  private get keypressService(): IKeypressService { return getService<IKeypressService>(TYPES.KeypressService); }
-  private get accessibilityService(): IAccessibilityService { return getService<IAccessibilityService>(TYPES.AccessibilityService); }
+  private get logger(): ILogger {
+    return getService<ILogger>(TYPES.Logger);
+  }
+
+  private get configService(): IConfigurationService {
+    return getService<IConfigurationService>(TYPES.ConfigurationService);
+  }
+
+  private get keypressService(): IKeypressService {
+    return getService<IKeypressService>(TYPES.KeypressService);
+  }
+
+  private get accessibilityService(): IAccessibilityService {
+    return getService<IAccessibilityService>(TYPES.AccessibilityService);
+  }
 
   public async activate(context: vscode.ExtensionContext): Promise<void> {
     this.logger.info('Activating Keypress Notifications extension');
@@ -74,7 +85,9 @@ export class ExtensionManager {
       // Wire config changes
       this.disposables.push(
         this.configService.onConfigurationChanged(() => {
-          void this.handleConfigurationChanged();
+          void this.handleConfigurationChanged().catch((err) => {
+            this.logger.error('Failed to handle configuration change', err);
+          });
         }),
       );
 
