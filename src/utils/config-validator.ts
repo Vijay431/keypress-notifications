@@ -1,5 +1,4 @@
-import { ExtensionConfig, LogLevel } from '../types/extension';
-import  { type ILogger } from '../types/extension';
+import { type ExtensionConfig, type ILogger, LogLevel } from '../types/extension';
 
 export class ConfigValidator {
   public static validate(config: ExtensionConfig, logger: ILogger): ExtensionConfig {
@@ -12,7 +11,11 @@ export class ConfigValidator {
     }
 
     // minimumKeys: must be >= 1, default 2
-    if (typeof validated.minimumKeys !== 'number' || validated.minimumKeys < 1) {
+    if (
+      typeof validated.minimumKeys !== 'number' ||
+      !Number.isFinite(validated.minimumKeys) ||
+      validated.minimumKeys < 1
+    ) {
       logger.warn('Invalid config: minimumKeys must be >= 1, defaulting to 2');
       validated.minimumKeys = 2;
     } else {
