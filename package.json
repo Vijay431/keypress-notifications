@@ -102,9 +102,6 @@
   },
   "main": "./dist/extension.js",
   "packageManager": "pnpm@11.1.3",
-  "pnpm": {
-    "ignoredBuiltDependencies": ["keytar"]
-  },
   "vsce": {
     "baseImageUrl": "./logo.png",
     "dependencies": true
