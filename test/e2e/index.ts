@@ -13,7 +13,7 @@ export function run(): Promise<void> {
   const testsRoot = path.resolve(__dirname, '..');
 
   return new Promise((resolve, reject) => {
-    glob('**/**.test.js', { cwd: testsRoot })
+    glob('e2e/**/*.test.js', { cwd: testsRoot })
       .then((files) => {
         console.log(`📋 Found ${files.length} E2E test file(s):`);
 

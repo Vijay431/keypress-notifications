@@ -22,6 +22,9 @@ meta.json
 .DS_Store
 Thumbs.db
 
+# Local git worktrees
+.worktrees/
+
 CLAUDE.md
 .claude
 TODO.md

@@ -1,0 +1,10 @@
+# Patterns to exclude from PR commit-size checks.
+# One grep-compatible pattern per line. Blank lines and # comments are ignored.
+# pr-commit-size.yml uses these to filter git diff --numstat output before counting.
+
+pnpm-lock\.yaml
+dist/
+out/
+docs/
+\.md$
+\.vsix$
