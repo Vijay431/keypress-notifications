@@ -64,9 +64,13 @@ export class ConfigurationService implements IConfigurationService {
     return disposable;
   }
 
-  public async updateConfiguration<T>(key: string, value: T): Promise<void> {
+  public async updateConfiguration<T>(
+    key: string,
+    value: T,
+    target: vscode.ConfigurationTarget = vscode.ConfigurationTarget.Global,
+  ): Promise<void> {
     const config = vscode.workspace.getConfiguration(this.configSection);
-    await config.update(key, value, vscode.ConfigurationTarget.Global);
+    await config.update(key, value, target);
     this.logger.info(`Configuration updated: ${key} = ${JSON.stringify(value)}`);
   }
 

@@ -10,5 +10,5 @@ export interface IConfigurationService {
   shouldShowCommandName(): boolean;
   getLogLevel(): LogLevel;
   onConfigurationChanged(callback: () => void): vscode.Disposable;
-  updateConfiguration<T>(key: string, value: T): Promise<void>;
+  updateConfiguration<T>(key: string, value: T, target?: vscode.ConfigurationTarget): Promise<void>;
 }

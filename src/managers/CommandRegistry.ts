@@ -12,7 +12,6 @@ export interface CommandMetadata {
 
 export class CommandRegistry {
   private readonly commands = new Map<string, { metadata: CommandMetadata; disposable: vscode.Disposable }>();
-  private readonly disposables: vscode.Disposable[] = [];
 
   public registerCommand(metadata: CommandMetadata): this {
     const handler = metadata.handlerFactory();
@@ -24,7 +23,6 @@ export class CommandRegistry {
       }
     });
     this.commands.set(metadata.id, { metadata, disposable });
-    this.disposables.push(disposable);
     return this;
   }
 
@@ -64,9 +62,5 @@ export class CommandRegistry {
       entry.disposable.dispose();
     }
     this.commands.clear();
-    for (const disposable of this.disposables) {
-      disposable.dispose();
-    }
-    this.disposables.length = 0;
   }
 }

@@ -1,10 +1,8 @@
 import  { type IAccessibilityService } from '../di/interfaces/IAccessibilityService';
 import  { type IConfigurationService } from '../di/interfaces/IConfigurationService';
 import  { type ILogger } from '../di/interfaces/ILogger';
-import { Logger } from '../utils/logger';
 
-import { BaseCommandHandler  } from './BaseCommandHandler';
-import  {type CommandResult} from './BaseCommandHandler';
+import { BaseCommandHandler, type CommandResult } from './BaseCommandHandler';
 
 export class ShowOutputChannelCommand extends BaseCommandHandler {
   constructor(
@@ -17,7 +15,7 @@ export class ShowOutputChannelCommand extends BaseCommandHandler {
 
   public async execute(): Promise<CommandResult> {
     try {
-      Logger.getInstance().show();
+      this.logger.show();
       const status = this.configService.isEnabled() ? 'enabled' : 'disabled';
       const message = `Keypress Notifications is active (${status})`;
       this.showInfo(message);
