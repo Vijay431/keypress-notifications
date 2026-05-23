@@ -41,13 +41,14 @@ jobs:
         with:
           ref: ${{ needs.setup.outputs.tag }}
 
+      - name: Install PNPM
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
-
-      - name: Install PNPM
-        uses: pnpm/action-setup@v4
+          cache: pnpm
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
@@ -151,13 +152,14 @@ jobs:
         with:
           name: vsix-package
 
+      - name: Install PNPM
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
-
-      - name: Install PNPM
-        uses: pnpm/action-setup@v4
+          cache: pnpm
 
       - name: Publish to VS Code Marketplace
         run: |
@@ -179,13 +181,14 @@ jobs:
         with:
           name: vsix-package
 
+      - name: Install PNPM
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
-
-      - name: Install PNPM
-        uses: pnpm/action-setup@v4
+          cache: pnpm
 
       - name: Publish to Open VSX Registry
         run: |
