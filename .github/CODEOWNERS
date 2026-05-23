@@ -10,6 +10,7 @@
 /.github/workflows/ci.yml @Vijay431              # main PR gate (lint, unit, E2E, build) — can be neutered
 /.github/workflows/release.yml @Vijay431         # release pipeline — can skip verification
 /.github/workflows/pr-commit-size.yml @Vijay431  # 10-file / 400-line cap enforcement
+/scripts/commit-size-excludes.txt @Vijay431      # commit-size bypass list — abuse vector
 /.husky/ @Vijay431                               # local pre-commit / commit-msg hooks
 
 # --- Release / publishing (bad change publishes broken build or leaks tokens) ---
