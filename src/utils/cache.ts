@@ -42,7 +42,7 @@ export class Cache<T> {
         },
         Math.min(this.config.defaultTTL, 60000),
       );
-      this.cleanupTimer.unref?.();
+      this.cleanupTimer.unref();
     }
   }
 
@@ -53,7 +53,7 @@ export class Cache<T> {
     }
 
     const now = Date.now();
-    const effectiveTTL = ttl !== undefined ? ttl : this.config.defaultTTL;
+    const effectiveTTL = ttl ?? this.config.defaultTTL;
     const expiresAt = effectiveTTL > 0 ? now + effectiveTTL : 0;
 
     this.cache.set(key, {
@@ -103,7 +103,9 @@ export class Cache<T> {
     }
     if (entry.expiresAt > 0 && Date.now() > entry.expiresAt) {
       this.cache.delete(key);
-      this.stats.expired++;
+      if (this.config.trackStats) {
+        this.stats.expired++;
+      }
       return false;
     }
     return true;
@@ -203,9 +205,8 @@ export function memoize(
         ? keyGenerator(...args)
         : `${_propertyKey.toString()}:${JSON.stringify(args)}`;
 
-      const cached = cache.get(cacheKey);
-      if (cached !== undefined) {
-        return cached;
+      if (cache.has(cacheKey)) {
+        return cache.get(cacheKey);
       }
 
       const result = originalMethod.apply(this, args);
