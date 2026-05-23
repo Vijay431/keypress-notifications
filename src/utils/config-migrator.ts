@@ -13,7 +13,7 @@ export class ConfigMigrator {
 
   private static readonly migrations: Migration[] = [
     // Future migrations added here
-    // Example: { version: 2, description: '...', migrate: (cfg) => ({...cfg, newField: defaultVal}) }
+    // Example: { version: 2, description: '...', migrate: (cfg) => ({ ...cfg }) }
   ];
 
   public static migrate(
@@ -30,7 +30,10 @@ export class ConfigMigrator {
 
     const sortedMigrations = [...ConfigMigrator.migrations].sort((a, b) => a.version - b.version);
     for (const migration of sortedMigrations) {
-      if (storedVersion < migration.version) {
+      const inRange =
+        storedVersion < migration.version &&
+        migration.version <= ConfigMigrator.CURRENT_VERSION;
+      if (inRange) {
         logger.info(`Migrating config to version ${migration.version}: ${migration.description}`);
         migrated = migration.migrate(migrated);
       }

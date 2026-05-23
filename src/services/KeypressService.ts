@@ -90,7 +90,8 @@ export class KeypressService implements IKeypressService {
 
     // Create wrapper for each discovered command
     shortcutCommands.forEach((originalCommand) => {
-      const wrapperCommand = `keypress-notifications.wrapper.${originalCommand.replace(/\./g, '_')}`;
+      const wrapperSuffix = originalCommand.replace(/\./g, '_');
+      const wrapperCommand = `keypress-notifications.wrapper.${wrapperSuffix}`;
 
       const disposable = vscode.commands.registerCommand(
         wrapperCommand,
@@ -175,6 +176,7 @@ export class KeypressService implements IKeypressService {
     };
 
     // Check if we have a direct mapping
+    // eslint-disable-next-line security/detect-object-injection
     const mapping = commandKeyMap[commandId];
     if (mapping) {
       return this.adjustForPlatform(mapping);
