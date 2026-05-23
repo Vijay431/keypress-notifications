@@ -106,12 +106,59 @@
     "baseImageUrl": "./logo.png",
     "dependencies": true
   },
+  "ovsx": {
+    "namespace": "VijayGangatharan",
+    "baseImageUrl": "./logo.png",
+    "dependencies": true
+  },
+  "all-contributors": {
+    "projectName": "keypress-notifications",
+    "projectOwner": "Vijay431",
+    "repoType": "github",
+    "repoHost": "https://github.com",
+    "files": [
+      "README.md"
+    ],
+    "imageSize": 100,
+    "commit": false,
+    "commitType": "docs",
+    "contributorsPerLine": 7,
+    "contributors": [
+      {
+        "login": "Vijay431",
+        "name": "Vijay Gangatharan",
+        "avatar_url": "https://github.com/Vijay431.png",
+        "profile": "https://github.com/Vijay431",
+        "contributions": [
+          "code",
+          "doc",
+          "design",
+          "infra",
+          "maintenance"
+        ]
+      },
+      {
+        "login": "claude-anthropic",
+        "name": "Claude (Anthropic)",
+        "avatar_url": "https://avatars.githubusercontent.com/u/76263028",
+        "profile": "https://claude.ai",
+        "contributions": [
+          "code",
+          "doc",
+          "test",
+          "review"
+        ]
+      }
+    ]
+  },
   "scripts": {
     "vscode:prepublish": "tsx esbuild.config.ts --production",
     "build": "tsx esbuild.config.ts",
     "watch": "tsx esbuild.config.ts --watch",
     "package": "vsce package",
+    "package:openvsx": "ovsx package",
     "publish": "vsce publish",
+    "publish:openvsx": "ovsx publish",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "check-types": "tsc --noEmit",
@@ -149,9 +196,11 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^7.2.1",
     "eslint-plugin-security": "^3.0.1",
+    "all-contributors-cli": "^6.26.1",
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.3.0",
     "mocha": "^11.7.1",
+    "ovsx": "^0.10.12",
     "picocolors": "^1.1.1",
     "prettier": "^3.6.2",
     "tsx": "^4.19.2",
