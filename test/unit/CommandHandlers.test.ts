@@ -29,6 +29,30 @@ const makeConfig = (enabled = true) => ({
   dispose: vi.fn(),
 });
 
+describe('BaseCommandHandler protected logging methods', () => {
+  it('should delegate logDebug, logWarn, logError to logger', async () => {
+    const { BaseCommandHandler } = await import('../../src/commands/BaseCommandHandler');
+    const logger = makeLogger();
+    const a11y = makeA11y();
+
+    class TestCmd extends BaseCommandHandler {
+      constructor() { super('Test', logger, a11y); }
+      async execute() {
+        this.logDebug('dbg', { x: 1 });
+        this.logWarn('wrn');
+        this.logError('err', new Error('oops'));
+        return this.success('ok');
+      }
+    }
+
+    const result = await new TestCmd().execute();
+    expect(result.success).toBe(true);
+    expect(logger.debug).toHaveBeenCalledWith('[Test] dbg', { x: 1 });
+    expect(logger.warn).toHaveBeenCalledWith('[Test] wrn', undefined);
+    expect(logger.error).toHaveBeenCalledWith('[Test] err', expect.any(Error));
+  });
+});
+
 describe('EnableCommand', () => {
   beforeEach(() => {
     vi.clearAllMocks();
