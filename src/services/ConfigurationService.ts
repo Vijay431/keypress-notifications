@@ -5,6 +5,13 @@ import  { type ILogger } from '../di/interfaces/ILogger';
 import { ExtensionConfig, LogLevel } from '../types/extension';
 import { Logger } from '../utils/logger';
 
+const LOG_LEVEL_MAP: Readonly<Record<string, LogLevel>> = {
+  debug: LogLevel.DEBUG,
+  info: LogLevel.INFO,
+  warn: LogLevel.WARN,
+  error: LogLevel.ERROR,
+};
+
 export class ConfigurationService implements IConfigurationService {
   private static instance: ConfigurationService | undefined;
   private readonly configSection = 'keypress-notifications';
@@ -25,14 +32,8 @@ export class ConfigurationService implements IConfigurationService {
   public getConfiguration(): ExtensionConfig {
     const config = vscode.workspace.getConfiguration(this.configSection);
     const logLevelStr = config.get<string>('logLevel', 'info');
-    const logLevelMap: Record<string, LogLevel> = {
-      debug: LogLevel.DEBUG,
-      info: LogLevel.INFO,
-      warn: LogLevel.WARN,
-      error: LogLevel.ERROR,
-    };
     // eslint-disable-next-line security/detect-object-injection
-    const logLevel = logLevelMap[logLevelStr] ?? LogLevel.INFO;
+    const logLevel = LOG_LEVEL_MAP[logLevelStr] ?? LogLevel.INFO;
     return {
       enabled: config.get<boolean>('enabled', true),
       minimumKeys: config.get<number>('minimumKeys', 2),
