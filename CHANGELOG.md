@@ -1,5 +1,10 @@
 # 📝 Changelog
 
+## [Unreleased]
+
+### Added
+- Scheduled GitHub Actions cache cleanup removes caches not used for 7 days or more every 3 days at 08:00 IST.
+
 ## [2.0.0] - 2026-05-23
 
 ### Added

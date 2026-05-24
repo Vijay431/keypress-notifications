@@ -66,6 +66,8 @@ flowchart TD
 
 Do not commit secrets, local VS Code state, generated packages, coverage output, or build artifacts. Review `SECURITY.md` for vulnerability reporting. Configuration changes should update `package.json`, related types in `src/types/`, and tests together. Third-party tooling changes should keep `THIRDPARTY.md` current.
 
+CI and release workflows use GitHub Actions cache for pnpm package storage and `node_modules` warm starts. `.github/workflows/cache-cleanup.yml` runs every 3 days at 08:00 IST and removes cache entries not used for 7 days or more. Keep workflow cache docs aligned across README, CHANGELOG, CLAUDE.md, CONTRIBUTING.md, AGENTS.md, and `.github/copilot-instructions.md`.
+
 ## Assistant Conventions
 
 ### Communication

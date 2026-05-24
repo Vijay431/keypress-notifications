@@ -72,6 +72,8 @@ Open the Command Palette (`Ctrl+Shift+P`) and search for:
 
 The extension uses a dependency-injection container, a typed service layer, and has zero runtime dependencies. See the [architecture note in the source](src/) for details. Node.js 22+ is required for development.
 
+CI and release workflows use GitHub Actions cache for pnpm package storage and `node_modules` warm starts. A scheduled cache cleanup workflow runs every 3 days at 08:00 IST and removes cache entries that have not been used for 7 days or more.
+
 ---
 
 ## Issues & Support
