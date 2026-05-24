@@ -1,5 +1,35 @@
 # 📝 Changelog
 
+## [2.0.0] - 2026-05-23
+
+### Added
+- VS Code 1.111.0 engine target with @types/vscode ^1.111.0 and @types/node ^22
+- 19 contributes.keybindings entries — core notification feature now fires in production
+- ACM-aligned test harness: test/suite/ with test/runTests.ts (Mocha TDD via @vscode/test-electron)
+- Unit tests for AccessibilityService, Logger, CommandRegistry, ExtensionManager, ConfigMigrator
+- husky and lint-staged pre-commit hooks
+- .cursorignore, .coderabbit.yaml, tsconfig.eslint.json added
+- public/ directory placeholder
+
+### Fixed
+- Log-level configuration now correctly maps string setting to numeric LogLevel enum
+- Logger.setLogLevel() now called on activate and config change
+- KeypressService and ConfigurationService disposables now properly wired to context.subscriptions
+- Untracked setTimeout in detectKeyPress() now cleared on dispose
+- ConfigValidator no longer incorrectly resets logLevel to INFO on every activation
+- KeypressService wrapper registration bounded to 19 known commands (was hundreds via getCommands())
+
+### Removed
+- Dead code: Cache, memoize, IMetricCollector (unused utilities never wired in production)
+- Obsolete scripts: create-minimal, test:full, test:minimal, test:quick, test:clean, validate:lockfile
+- Unused devDependencies: fs-extra, picocolors, fast-glob
+
+### Security
+- pnpm workspace overrides added for serialize-javascript, diff, tmp, fast-uri, postcss, brace-expansion — reduces pnpm audit to 0 vulnerabilities
+
+---
+
+
 Updates and improvements to the Keypress Notifications VS Code extension.
 
 ---
