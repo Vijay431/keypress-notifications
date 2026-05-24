@@ -8,8 +8,6 @@ import  { type IAccessibilityService } from '../di/interfaces/IAccessibilityServ
 import  { type IConfigurationService } from '../di/interfaces/IConfigurationService';
 import  { type IKeypressService } from '../di/interfaces/IKeypressService';
 import  { type ILogger } from '../di/interfaces/ILogger';
-import { ConfigMigrator } from '../utils/config-migrator';
-import { ConfigValidator } from '../utils/config-validator';
 
 import { CommandRegistry } from './CommandRegistry';
 
@@ -38,19 +36,13 @@ export class ExtensionManager {
     this.logger.info('Activating Keypress Notifications extension');
 
     try {
-      // Validate and migrate config
-      const rawConfig = this.configService.getConfiguration();
-      const validatedConfig = ConfigValidator.validate(rawConfig, this.logger);
-      const migratedConfig = ConfigMigrator.migrate(
-        validatedConfig as unknown as Record<string, unknown>,
-        this.logger,
-      );
-      if (migratedConfig !== (validatedConfig as unknown)) {
-        this.logger.info('Config migration applied');
-      }
-
       // Initialize services
       await this.keypressService.initialize();
+
+      // Apply configured log level
+      const config = this.configService.getConfiguration();
+      const logSetter = this.logger as unknown as { setLogLevel?(level: number): void };
+      logSetter.setLogLevel?.(config.logLevel);
 
       // Build command registry
       this.commandRegistry = new CommandRegistry();
@@ -91,6 +83,14 @@ export class ExtensionManager {
         }),
       );
 
+      // Register service disposables
+      this.disposables.push({
+        dispose: () => this.keypressService.dispose(),
+      });
+      this.disposables.push({
+        dispose: () => (this.configService as unknown as { dispose(): void }).dispose(),
+      });
+
       // Push all disposables
       this.disposables.push({ dispose: () => this.commandRegistry?.dispose() });
       this.disposables.forEach(d => context.subscriptions.push(d));
@@ -114,6 +114,9 @@ export class ExtensionManager {
   private async handleConfigurationChanged(): Promise<void> {
     const isEnabled = this.configService.isEnabled();
     this.logger.debug(`Configuration changed — enabled: ${String(isEnabled)}`);
+    (this.logger as unknown as { setLogLevel?(level: number): void }).setLogLevel?.(
+      this.configService.getLogLevel(),
+    );
     await this.updateEnabledContext();
     if (isEnabled) {
       await this.keypressService.enable();

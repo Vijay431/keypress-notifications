@@ -24,12 +24,21 @@ export class ConfigurationService implements IConfigurationService {
 
   public getConfiguration(): ExtensionConfig {
     const config = vscode.workspace.getConfiguration(this.configSection);
+    const logLevelStr = config.get<string>('logLevel', 'info');
+    const logLevelMap: Record<string, LogLevel> = {
+      debug: LogLevel.DEBUG,
+      info: LogLevel.INFO,
+      warn: LogLevel.WARN,
+      error: LogLevel.ERROR,
+    };
+    // eslint-disable-next-line security/detect-object-injection
+    const logLevel = logLevelMap[logLevelStr] ?? LogLevel.INFO;
     return {
       enabled: config.get<boolean>('enabled', true),
       minimumKeys: config.get<number>('minimumKeys', 2),
       excludedCommands: config.get<string[]>('excludedCommands', []),
       showCommandName: config.get<boolean>('showCommandName', false),
-      logLevel: config.get<LogLevel>('logLevel', LogLevel.INFO),
+      logLevel,
     };
   }
 
