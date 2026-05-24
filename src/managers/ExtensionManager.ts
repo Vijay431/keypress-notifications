@@ -40,9 +40,7 @@ export class ExtensionManager {
       await this.keypressService.initialize();
 
       // Apply configured log level
-      const config = this.configService.getConfiguration();
-      const logSetter = this.logger as unknown as { setLogLevel?(level: number): void };
-      logSetter.setLogLevel?.(config.logLevel);
+      this.logger.setLogLevel(this.configService.getConfiguration().logLevel);
 
       // Build command registry
       this.commandRegistry = new CommandRegistry();
@@ -88,7 +86,7 @@ export class ExtensionManager {
         dispose: () => this.keypressService.dispose(),
       });
       this.disposables.push({
-        dispose: () => (this.configService as unknown as { dispose(): void }).dispose(),
+        dispose: () => this.configService.dispose(),
       });
 
       // Push all disposables
@@ -114,9 +112,7 @@ export class ExtensionManager {
   private async handleConfigurationChanged(): Promise<void> {
     const isEnabled = this.configService.isEnabled();
     this.logger.debug(`Configuration changed — enabled: ${String(isEnabled)}`);
-    (this.logger as unknown as { setLogLevel?(level: number): void }).setLogLevel?.(
-      this.configService.getLogLevel(),
-    );
+    this.logger.setLogLevel(this.configService.getLogLevel());
     await this.updateEnabledContext();
     if (isEnabled) {
       await this.keypressService.enable();
