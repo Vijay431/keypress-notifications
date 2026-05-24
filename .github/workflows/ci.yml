@@ -91,7 +91,7 @@ jobs:
         run: pnpm run build
 
       - name: Run E2E Tests
-        run: xvfb-run --auto-servernum pnpm test
+        run: pnpm run test:integration
 
   build:
     name: Build
