@@ -20,6 +20,29 @@ export class KeypressService implements IKeypressService {
   private readonly MULTI_KEY_THRESHOLD = 150; // ms between keys to consider multi-key sequence
   private enabled = true;
   private readonly disposables: vscode.Disposable[] = [];
+  private readonly pendingTimers = new Set<ReturnType<typeof setTimeout>>();
+
+  private readonly commandKeyMap: Record<string, string> = {
+    'editor.action.clipboardCopyAction': 'Ctrl+C',
+    'editor.action.clipboardCutAction': 'Ctrl+X',
+    'editor.action.clipboardPasteAction': 'Ctrl+V',
+    'workbench.action.showCommands': 'Ctrl+Shift+P',
+    'workbench.action.quickOpen': 'Ctrl+P',
+    'workbench.action.files.save': 'Ctrl+S',
+    'workbench.action.files.saveAll': 'Ctrl+K S',
+    'workbench.action.files.newUntitledFile': 'Ctrl+N',
+    'workbench.action.files.openFile': 'Ctrl+O',
+    'workbench.action.findInFiles': 'Ctrl+Shift+F',
+    'workbench.action.gotoLine': 'Ctrl+G',
+    'workbench.action.toggleSidebarVisibility': 'Ctrl+B',
+    'workbench.action.terminal.toggleTerminal': 'Ctrl+`',
+    'workbench.action.togglePanel': 'Ctrl+J',
+    'workbench.action.closeActiveEditor': 'Ctrl+W',
+    'workbench.action.newWindow': 'Ctrl+Shift+N',
+    'editor.action.formatDocument': 'Shift+Alt+F',
+    'editor.action.commentLine': 'Ctrl+/',
+    'editor.action.addSelectionToNextFindMatch': 'Ctrl+D',
+  };
 
   private constructor(
     private readonly logger: ILogger,
@@ -73,23 +96,12 @@ export class KeypressService implements IKeypressService {
    * Discover VS Code commands and create dynamic wrappers
    */
   private async discoverAndWrapCommands(): Promise<void> {
-    const allCommands = await vscode.commands.getCommands();
+    const knownCommands = Object.keys(this.commandKeyMap);
 
-    // Filter for common keyboard shortcut commands
-    const shortcutCommands = allCommands.filter(
-      (cmd) =>
-        cmd.startsWith('editor.action.') ||
-        cmd.startsWith('workbench.action.') ||
-        cmd.includes('clipboard') ||
-        cmd.includes('save') ||
-        cmd.includes('format') ||
-        cmd.includes('comment'),
-    );
+    this.logger.debug(`Registering wrappers for ${knownCommands.length} known shortcut commands`);
 
-    this.logger.debug(`Found ${shortcutCommands.length} shortcut commands to wrap`);
-
-    // Create wrapper for each discovered command
-    shortcutCommands.forEach((originalCommand) => {
+    // Create wrapper for each known command
+    knownCommands.forEach((originalCommand) => {
       const wrapperSuffix = originalCommand.replace(/\./g, '_');
       const wrapperCommand = `keypress-notifications.wrapper.${wrapperSuffix}`;
 
@@ -132,7 +144,11 @@ export class KeypressService implements IKeypressService {
       this.actionBuffer = [keyCombo];
       // Show notification for any key combination (2+ keys)
       if (this.isMultiKeyCombo(keyCombo)) {
-        setTimeout(() => this.showMultiKeyNotification(), 50); // Small delay to capture sequences
+        const timer = setTimeout(() => {
+          this.pendingTimers.delete(timer);
+          this.showMultiKeyNotification();
+        }, 50); // Small delay to capture sequences
+        this.pendingTimers.add(timer);
       }
     }
 
@@ -152,32 +168,9 @@ export class KeypressService implements IKeypressService {
    * Infer key combination from VS Code command name
    */
   private inferKeysFromCommand(commandId: string): string {
-    // Common command to key mappings
-    const commandKeyMap: Record<string, string> = {
-      'editor.action.clipboardCopyAction': 'Ctrl+C',
-      'editor.action.clipboardCutAction': 'Ctrl+X',
-      'editor.action.clipboardPasteAction': 'Ctrl+V',
-      'workbench.action.showCommands': 'Ctrl+Shift+P',
-      'workbench.action.quickOpen': 'Ctrl+P',
-      'workbench.action.files.save': 'Ctrl+S',
-      'workbench.action.files.saveAll': 'Ctrl+K S',
-      'workbench.action.files.newUntitledFile': 'Ctrl+N',
-      'workbench.action.files.openFile': 'Ctrl+O',
-      'workbench.action.findInFiles': 'Ctrl+Shift+F',
-      'workbench.action.gotoLine': 'Ctrl+G',
-      'workbench.action.toggleSidebarVisibility': 'Ctrl+B',
-      'workbench.action.terminal.toggleTerminal': 'Ctrl+`',
-      'workbench.action.togglePanel': 'Ctrl+J',
-      'workbench.action.closeActiveEditor': 'Ctrl+W',
-      'workbench.action.newWindow': 'Ctrl+Shift+N',
-      'editor.action.formatDocument': 'Shift+Alt+F',
-      'editor.action.commentLine': 'Ctrl+/',
-      'editor.action.addSelectionToNextFindMatch': 'Ctrl+D',
-    };
-
     // Check if we have a direct mapping
     // eslint-disable-next-line security/detect-object-injection
-    const mapping = commandKeyMap[commandId];
+    const mapping = this.commandKeyMap[commandId];
     if (mapping) {
       return this.adjustForPlatform(mapping);
     }
@@ -240,6 +233,8 @@ export class KeypressService implements IKeypressService {
   }
 
   public dispose(): void {
+    this.pendingTimers.forEach(clearTimeout);
+    this.pendingTimers.clear();
     this.disposables.forEach((d) => {
       try {
         d.dispose();

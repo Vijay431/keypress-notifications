@@ -1,23 +1,74 @@
-# Directories
-.claude/
-.github/
-.vscode/
-.vscode-test/
-blogs/
-docs/
-node_modules/
-scripts/
+# ============================================
+# Source & Build Directories
+# ============================================
 src/
 test/
+scripts/
+out-test/
+dist/src/
+dist/test/
+coverage/
 
-# Files
-.editorconfig
+# ============================================
+# Dependencies & Package Management
+# ============================================
+node_modules/
+pnpm-lock.yaml
+
+# ============================================
+# Development & CI/CD Configuration
+# ============================================
+.github/
+.husky/
 .gitignore
+.editorconfig
+.coderabbit.yaml
+.nvmrc
 .mcp.json
 .prettier*
 eslint*
-.vscode-test.mjs
-.vscodeignore
-CLAUDE.md
-esbuild*
 tsconfig*.json
+esbuild*
+vitest.config.ts
+tsconfig.test.json
+.lintstagedrc
+.devcontainer/
+.cursorignore
+.code-review-graph
+
+# ============================================
+# VS Code Configuration & Workspaces
+# ============================================
+.vscode/
+.vscode-test/
+.vscodeignore
+.worktrees/
+.auto-claude/
+.automaker/
+.claude/
+.sisyphus
+
+# ============================================
+# Build Artifacts & Logs
+# ============================================
+*.vsix
+debug.log
+
+# ============================================
+# Documentation & Content
+# ============================================
+blogs/
+docs/
+public/
+
+# ============================================
+# Project & Documentation Files
+# ============================================
+CLAUDE.md
+CHANGELOG_RELEASE.md
+TODO.md
+IMPLEMENTATION_SUMMARY.md
+opencode.json
+.auto-claude-security.json
+DEVELOPER.md
+AGENTS.md

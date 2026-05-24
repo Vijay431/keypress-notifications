@@ -1,163 +1,87 @@
-# ⌨️ Keypress Notifications for VS Code 🔔
+# Keypress Notifications
 
-<div align="center">
+[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/VijayGangatharan.keypress-notifications?label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
 
-**🎯 Get instant visual feedback when you execute multi-key combinations in VS Code.**
-
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg?style=flat-square&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
-[![VS Code](https://img.shields.io/badge/VS%20Code-1.102.0+-blue.svg?style=flat-square&logo=visual-studio-code)](https://code.visualstudio.com/)
-[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg?style=flat-square)](#)
-
-[🐛 Report Bug](https://github.com/Vijay431/keypress-notifications/issues) • [💡 Request Feature](https://github.com/Vijay431/keypress-notifications/issues)
-
-</div>
+A VS Code extension that shows a notification whenever you press one of the 19 most common keyboard shortcuts — handy for demos, pair programming, and learning new keybindings.
 
 ---
 
-## ✨ What This Extension Does
+## Features
 
-Simple and straightforward: this extension shows you notifications when you execute common multi-key combinations in VS Code. Perfect for when you want visual confirmation that your keybinding actually worked.
+### Shortcut notifications
 
-Great for:
+Every time you trigger one of the supported shortcuts, a VS Code information notification appears — e.g. **"You've pressed Ctrl+C"**.
 
-- 🧠 **Visual learners** who like immediate feedback
-- 🎓 **Teaching/learning** situations to demonstrate actions
-- 🐛 **Debugging** when you're not sure if a command executed
+Supported shortcuts:
 
-## 🎮 Features
+| Shortcut | Action |
+|---|---|
+| Ctrl+C | Copy |
+| Ctrl+X | Cut |
+| Ctrl+V | Paste |
+| Ctrl+S | Save |
+| Ctrl+Shift+P | Command Palette |
+| Ctrl+P | Quick Open |
+| Ctrl+Shift+F | Find in Files |
+| Ctrl+G | Go to Line |
+| Ctrl+B | Toggle Sidebar |
+| Ctrl+\` | Toggle Terminal |
+| Ctrl+J | Toggle Panel |
+| Ctrl+W | Close Editor |
+| Ctrl+Shift+N | New Window |
+| Ctrl+N | New File |
+| Ctrl+O | Open File |
+| Shift+Alt+F | Format Document |
+| Ctrl+/ | Toggle Line Comment |
+| Ctrl+D | Add Selection to Next Match |
+| Ctrl+K S | Save All |
 
-### ⌨️ Detected Commands
-
-The extension shows notifications for these common multi-key combinations:
-
-**Clipboard Operations:**
-
-- Copy (Ctrl+C), Cut (Ctrl+X), Paste (Ctrl+V)
-
-**Navigation & Search:**
-
-- Command Palette (Ctrl+Shift+P), Quick Open (Ctrl+P)
-- Find in Files (Ctrl+Shift+F), Go to Line (Ctrl+G)
-
-**View Operations:**
-
-- Toggle Sidebar (Ctrl+B), Toggle Terminal (Ctrl+`)
-- Toggle Panel (Ctrl+J)
-
-**File Operations:**
-
-- Save (Ctrl+S), Save All (Ctrl+K S)
-- New File (Ctrl+N), Open File (Ctrl+O)
-
-**Editor Operations:**
-
-- Format Document (Shift+Alt+F), Comment Line (Ctrl+/)
-- Add Selection to Next Match (Ctrl+D)
-
-### 🎛️ Commands
-
-Access via Command Palette (`Ctrl+Shift+P`):
-
-- **Keypress Notifications: Enable** - Enable notifications
-- **Keypress Notifications: Disable** - Disable notifications
-- **Keypress Notifications: Show Status** - Show status message
-
-### ⚙️ Configuration
-
-- Automatically enabled on VS Code startup
-- Configurable minimum key count (default: 2)
-- Simple enable/disable toggle
-
----
-
-## 🚀 Installation & Usage
-
-### Installation
-
-1. Open Extensions in VS Code (`Ctrl+Shift+X`)
-2. Search for "Keypress Notifications"
-3. Click Install
-4. The extension activates automatically
-
-### Usage
-
-No setup needed! The extension works immediately:
-
-- Use any multi-key combination (like `Ctrl+C`, `Ctrl+Shift+P`, etc.)
-- See a notification confirming the command was detected
-- Commands can be controlled via the Command Palette (`Ctrl+Shift+P`)
+On macOS, the extension uses Cmd-based variants automatically.
 
 ### Configuration
 
-Available settings in VS Code:
+All settings live under the `keypress-notifications.*` namespace:
 
-```json
-{
-  "keypress-notifications.enabled": true,
-  "keypress-notifications.minimumKeys": 2
-}
-```
+| Setting | Type | Default | Description |
+|---|---|---|---|
+| `enabled` | boolean | `true` | Enable or disable notifications |
+| `minimumKeys` | number | `2` | Minimum number of keys in a combination before a notification fires |
+| `excludedCommands` | string[] | `[]` | Commands to suppress notifications for |
+| `showCommandName` | boolean | `false` | Include the VS Code command ID in the notification message |
+| `logLevel` | string | `"info"` | Logging verbosity: `"debug"`, `"info"`, `"warn"`, or `"error"` |
 
-## 🏗️ How It Works
+### Commands
 
-Simple architecture:
+Open the Command Palette (`Ctrl+Shift+P`) and search for:
 
-- **Extension Entry Point** (`src/extension.ts`): Handles activation and command registration
-- **ExtensionManager** (`src/managers/ExtensionManager.ts`): Coordinates extension lifecycle and services
-- **KeypressService** (`src/services/KeypressService.ts`): Detects and shows notifications for multi-key commands
-- **ConfigurationService** (`src/services/ConfigurationService.ts`): Manages extension settings
-- **Configuration**: Basic settings for enabling/disabling and minimum key count
+| Command | Description |
+|---|---|
+| **Keypress Notifications: Enable** | Turn notifications on |
+| **Keypress Notifications: Disable** | Turn notifications off |
+| **Keypress Notifications: Show Status** | Open the extension output channel |
 
-The extension works by tracking common multi-key command executions and displaying notifications when they're detected.
+---
 
-## 🛠️ Development
+## Requirements
 
-### Setup
+- VS Code **1.111.0** or later
 
-```bash
-npm install     # Install dependencies
-npm run build   # Build the extension
-npm test        # Run tests
-```
+---
 
-### Available Commands
+## For Contributors
 
-```bash
-npm run build          # Build TypeScript with esbuild
-npm run watch          # Watch mode for development
-npm run package        # Create VSIX package
-npm run lint           # Run ESLint
-npm run lint:fix       # Fix linting issues
-npm run format         # Format code with Prettier
-npm run check-types    # TypeScript type checking
-npm run validate:lockfile  # Validate package-lock.json
-```
+The extension uses a dependency-injection container, a typed service layer, and has zero runtime dependencies. See the [architecture note in the source](src/) for details. Node.js 22+ is required for development.
 
-### Testing
+CI and release workflows use GitHub Actions cache for pnpm package storage and `node_modules` warm starts. A scheduled cache cleanup workflow runs every 3 days at 08:00 IST and removes cache entries that have not been used for 7 days or more.
 
-```bash
-npm test                # Run E2E tests
-npm run test:full       # Run full tests (no optimization)
-npm run test:minimal    # Minimal test run
-npm run test:quick      # Fast compile + test for CI
-npm run test:clean      # Clean test directories
-```
+---
 
-## 📋 Requirements
+## Issues & Support
 
-- **VS Code**: Version 1.102.0 or higher
-- **Node.js**: Version 16.0.0 or higher (for development)
+Found a bug or have a feature request? Please [open an issue](https://github.com/Vijay431/keypress-notifications/issues).
 
-## 🐛 Issues & Support
+---
 
-Found a bug or have a feature request? Please [create an issue](https://github.com/Vijay431/keypress-notifications/issues).
+## License
 
-## 📄 License
-
-This project is licensed under the **Proprietary License**.
-
-## 👨‍💻 Author
-
-**Vijay Gangatharan**
-📧 [vijayanand431@gmail.com](mailto:vijayanand431@gmail.com)
-🐙 [GitHub Profile](https://github.com/Vijay431)
+[MIT](LICENSE)
