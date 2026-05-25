@@ -21,7 +21,11 @@ export class Logger implements ILogger {
 
   /** @internal For testing purposes only */
   public static _resetInstance(): void {
-    Logger.instance = undefined;
+    try {
+      Logger.instance?.dispose();
+    } finally {
+      Logger.instance = undefined;
+    }
   }
 
   public setLogLevel(level: LogLevel): void {

@@ -49,7 +49,10 @@ async function build(production = false): Promise<void> {
 
       const overage = parseFloat(sizeKB) - targetKB;
       if (overage > 0) {
-        console.warn(`⚠️  WARNING: bundle ${sizeKB} KB exceeds budget ${targetKB} KB (+${overage.toFixed(2)} KB)`);
+        const warning =
+          `⚠️  WARNING: bundle ${sizeKB} KB exceeds budget ${targetKB} KB` +
+          ` (+${overage.toFixed(2)} KB)`;
+        console.warn(warning);
       }
 
       // Bundle analysis summary
