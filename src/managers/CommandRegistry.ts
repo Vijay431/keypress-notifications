@@ -17,6 +17,9 @@ export class CommandRegistry {
   >();
 
   public registerCommand(metadata: CommandMetadata): this {
+    if (this.commands.has(metadata.id)) {
+      this.unregisterCommand(metadata.id);
+    }
     const handler = metadata.handlerFactory();
     const disposable = vscode.commands.registerCommand(metadata.id, async () => {
       try {
