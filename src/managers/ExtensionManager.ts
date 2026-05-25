@@ -3,7 +3,6 @@ import * as vscode from 'vscode';
 import { DisableCommand } from '../commands/DisableCommand';
 import { EnableCommand } from '../commands/EnableCommand';
 import { ShowOutputChannelCommand } from '../commands/ShowOutputChannelCommand';
-import { getService, TYPES } from '../di';
 import  { type IAccessibilityService } from '../di/interfaces/IAccessibilityService';
 import  { type IConfigurationService } from '../di/interfaces/IConfigurationService';
 import  { type IKeypressService } from '../di/interfaces/IKeypressService';
@@ -15,22 +14,12 @@ export class ExtensionManager {
   private readonly disposables: vscode.Disposable[] = [];
   private commandRegistry: CommandRegistry | undefined;
 
-  // Lazy getters that pull from DI container
-  private get logger(): ILogger {
-    return getService<ILogger>(TYPES.Logger);
-  }
-
-  private get configService(): IConfigurationService {
-    return getService<IConfigurationService>(TYPES.ConfigurationService);
-  }
-
-  private get keypressService(): IKeypressService {
-    return getService<IKeypressService>(TYPES.KeypressService);
-  }
-
-  private get accessibilityService(): IAccessibilityService {
-    return getService<IAccessibilityService>(TYPES.AccessibilityService);
-  }
+  constructor(
+    private readonly logger: ILogger,
+    private readonly configService: IConfigurationService,
+    private readonly keypressService: IKeypressService,
+    private readonly accessibilityService: IAccessibilityService,
+  ) {}
 
   public async activate(context: vscode.ExtensionContext): Promise<void> {
     this.logger.info('Activating Keypress Notifications extension');
@@ -89,17 +78,16 @@ export class ExtensionManager {
         dispose: () => this.configService.dispose(),
       });
 
-      // Push all disposables
+      // Push all disposables to context
       this.disposables.push({ dispose: () => this.commandRegistry?.dispose() });
       this.disposables.forEach(d => context.subscriptions.push(d));
-      context.subscriptions.push({ dispose: () => this.dispose() });
 
       // Set initial enabled context
       await this.updateEnabledContext();
 
       this.logger.info('Keypress Notifications extension activated successfully');
 
-      if (process.env['NODE_ENV'] === 'development' && this.configService.isEnabled()) {
+      if (context.extensionMode === vscode.ExtensionMode.Development && this.configService.isEnabled()) {
         vscode.window.showInformationMessage('Keypress Notifications extension is now active');
       }
     } catch (error) {
