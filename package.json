@@ -1,9 +1,9 @@
 {
   "name": "keypress-notifications",
   "displayName": "Keypress Notifications",
-  "description": "Simple VS Code extension that shows notifications when you execute common multi-key combinations (Ctrl+C, Ctrl+Shift+P, etc.).",
-  "version": "1.1.0",
-  "license": "Proprietary",
+  "description": "Never lose track of which shortcut you pressed. Keypress Notifications shows an on-screen toast for 42 common VS Code keybindings — perfect for screencasts, tutorials, pair programming, streaming, accessibility, and learning shortcuts.",
+  "version": "2.0.0",
+  "license": "MIT",
   "publisher": "VijayGangatharan",
   "icon": "logo.png",
   "author": {
@@ -18,22 +18,26 @@
     "url": "https://github.com/Vijay431/keypress-notifications/issues"
   },
   "homepage": "https://github.com/Vijay431/keypress-notifications#readme",
-  "keywords": [
-    "vscode",
-    "extension",
+    "keywords": [
     "keypress",
     "notifications",
-    "clipboard",
-    "productivity",
-    "typescript",
-    "enterprise"
+    "screencast",
+    "accessibility",
+    "shortcut"
   ],
   "categories": [
-    "Other"
+    "Other",
+    "Education"
   ],
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "qna": "marketplace",
   "engines": {
-    "node": ">=16.0.0 <25.0.0",
-    "vscode": "^1.102.0"
+    "node": ">=22.13.0",
+    "vscode": ">=1.111.0",
+    "pnpm": ">=10"
   },
   "activationEvents": [
     "onStartupFinished"
@@ -80,6 +84,12 @@
           "type": "boolean",
           "default": false,
           "description": "Whether to show the command name in notifications"
+        },
+        "keypress-notifications.logLevel": {
+          "type": "string",
+          "default": "info",
+          "enum": ["debug", "info", "warn", "error"],
+          "description": "Log level for Keypress Notifications extension"
         }
       }
     },
@@ -91,42 +101,299 @@
           "group": "9_cutcopypaste@3"
         }
       ]
-    }
+    },
+    "keybindings": [
+      {
+        "key": "ctrl+c",
+        "mac": "cmd+c",
+        "command": "keypress-notifications.wrapper.editor_action_clipboardCopyAction",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "ctrl+x",
+        "mac": "cmd+x",
+        "command": "keypress-notifications.wrapper.editor_action_clipboardCutAction",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "ctrl+v",
+        "mac": "cmd+v",
+        "command": "keypress-notifications.wrapper.editor_action_clipboardPasteAction",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "ctrl+shift+p",
+        "mac": "cmd+shift+p",
+        "command": "keypress-notifications.wrapper.workbench_action_showCommands"      },
+      {
+        "key": "ctrl+p",
+        "mac": "cmd+p",
+        "command": "keypress-notifications.wrapper.workbench_action_quickOpen",
+        "when": "!inQuickOpen"
+      },
+      {
+        "key": "ctrl+s",
+        "mac": "cmd+s",
+        "command": "keypress-notifications.wrapper.workbench_action_files_save",
+        "when": "editorTextFocus || filesExplorerFocus"
+      },
+      {
+        "key": "ctrl+k ctrl+s",
+        "mac": "cmd+k cmd+s",
+        "command": "keypress-notifications.wrapper.workbench_action_files_saveAll",
+        "when": "editorTextFocus || filesExplorerFocus"
+      },
+      {
+        "key": "ctrl+n",
+        "mac": "cmd+n",
+        "command": "keypress-notifications.wrapper.workbench_action_files_newUntitledFile"      },
+      {
+        "key": "ctrl+o",
+        "mac": "cmd+o",
+        "command": "keypress-notifications.wrapper.workbench_action_files_openFile"      },
+      {
+        "key": "ctrl+shift+f",
+        "mac": "cmd+shift+f",
+        "command": "keypress-notifications.wrapper.workbench_action_findInFiles"      },
+      {
+        "key": "ctrl+g",
+        "mac": "cmd+g",
+        "command": "keypress-notifications.wrapper.workbench_action_gotoLine"      },
+      {
+        "key": "ctrl+b",
+        "mac": "cmd+b",
+        "command": "keypress-notifications.wrapper.workbench_action_toggleSidebarVisibility"      },
+      {
+        "key": "ctrl+`",
+        "command": "keypress-notifications.wrapper.workbench_action_terminal_toggleTerminal"      },
+      {
+        "key": "ctrl+j",
+        "mac": "cmd+j",
+        "command": "keypress-notifications.wrapper.workbench_action_togglePanel"      },
+      {
+        "key": "ctrl+w",
+        "mac": "cmd+w",
+        "command": "keypress-notifications.wrapper.workbench_action_closeActiveEditor",
+        "when": "editorIsOpen"
+      },
+      {
+        "key": "ctrl+shift+n",
+        "mac": "cmd+shift+n",
+        "command": "keypress-notifications.wrapper.workbench_action_newWindow"      },
+      {
+        "key": "shift+alt+f",
+        "command": "keypress-notifications.wrapper.editor_action_formatDocument",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "ctrl+/",
+        "mac": "cmd+/",
+        "command": "keypress-notifications.wrapper.editor_action_commentLine",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "ctrl+d",
+        "mac": "cmd+d",
+        "command": "keypress-notifications.wrapper.editor_action_addSelectionToNextFindMatch",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "ctrl+c",
+        "mac": "cmd+c",
+        "command": "keypress-notifications.wrapper.filesExplorer_copy",
+        "when": "filesExplorerFocus"
+      },
+      {
+        "key": "ctrl+x",
+        "mac": "cmd+x",
+        "command": "keypress-notifications.wrapper.filesExplorer_cut",
+        "when": "filesExplorerFocus"
+      },
+      {
+        "key": "ctrl+v",
+        "mac": "cmd+v",
+        "command": "keypress-notifications.wrapper.filesExplorer_paste",
+        "when": "filesExplorerFocus"
+      },
+      {
+        "key": "ctrl+z",
+        "mac": "cmd+z",
+        "command": "keypress-notifications.wrapper.undo",
+        "when": "editorFocus"
+      },
+      {
+        "key": "ctrl+y",
+        "mac": "cmd+shift+z",
+        "command": "keypress-notifications.wrapper.redo",
+        "when": "editorFocus"
+      },
+      {
+        "key": "ctrl+a",
+        "mac": "cmd+a",
+        "command": "keypress-notifications.wrapper.editor_action_selectAll",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "ctrl+f",
+        "mac": "cmd+f",
+        "command": "keypress-notifications.wrapper.actions_find",
+        "when": "editorFocus"
+      },
+      {
+        "key": "ctrl+h",
+        "mac": "cmd+h",
+        "command": "keypress-notifications.wrapper.editor_action_startFindReplaceAction",
+        "when": "editorFocus && !editorReadonly"
+      },
+      {
+        "key": "alt+up",
+        "command": "keypress-notifications.wrapper.editor_action_moveLinesUpAction",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "alt+down",
+        "command": "keypress-notifications.wrapper.editor_action_moveLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "shift+alt+up",
+        "command": "keypress-notifications.wrapper.editor_action_copyLinesUpAction",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "shift+alt+down",
+        "command": "keypress-notifications.wrapper.editor_action_copyLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "ctrl+shift+k",
+        "mac": "cmd+shift+k",
+        "command": "keypress-notifications.wrapper.editor_action_deleteLines",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "ctrl+.",
+        "mac": "cmd+.",
+        "command": "keypress-notifications.wrapper.editor_action_quickFix",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "ctrl+\\",
+        "mac": "cmd+\\",
+        "command": "keypress-notifications.wrapper.workbench_action_splitEditor"      },
+      {
+        "key": "ctrl+shift+t",
+        "mac": "cmd+shift+t",
+        "command": "keypress-notifications.wrapper.workbench_action_reopenClosedEditor"      },
+      {
+        "key": "ctrl+shift+o",
+        "mac": "cmd+shift+o",
+        "command": "keypress-notifications.wrapper.workbench_action_gotoSymbol"      },
+      {
+        "key": "ctrl+,",
+        "mac": "cmd+,",
+        "command": "keypress-notifications.wrapper.workbench_action_openSettings"      },
+      {
+        "key": "ctrl+shift+g",
+        "mac": "cmd+shift+g",
+        "command": "keypress-notifications.wrapper.workbench_view_scm"      },
+      {
+        "key": "ctrl+shift+x",
+        "mac": "cmd+shift+x",
+        "command": "keypress-notifications.wrapper.workbench_view_extensions"      },
+      {
+        "key": "ctrl+shift+d",
+        "mac": "cmd+shift+d",
+        "command": "keypress-notifications.wrapper.workbench_view_debug"      },
+      {
+        "key": "ctrl+shift+m",
+        "mac": "cmd+shift+m",
+        "command": "keypress-notifications.wrapper.workbench_actions_view_problems"      },
+      {
+        "key": "ctrl+shift+`",
+        "command": "keypress-notifications.wrapper.workbench_action_terminal_new"      }
+    ]
   },
   "main": "./dist/extension.js",
+  "packageManager": "pnpm@11.1.3",
   "vsce": {
     "baseImageUrl": "./logo.png",
-    "dependencies": true,
-    "yarn": false
+    "dependencies": false
+  },
+  "ovsx": {
+    "namespace": "VijayGangatharan",
+    "baseImageUrl": "./logo.png",
+    "dependencies": false
+  },
+  "all-contributors": {
+    "projectName": "keypress-notifications",
+    "projectOwner": "Vijay431",
+    "repoType": "github",
+    "repoHost": "https://github.com",
+    "files": [
+      "README.md"
+    ],
+    "imageSize": 100,
+    "commit": false,
+    "commitType": "docs",
+    "contributorsPerLine": 7,
+    "contributors": [
+      {
+        "login": "Vijay431",
+        "name": "Vijay Gangatharan",
+        "avatar_url": "https://github.com/Vijay431.png",
+        "profile": "https://github.com/Vijay431",
+        "contributions": [
+          "code",
+          "doc",
+          "design",
+          "infra",
+          "maintenance"
+        ]
+      },
+      {
+        "login": "claude-anthropic",
+        "name": "Claude (Anthropic)",
+        "avatar_url": "https://avatars.githubusercontent.com/u/76263028",
+        "profile": "https://claude.ai",
+        "contributions": [
+          "code",
+          "doc",
+          "test",
+          "review"
+        ]
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "tsx esbuild.config.ts --production",
     "build": "tsx esbuild.config.ts",
-    "compile": "tsx esbuild.config.ts",
     "watch": "tsx esbuild.config.ts --watch",
+    "clean": "rimraf dist *.vsix",
+    "rebuild": "pnpm run clean && pnpm run build && vsce package",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:unit:coverage": "vitest run --coverage --coverage.reporter=text --coverage.reporter=lcov",
+    "test:integration": "tsc -p tsconfig.test.json && xvfb-run -a node ./out-test/test/runTests.js",
     "package": "vsce package",
+    "package:openvsx": "ovsx package",
     "publish": "vsce publish",
+    "publish:openvsx": "ovsx publish",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "check-types": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "validate:lockfile": "npm ci --dry-run",
-    "test": "rm -rf dist && npm run build && npm run create-minimal && tsc -p ./tsconfig.test.json && node ./dist/test/e2e/runE2ETest.js",
-    "test:full": "rm -rf dist && npm run build && tsc -p ./tsconfig.test.json && SKIP_OPTIMIZATION=true node ./dist/test/e2e/runE2ETest.js",
-    "test:minimal": "npm test",
-    "test:clean": "rm -rf .vscode-test/minimal-extension .vscode-test/user-data-isolated .vscode-test/user-data-dev",
-    "test:quick": "npm run build && npm test",
-    "create-minimal": "tsx scripts/create-minimal-extension.ts",
-    "clean": "rm -rf dist out"
+    "check-types": "tsc --noEmit",
+    "lint-staged": "lint-staged",
+    "system:verify": "husky"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
+    "@vitest/coverage-v8": "^3.2.4",
     "@stylistic/eslint-plugin": "^5.2.2",
-    "@types/fs-extra": "^11.0.4",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^16.18.126",
-    "@types/vscode": "^1.102.0",
+    "@types/node": "^22",
+    "@types/vscode": "^1.111.0",
     "@typescript-eslint/eslint-plugin": "^8.44.1",
     "@typescript-eslint/parser": "^8.44.1",
     "@vscode/test-cli": "^0.0.11",
@@ -139,13 +406,17 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^7.2.1",
     "eslint-plugin-security": "^3.0.1",
-    "fast-glob": "^3.3.3",
-    "fs-extra": "^11.3.0",
+    "all-contributors-cli": "^6.26.1",
+    "glob": "^13.0.0",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0",
     "mocha": "^11.7.1",
-    "picocolors": "^1.1.1",
+    "rimraf": "^6.0.0",
+    "ovsx": "^0.10.12",
     "prettier": "^3.6.2",
     "tsx": "^4.19.2",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.38.0"
+    "typescript-eslint": "^8.38.0",
+    "vitest": "^3.2.4"
   }
 }

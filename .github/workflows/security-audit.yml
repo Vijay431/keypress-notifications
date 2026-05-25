@@ -2,146 +2,91 @@ name: Daily Security Audit
 
 on:
   schedule:
-    # Run daily at 2:00 AM UTC to minimize impact on development
     - cron: '0 2 * * *'
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch:
   push:
-    branches: ['main']
+    branches: [main]
     paths:
+      - 'pnpm-lock.yaml'
       - 'package.json'
-      - 'package-lock.json'
 
 permissions:
   contents: read
   issues: write
-  pull-requests: write
 
 jobs:
   security-audit:
-    name: NPM Security Audit
+    name: pnpm Security Audit
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          standalone: true
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '20.x'
-          cache: 'npm'
+          node-version: '22.x'
+          cache: pnpm
+          cache-dependency-path: |
+            pnpm-lock.yaml
+            package.json
 
       - name: Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Run Security Audit
         id: audit
         run: |
-          echo "Running npm audit..."
-          npm audit --json > audit-results.json || true
+          echo "Running pnpm audit..."
+          pnpm audit --json > audit-results.json || true
 
-          # Count vulnerabilities by severity
-          HIGH=$(jq '.vulnerabilities | to_entries | map(select(.value.severity == "high")) | length' audit-results.json)
-          MODERATE=$(jq '.vulnerabilities | to_entries | map(select(.value.severity == "moderate")) | length' audit-results.json)
-          LOW=$(jq '.vulnerabilities | to_entries | map(select(.value.severity == "low")) | length' audit-results.json)
-          CRITICAL=$(jq '.vulnerabilities | to_entries | map(select(.value.severity == "critical")) | length' audit-results.json)
+          CRITICAL=$(jq '.metadata.vulnerabilities.critical' audit-results.json)
+          HIGH=$(jq '.metadata.vulnerabilities.high' audit-results.json)
+          MODERATE=$(jq '.metadata.vulnerabilities.moderate' audit-results.json)
+          LOW=$(jq '.metadata.vulnerabilities.low' audit-results.json)
+          TOTAL=$((CRITICAL + HIGH + MODERATE + LOW))
 
           echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
           echo "high=$HIGH" >> $GITHUB_OUTPUT
           echo "moderate=$MODERATE" >> $GITHUB_OUTPUT
           echo "low=$LOW" >> $GITHUB_OUTPUT
-
-          # Create summary
-          TOTAL=$((CRITICAL + HIGH + MODERATE + LOW))
           echo "total=$TOTAL" >> $GITHUB_OUTPUT
 
-          echo "## Security Audit Results" >> audit-summary.md
-          echo "| Severity | Count |" >> audit-summary.md
-          echo "|----------|-------|" >> audit-summary.md
-          echo "| Critical | $CRITICAL |" >> audit-summary.md
-          echo "| High | $HIGH |" >> audit-summary.md
-          echo "| Moderate | $MODERATE |" >> audit-summary.md
-          echo "| Low | $LOW |" >> audit-summary.md
-          echo "| **Total** | **$TOTAL** |" >> audit-summary.md
+          {
+            echo "## Security Audit Results"
+            echo "| Severity | Count |"
+            echo "|----------|-------|"
+            echo "| Critical | $CRITICAL |"
+            echo "| High | $HIGH |"
+            echo "| Moderate | $MODERATE |"
+            echo "| Low | $LOW |"
+            echo "| **Total** | **$TOTAL** |"
+          } >> audit-summary.md
 
       - name: Check for Outdated Packages
         id: outdated
         run: |
           echo "Checking for outdated packages..."
-          npm outdated --json > outdated-packages.json || true
+          pnpm outdated --json > outdated.json || true
 
-          # Count outdated packages
-          OUTDATED_COUNT=$(jq '. | length' outdated-packages.json)
+          OUTDATED_COUNT=$(jq '. | length' outdated.json)
           echo "outdated_count=$OUTDATED_COUNT" >> $GITHUB_OUTPUT
 
           if [ "$OUTDATED_COUNT" -gt 0 ]; then
-            echo "" >> audit-summary.md
-            echo "## Outdated Packages ($OUTDATED_COUNT)" >> audit-summary.md
-            echo "| Package | Current | Wanted | Latest |" >> audit-summary.md
-            echo "|---------|---------|--------|--------|" >> audit-summary.md
-            jq -r 'to_entries[] | "| \(.key) | \(.value.current) | \(.value.wanted) | \(.value.latest) |"' outdated-packages.json >> audit-summary.md
+            {
+              echo ""
+              echo "## Outdated Packages ($OUTDATED_COUNT)"
+              echo "| Package | Current | Wanted | Latest |"
+              echo "|---------|---------|--------|--------|"
+              jq -r 'to_entries[] | "| \(.key) | \(.value.current) | \(.value.wanted) | \(.value.latest) |"' outdated.json
+            } >> audit-summary.md
           fi
-
-      - name: Attempt Automatic Fixes
-        id: autofix
-        if: steps.audit.outputs.total > 0
-        run: |
-          echo "Attempting to fix vulnerabilities automatically..."
-
-          # Try to fix vulnerabilities
-          npm audit fix --dry-run > fix-preview.txt 2>&1 || true
-
-          # Check if fixes are available
-          if grep -q "fixed" fix-preview.txt; then
-            echo "auto_fixes_available=true" >> $GITHUB_OUTPUT
-            npm audit fix > fix-results.txt 2>&1 || true
-
-            # Check if package-lock.json was modified
-            if git diff --quiet package-lock.json; then
-              echo "fixes_applied=false" >> $GITHUB_OUTPUT
-            else
-              echo "fixes_applied=true" >> $GITHUB_OUTPUT
-            fi
-          else
-            echo "auto_fixes_available=false" >> $GITHUB_OUTPUT
-            echo "fixes_applied=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Create Pull Request for Security Fixes
-        if: steps.autofix.outputs.fixes_applied == 'true'
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'security: automated npm audit fix'
-          title: '🔒 Automated Security Updates'
-          body: |
-            ## Automated Security Updates
-
-            This PR contains automated fixes for npm security vulnerabilities detected during the daily security audit.
-
-            ### Security Audit Results
-            $(cat audit-summary.md)
-
-            ### Applied Fixes
-            ```
-            $(cat fix-results.txt)
-            ```
-
-            **⚠️ Please review these changes carefully before merging.**
-
-            - Verify that all tests still pass
-            - Check that the extension builds successfully
-            - Test critical functionality to ensure no breaking changes
-
-            This PR was automatically created by the Daily Security Audit workflow.
-          branch: security/automated-fixes-${{ github.run_number }}
-          delete-branch: true
-          labels: |
-            security
-            automated
-            dependencies
 
       - name: Create Security Issue for Manual Review
         if: steps.audit.outputs.critical > 0 || steps.audit.outputs.high > 0
@@ -152,7 +97,6 @@ jobs:
             const auditSummary = fs.readFileSync('audit-summary.md', 'utf8');
 
             const title = `🚨 Security Alert: ${{ steps.audit.outputs.critical }} Critical, ${{ steps.audit.outputs.high }} High Vulnerabilities`;
-
             const body = `## Security Vulnerability Alert
 
             The daily security audit has detected **critical** or **high** severity vulnerabilities that require immediate attention.
@@ -162,14 +106,9 @@ jobs:
             ## Next Steps
 
             1. **Immediate Action Required**: Review and address critical and high-severity vulnerabilities
-            2. **Update Dependencies**: Run \`npm update\` and \`npm audit fix\` manually
-            3. **Test Thoroughly**: Ensure all functionality works after updates
-            4. **Security Review**: Consider additional security measures if needed
-
-            ## Automated Actions Taken
-
-            - ${{ steps.autofix.outputs.auto_fixes_available == 'true' && 'Automatic fixes were attempted' || 'No automatic fixes available' }}
-            - ${{ steps.autofix.outputs.fixes_applied == 'true' && 'A pull request with fixes has been created' || 'Manual intervention required' }}
+            2. **Update Dependencies**: Run \`pnpm update\` and \`pnpm audit\` manually
+            3. **Check Overrides**: Verify \`pnpm-workspace.yaml\` overrides cannot pin the safe version
+            4. **Test Thoroughly**: Ensure all functionality works after updates
 
             ---
 
@@ -179,9 +118,9 @@ jobs:
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: title,
-              body: body,
-              labels: ['security', 'critical', 'automated']
+              title,
+              body,
+              labels: ['security', 'critical', 'automated'],
             });
 
       - name: Notify on Workflow Failure
@@ -199,16 +138,13 @@ jobs:
 
               **Workflow Run**: ${{ github.run_id }}
               **Run Number**: ${{ github.run_number }}
-              **Failed Step**: Check the workflow logs for details
 
-              ## Action Required
-
-              Please review the workflow logs and fix any issues preventing the security audit from running properly.
+              Please review the workflow logs and fix any issues preventing the security audit from running.
 
               ---
 
               *This issue was automatically created due to workflow failure.*`,
-              labels: ['bug', 'workflow', 'automated']
+              labels: ['bug', 'workflow', 'automated'],
             });
 
       - name: Upload Audit Results
@@ -218,8 +154,6 @@ jobs:
           name: security-audit-results-${{ github.run_number }}
           path: |
             audit-results.json
-            outdated-packages.json
+            outdated.json
             audit-summary.md
-            fix-preview.txt
-            fix-results.txt
           retention-days: 30

@@ -1,29 +1,35 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+out-test/
+coverage/
 *.vsix
-.vscode-test
-.vscode-test-web
 
-coverage
-dist
-node_modules
-out
-
-# Compiled files - prevent TypeScript output in source directories
-src/**/*.js
-src/**/*.js.map
+# Compiled test files
 test/**/*.js
 test/**/*.js.map
 
-# Debug files
-*.map
-debug.log
-meta.json
+# Tooling caches & local state
+.claude/
+.code-review-graph/
+.vscode-test/
+.worktrees/
+.auto-claude/
+.automaker/
+.sisyphus
+.auto-claude-security.json
 
-# OS generated files
+# Logs
+*.log
+debug.log
+
+# OS
 .DS_Store
 Thumbs.db
 
-CLAUDE.md
-.claude
+# Local-only docs
 TODO.md
-
-.mcp.json
+CHANGELOG_RELEASE.md
+IMPLEMENTATION_SUMMARY.md

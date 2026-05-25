@@ -1,19 +1,24 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist",
-    "rootDir": "./",
+    "rootDir": ".",
+    "outDir": "./out-test",
     "skipLibCheck": true,
-    "jsx": "react",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitAny": true,
+    "strict": true,
+    "exactOptionalPropertyTypes": false,
+    "noUncheckedIndexedAccess": false,
+    "noImplicitOverride": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": false,
+    "noEmitOnError": true
   },
-  "include": ["test/**/*.ts"],
-  "exclude": ["test/fixtures/**/*.ts", "node_modules"],
-  "ts-node": {
-    "compilerOptions": {
-      "module": "CommonJS"
-    }
-  }
+  "include": [
+    "test/runTests.ts",
+    "test/suite/**/*"
+  ],
+  "exclude": ["node_modules"]
 }

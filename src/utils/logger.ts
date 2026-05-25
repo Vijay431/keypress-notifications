@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import { ILogger, LogLevel } from '../types/extension';
 
 export class Logger implements ILogger {
-  private static instance: Logger;
+  private static instance: Logger | undefined;
   private outputChannel: vscode.OutputChannel;
   private logLevel: LogLevel = LogLevel.INFO;
 
@@ -12,10 +12,20 @@ export class Logger implements ILogger {
   }
 
   public static getInstance(): Logger {
-    if (!this.instance) {
-      this.instance = new Logger();
+    return (this.instance ??= new Logger());
+  }
+
+  public static create(): Logger {
+    return Logger.getInstance();
+  }
+
+  /** @internal For testing purposes only */
+  public static _resetInstance(): void {
+    try {
+      Logger.instance?.dispose();
+    } finally {
+      Logger.instance = undefined;
     }
-    return this.instance;
   }
 
   public setLogLevel(level: LogLevel): void {
@@ -52,6 +62,7 @@ export class Logger implements ILogger {
     }
 
     const timestamp = new Date().toISOString();
+    // eslint-disable-next-line security/detect-object-injection
     const levelName = LogLevel[level] as string;
     const logMessage = `[${timestamp}] [${levelName}] ${message}`;
 

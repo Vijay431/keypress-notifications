@@ -45,17 +45,14 @@ async function build(production = false): Promise<void> {
       const targetKB = 50;
 
       console.log('✅ Build completed successfully!');
-      console.log(`📦 Bundle size: ${sizeKB} KB`);
+      console.log(`📦 Bundle size: ${sizeKB} KB (budget: ${targetKB} KB)`);
 
-      // Target verification
-      if (parseFloat(sizeKB) > targetKB) {
-        console.log(
-          `⚠️  Bundle exceeds ${targetKB}KB target by ${(parseFloat(sizeKB) - targetKB).toFixed(2)}KB`,
-        );
-      } else {
-        console.log(
-          `✨ Bundle is ${(targetKB - parseFloat(sizeKB)).toFixed(2)}KB under ${targetKB}KB target!`,
-        );
+      const overage = parseFloat(sizeKB) - targetKB;
+      if (overage > 0) {
+        const warning =
+          `⚠️  WARNING: bundle ${sizeKB} KB exceeds budget ${targetKB} KB` +
+          ` (+${overage.toFixed(2)} KB)`;
+        console.warn(warning);
       }
 
       // Bundle analysis summary

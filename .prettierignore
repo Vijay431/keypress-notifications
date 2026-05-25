@@ -1,48 +1,17 @@
-# Build outputs & generated files
+# Build output
 dist/
-out/
-build/
-lib/
-*.d.ts
-*.js.map
-*.ts.map
-
-# Dependencies & package management
-node_modules/
-.yarn/
-package-lock.json
-
-# Test infrastructure & fixtures
-.vscode-test/
-test/mock-workspace/
-test/fixtures/
+out-test/
 coverage/
-.nyc_output/
-
-# Cache & temporary files
-.cache/
-.parcel-cache/
-.rollup.cache/
-.turbo/
-tmp/
-temp/
-.tmp/
-*.tmp
-*.temp
-
-# Platform & IDE files
-.DS_Store
-Thumbs.db
-desktop.ini
-*.swp
-*.swo
-*~
-
-# Package artifacts & logs
 *.vsix
-*.tgz
-*.log
-logs/
 
-# Git hooks (preserve shell script formatting)
-.husky/_/*
+# Dependencies & lockfiles
+node_modules/
+pnpm-lock.yaml
+
+# Jekyll site
+docs/_site/
+docs/.bundle/
+docs/vendor/
+
+# Tooling caches
+.vscode-test/
