@@ -143,9 +143,9 @@ pnpm run build           # Extension must build
 4. Keep PRs focused — one feature or fix per PR
 5. Update documentation if your change affects behavior
 
-### Workflow Cache Automation
+### Workflow Automation
 
-CI and release workflows use GitHub Actions cache for pnpm package storage and `node_modules` warm starts. The scheduled cache cleanup workflow runs every 3 days at 08:00 IST and removes repository cache entries that have not been used for 7 days or more. Update `.github/workflows/cache-cleanup.yml` and maintainer docs together when changing cache keys, cache paths, cleanup timing, or retention rules.
+CI and release workflows use GitHub Actions cache for pnpm package storage and `node_modules` warm starts. The scheduled cache cleanup workflow runs every 3 days at 08:00 IST and removes repository cache entries that have not been used for 7 days or more. The daily security audit workflow (`.github/workflows/security-audit.yml`) runs `pnpm audit` at 02:00 UTC and on `pnpm-lock.yaml`/`package.json` changes on `main`; it creates a GitHub issue only when high or critical vulnerabilities are detected and respects `pnpm-workspace.yaml` overrides so patched transitive dependencies do not produce false alerts. Update these workflows and maintainer docs together when changing schedules, cache keys, retention rules, or audit behavior.
 
 ### Commit Messages
 
