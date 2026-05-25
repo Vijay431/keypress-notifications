@@ -16,7 +16,7 @@
 - **CI workflows:** `persist-credentials: false` added to all `actions/checkout` steps (ci, release, all-contributors, labels-sync, pr-commit-size) to prevent token persistence.
 - **pr-commit-size:** `github.base_ref` moved into an `env:` variable to eliminate template-injection code-execution risk.
 - **release:** workflow-level `contents: write` permission narrowed to `contents: read`; `contents: write` promoted to the `create-release` job only.
-- **ci:** removed `cache: pnpm` from all `actions/setup-node` steps; restore-only jobs never run `pnpm install`, so setup-node's post-job store-save failed with `Path Validation Error` and broke the `Warm node_modules cache` matrix. `node_modules` (`actions/cache`, keyed on `pnpm-lock.yaml`) is now the sole dependency cache.
+- **ci:** removed `cache: pnpm` from all `actions/setup-node` steps; restore-only jobs never run `pnpm install`, so setup-node's post-job store-save failed with `Path Validation Error` and broke the `Warm node_modules cache` matrix. `node_modules` (`actions/cache`, keyed on runner OS + Node version + `pnpm-lock.yaml`) is now the sole dependency cache.
 
 ### Tests
 - **extension.test.ts:** fixed `any` types, tautological assertion (`ext.isActive || true`), and replaced fixed `setTimeout` waits with a `waitFor()` polling helper to de-flake the integration suite.
