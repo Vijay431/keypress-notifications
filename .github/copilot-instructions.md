@@ -38,7 +38,8 @@ Run `pnpm run check-types` and `pnpm run test:unit` before any user-facing behav
 
 - CI and release workflows cache pnpm package data and warm `node_modules` for faster jobs.
 - `.github/workflows/cache-cleanup.yml` runs every 3 days at 08:00 IST and deletes GitHub Actions cache entries not used for 7 days or more.
-- Keep README, CHANGELOG, CLAUDE.md, CONTRIBUTING.md, AGENTS.md, and this file aligned when workflow cache behavior changes.
+- `.github/workflows/security-audit.yml` runs daily at 02:00 UTC using `pnpm audit` (respects `pnpm-workspace.yaml` overrides); creates a GitHub issue only when high or critical vulnerabilities are found.
+- Keep README, CHANGELOG, CLAUDE.md, CONTRIBUTING.md, AGENTS.md, and this file aligned when workflow cache or security-audit behavior changes.
 
 ## Assistant Conventions
 

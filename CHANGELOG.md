@@ -4,6 +4,11 @@
 
 ### Added
 - Scheduled GitHub Actions cache cleanup removes caches not used for 7 days or more every 3 days at 08:00 IST.
+- pnpm-based daily security audit workflow (`security-audit.yml`) replaces the removed npm-based one; respects `pnpm-workspace.yaml` overrides so phantom high-severity reports no longer occur.
+- `audit` job in `ci.yml` runs `pnpm audit --audit-level=high` on every PR/push; `dependency-review` job blocks high-severity dependency introductions on pull requests.
+
+### Removed
+- npm-based `security-audit.yml` (was on `main`, generated false-positive daily alerts because npm ignores pnpm overrides).
 
 ## [2.0.0] - 2026-05-23
 
