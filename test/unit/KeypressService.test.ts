@@ -96,15 +96,14 @@ describe('KeypressService — inferKeysFromCommand', () => {
 
 describe('KeypressService — new COMMAND_KEY_MAP entries', () => {
   let service: import('../../src/services/KeypressService').KeypressService;
-  const showInfoMock = vi.fn();
+  let showInfoMock: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.useFakeTimers();
     vi.clearAllMocks();
 
-    // override showInformationMessage so we can assert labels
     const vscode = await import('vscode');
-    (vscode.window.showInformationMessage as ReturnType<typeof vi.fn>) = showInfoMock;
+    showInfoMock = vi.mocked(vscode.window.showInformationMessage);
 
     const logger = { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn(), show: vi.fn(), dispose: vi.fn() };
     const configService = {
