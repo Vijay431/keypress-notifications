@@ -1,16 +1,31 @@
 # 📝 Changelog
 
-## [Unreleased]
+## [2.0.0]
 
 ### Added
+
 - **KeypressService:** expanded from 19 to 42 wrapped commands, adding coverage across the Explorer and workbench. New notifications fire for: Explorer copy/cut/paste (`filesExplorer.*`), undo/redo, select-all, find, find-replace, move/copy lines up/down, delete line, quick-fix, split editor, reopen closed editor, go to symbol, open settings, SCM view, Extensions view, Debug view, Problems view, and new terminal.
+- Scheduled GitHub Actions cache cleanup removes caches not used for 7 days or more every 3 days at 08:00 IST.
+- pnpm-based daily security audit workflow (`security-audit.yml`) replaces the removed npm-based one; respects `pnpm-workspace.yaml` overrides so phantom high-severity reports no longer occur.
+- `audit` job in `ci.yml` runs `pnpm audit --audit-level=high` on every PR/push; `dependency-review` job blocks high-severity dependency introductions on pull requests.
+- `size/override` label added to `.github/labels.yml` — the documented escape hatch for the PR commit-size hard-fail on intentionally large PRs.
+- VS Code 1.111.0 engine target with @types/vscode ^1.111.0 and @types/node ^22
+- 19 contributes.keybindings entries — core notification feature now fires in production
+- ACM-aligned test harness: test/suite/ with test/runTests.ts (Mocha TDD via @vscode/test-electron)
+- Unit tests for AccessibilityService, Logger, CommandRegistry, ExtensionManager, ConfigMigrator
+- husky and lint-staged pre-commit hooks
+- .cursorignore, .coderabbit.yaml, tsconfig.eslint.json added
+- public/ directory placeholder
 
 ### Changed
+
+- **Docs:** README and Marketplace metadata rewritten for discoverability — pain-point pitch, install badges, demo media slot, "Who it's for" use cases, expanded keywords, `Education` category, gallery banner.
 - **License:** changed from Proprietary to MIT (open source).
 - **ExtensionManager:** services now injected via constructor instead of DI lazy getters, matching project DI conventions; double-dispose on `context.subscriptions` removed; dev-mode banner now uses `context.extensionMode === ExtensionMode.Development` instead of `process.env.NODE_ENV`.
 - **NOTICE.md:** dependency license statement updated to accurately reflect multi-license devDependency set (MIT, ISC, Apache-2.0, BSD, BlueOak-1.0.0, EPL-2.0).
 
 ### Fixed
+
 - **ExtensionManager:** removed redundant `dispose()` method that double-disposed `commandRegistry` and all services already managed by `context.subscriptions`.
 - **KeypressService:** `commandKeyMap` hoisted to `private static readonly COMMAND_KEY_MAP` to avoid per-instance allocation.
 - **Logger:** added `_resetInstance()` static method for test isolation, replacing unsafe `as unknown as` cast in unit tests.
@@ -20,8 +35,15 @@
 - **pr-commit-size:** `github.base_ref` moved into an `env:` variable to eliminate template-injection code-execution risk.
 - **release:** workflow-level `contents: write` permission narrowed to `contents: read`; `contents: write` promoted to the `create-release` job only.
 - **ci:** removed `cache: pnpm` from all `actions/setup-node` steps; restore-only jobs never run `pnpm install`, so setup-node's post-job store-save failed with `Path Validation Error` and broke the `Warm node_modules cache` matrix. `node_modules` (`actions/cache`, keyed on runner OS + Node version + `pnpm-lock.yaml`) is now the sole dependency cache.
+- Log-level configuration now correctly maps string setting to numeric LogLevel enum
+- Logger.setLogLevel() now called on activate and config change
+- KeypressService and ConfigurationService disposables now properly wired to context.subscriptions
+- Untracked setTimeout in detectKeyPress() now cleared on dispose
+- ConfigValidator no longer incorrectly resets logLevel to INFO on every activation
+- KeypressService wrapper registration bounded to 19 known commands (was hundreds via getCommands())
 
 ### Tests
+
 - **extension.test.ts:** fixed `any` types, tautological assertion (`ext.isActive || true`), and replaced fixed `setTimeout` waits with a `waitFor()` polling helper to de-flake the integration suite.
 - **DIContainer.test.ts / ExtensionManager.test.ts:** all `it()` descriptions now start with "should " per project convention.
 - **tsconfig.test.json:** `src/**/*` removed from `include` so relaxed test compiler flags no longer apply to source files.
@@ -30,50 +52,21 @@
 - `dist/meta.json`, `pnpm-workspace.yaml`, and `.vscode-test.mjs` excluded from the `.vsix` via `.vscodeignore`; total package size drops from ~118 KB to ~20 KB.
 - Build output now prints a single standard budget warning (`⚠️  WARNING: bundle X KB exceeds budget Y KB (+Z KB)`) only when the bundle exceeds the 50 KB target; removed verbose under-budget message.
 
-### Added
-- Scheduled GitHub Actions cache cleanup removes caches not used for 7 days or more every 3 days at 08:00 IST.
-- pnpm-based daily security audit workflow (`security-audit.yml`) replaces the removed npm-based one; respects `pnpm-workspace.yaml` overrides so phantom high-severity reports no longer occur.
-- `audit` job in `ci.yml` runs `pnpm audit --audit-level=high` on every PR/push; `dependency-review` job blocks high-severity dependency introductions on pull requests.
-- `size/override` label added to `.github/labels.yml` — the documented escape hatch for the PR commit-size hard-fail on intentionally large PRs.
-
 ### Removed
+
 - npm-based `security-audit.yml` (was on `main`, generated false-positive daily alerts because npm ignores pnpm overrides).
-
-## [2.0.0] - 2026-05-23
-
-### Added
-- VS Code 1.111.0 engine target with @types/vscode ^1.111.0 and @types/node ^22
-- 19 contributes.keybindings entries — core notification feature now fires in production
-- ACM-aligned test harness: test/suite/ with test/runTests.ts (Mocha TDD via @vscode/test-electron)
-- Unit tests for AccessibilityService, Logger, CommandRegistry, ExtensionManager, ConfigMigrator
-- husky and lint-staged pre-commit hooks
-- .cursorignore, .coderabbit.yaml, tsconfig.eslint.json added
-- public/ directory placeholder
-
-### Fixed
-- Log-level configuration now correctly maps string setting to numeric LogLevel enum
-- Logger.setLogLevel() now called on activate and config change
-- KeypressService and ConfigurationService disposables now properly wired to context.subscriptions
-- Untracked setTimeout in detectKeyPress() now cleared on dispose
-- ConfigValidator no longer incorrectly resets logLevel to INFO on every activation
-- KeypressService wrapper registration bounded to 19 known commands (was hundreds via getCommands())
-
-### Removed
 - Dead code: Cache, memoize, IMetricCollector (unused utilities never wired in production)
 - Obsolete scripts: create-minimal, test:full, test:minimal, test:quick, test:clean, validate:lockfile
 - Unused devDependencies: fs-extra, picocolors, fast-glob
 
 ### Security
+
 - pnpm workspace overrides added for serialize-javascript, diff, tmp, fast-uri, postcss, brace-expansion — reduces pnpm audit to 0 vulnerabilities
 
 ---
 
-
-Updates and improvements to the Keypress Notifications VS Code extension.
-
----
-
-## [1.0.0] - 2025-09-28
+<details>
+<summary><h2>[1.0.0]</h2></summary>
 
 ### 🔧 **Build System & Infrastructure**
 
@@ -117,9 +110,10 @@ Updates and improvements to the Keypress Notifications VS Code extension.
 ✅ **Enhanced Architecture**: Cleaner separation of concerns with manager and service patterns
 ✅ **Accurate Documentation**: All docs now match the actual implementation
 
----
+</details>
 
-## 🌟 [0.0.1] - December 28, 2024
+<details>
+<summary><h2>🌟 [0.0.1]</h2></summary>
 
 ### 🎉 **Initial Release**
 
@@ -138,3 +132,5 @@ The first version of Keypress Notifications for VS Code.
 - VS Code 1.90.0+ compatibility
 - Proper extension lifecycle management
 - Clean activation and deactivation
+
+</details>

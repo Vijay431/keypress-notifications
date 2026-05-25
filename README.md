@@ -1,8 +1,55 @@
 # Keypress Notifications
 
-[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/VijayGangatharan.keypress-notifications?label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
+[![VS Code Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/VijayGangatharan.keypress-notifications?label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
+[![VS Code Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/VijayGangatharan.keypress-notifications)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
+[![VS Code Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/VijayGangatharan.keypress-notifications)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
+[![Open VSX Version](https://img.shields.io/open-vsx/v/VijayGangatharan/keypress-notifications?label=Open%20VSX)](https://open-vsx.org/extension/VijayGangatharan/keypress-notifications)
 
-A VS Code extension that shows a notification whenever you press one of the 42 most common keyboard shortcuts — handy for demos, pair programming, and learning new keybindings.
+**Never lose track of which shortcut you just pressed.**
+
+---
+
+## The Problem
+
+VS Code gives you zero feedback about which keyboard shortcut you triggered. You pressed *something* — but what?
+
+This tiny blind spot compounds fast: during screencasts and tutorials, your audience can't follow your keystrokes. In pair-programming sessions, your colleague doesn't know what you just did. When streaming or presenting, viewers stare at a result with no context. And when you're *learning* new keybindings yourself, muscle memory can't form if nothing confirms you hit the right combo.
+
+Keypress Notifications plugs that gap. Every time you trigger one of **42 common VS Code keybindings**, a toast notification pops up — **"You've pressed Ctrl+C"** — so there's always on-screen confirmation of what happened.
+
+---
+
+## Demo
+
+![Keypress Notifications demo](https://raw.githubusercontent.com/Vijay431/keypress-notifications/main/public/demo.gif)
+
+> **Record your own demo** — see [`public/`](public/) for a short recording guide.
+
+---
+
+## Who It's For
+
+- **Screencasters & YouTube/course creators** — your shortcuts are always visible on screen
+- **Live streamers** — viewers on Twitch or YouTube Live always know what you're doing
+- **Teachers & workshop leads** — no more "wait, what did you just press?"
+- **Pair programmers** — your partner sees your keystrokes without screen-sharing tools that need special setup
+- **Accessibility users** — on-screen text confirmation of every action, alongside whatever screen reader you use
+- **Keybinding learners** — instant reinforcement every time you hit the right combo
+
+---
+
+## Install
+
+**VS Code Marketplace** (recommended):
+
+```
+ext install VijayGangatharan.keypress-notifications
+```
+
+Or search **"Keypress Notifications"** in the Extensions view (`Ctrl+Shift+X`).
+
+**Open VSX** (VS Codium / other open-source VS Code builds):
+[open-vsx.org/extension/VijayGangatharan/keypress-notifications](https://open-vsx.org/extension/VijayGangatharan/keypress-notifications)
 
 ---
 
