@@ -43,7 +43,7 @@ jobs:
           persist-credentials: false
 
       - name: Install PNPM
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6
         with:
           standalone: true
 
@@ -167,7 +167,7 @@ jobs:
           name: vsix-package
 
       - name: Install PNPM
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6
         with:
           standalone: true
 
@@ -198,7 +198,7 @@ jobs:
           name: vsix-package
 
       - name: Install PNPM
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6
         with:
           standalone: true
 
