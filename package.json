@@ -18,27 +18,12 @@
     "url": "https://github.com/Vijay431/keypress-notifications/issues"
   },
   "homepage": "https://github.com/Vijay431/keypress-notifications#readme",
-  "keywords": [
+    "keywords": [
     "keypress",
     "notifications",
-    "keybinding",
-    "shortcut",
-    "hotkey",
     "screencast",
-    "screen-recording",
-    "tutorial",
-    "teaching",
-    "presentation",
-    "pair-programming",
-    "live-coding",
-    "streaming",
     "accessibility",
-    "screen-reader",
-    "cheatsheet",
-    "toast",
-    "productivity",
-    "vscode",
-    "extension"
+    "shortcut"
   ],
   "categories": [
     "Other",
