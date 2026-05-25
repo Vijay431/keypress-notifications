@@ -296,19 +296,19 @@ flowchart TD
     C --> D["EnableCommand"]
     C --> E["DisableCommand"]
     C --> F["ShowOutputChannelCommand"]
-    B --> G["KeypressService\nwraps 42 known commands\nshows notifications"]
-    B --> H["ConfigurationService\nsettings & change events"]
-    B --> I["AccessibilityService\nscreen reader announcements"]
+    B --> G["KeypressService<br/>wraps 42 known commands<br/>shows notifications"]
+    B --> H["ConfigurationService<br/>settings & change events"]
+    B --> I["AccessibilityService<br/>screen reader announcements"]
 ```
 
 ### Codebase Structure
 
 ```mermaid
 flowchart TD
-    A["extension"] --> B["managers\nExtensionManager, CommandRegistry"]
-    B --> C["di\ncontainer, interfaces"]
-    C --> D["Services\nKeypressService\nConfigurationService\nAccessibilityService"]
-    C --> E["Commands\nEnableCommand\nDisableCommand\nShowOutputChannelCommand"]
+    A["extension"] --> B["managers<br/>ExtensionManager, CommandRegistry"]
+    B --> C["di<br/>container, interfaces"]
+    C --> D["Services<br/>KeypressService<br/>ConfigurationService<br/>AccessibilityService"]
+    B --> E["Commands<br/>EnableCommand<br/>DisableCommand<br/>ShowOutputChannelCommand"]
     D --> F["utils, types"]
     E --> F
 ```
