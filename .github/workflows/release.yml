@@ -43,7 +43,7 @@ jobs:
           persist-credentials: false
 
       - name: Install PNPM
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6
         with:
           standalone: true
 
@@ -74,7 +74,7 @@ jobs:
         run: pnpm run package
 
       - name: Upload VSIX Artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: vsix-package
           path: '*.vsix'
@@ -85,7 +85,7 @@ jobs:
     needs: [release-build]
     steps:
       - name: Download VSIX Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: vsix-package
 
@@ -162,12 +162,12 @@ jobs:
     needs: [setup, verifier]
     steps:
       - name: Download VSIX Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: vsix-package
 
       - name: Install PNPM
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6
         with:
           standalone: true
 
@@ -193,12 +193,12 @@ jobs:
     needs: [setup, verifier]
     steps:
       - name: Download VSIX Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: vsix-package
 
       - name: Install PNPM
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6
         with:
           standalone: true
 
@@ -226,7 +226,7 @@ jobs:
       contents: write
     steps:
       - name: Download VSIX Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: vsix-package
 
