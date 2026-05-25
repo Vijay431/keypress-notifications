@@ -3,6 +3,21 @@
 ## [Unreleased]
 
 ### Changed
+- **License:** changed from Proprietary to MIT (open source).
+- **ExtensionManager:** services now injected via constructor instead of DI lazy getters, matching project DI conventions; double-dispose on `context.subscriptions` removed; dev-mode banner now uses `context.extensionMode === ExtensionMode.Development` instead of `process.env.NODE_ENV`.
+- **NOTICE.md:** dependency license statement updated to accurately reflect multi-license devDependency set (MIT, ISC, Apache-2.0, BSD, BlueOak-1.0.0, EPL-2.0).
+
+### Fixed
+- **CommandRegistry:** `registerCommand` now disposes the existing `vscode.Disposable` before re-registering the same command ID, preventing a disposable leak.
+- **ConfigMigrator:** magic string `'__kn_migrationVersion'` hoisted to a `static readonly` class constant.
+- **CI workflows:** `persist-credentials: false` added to all `actions/checkout` steps (ci, release, all-contributors, labels-sync, pr-commit-size) to prevent token persistence.
+- **pr-commit-size:** `github.base_ref` moved into an `env:` variable to eliminate template-injection code-execution risk.
+- **release:** workflow-level `contents: write` permission narrowed to `contents: read`; `contents: write` promoted to the `create-release` job only.
+
+### Tests
+- **extension.test.ts:** fixed `any` types, tautological assertion (`ext.isActive || true`), and replaced fixed `setTimeout` waits with a `waitFor()` polling helper to de-flake the integration suite.
+- **DIContainer.test.ts / ExtensionManager.test.ts:** all `it()` descriptions now start with `should ` per project convention.
+- **tsconfig.test.json:** `src/**/*` removed from `include` so relaxed test compiler flags no longer apply to source files.
 - `logo.png` recompressed: resized 1120×1120 → 256×256 and palette-quantized (~102 KB → ~5 KB).
 - `vsce`/`ovsx` `dependencies` set to `false`; extension is fully esbuild-bundled with no runtime deps so vsce no longer scans node_modules during packaging.
 - `dist/meta.json`, `pnpm-workspace.yaml`, and `.vscode-test.mjs` excluded from the `.vsix` via `.vscodeignore`; total package size drops from ~118 KB to ~20 KB.
