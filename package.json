@@ -211,6 +211,139 @@
         "mac": "cmd+d",
         "command": "keypress-notifications.wrapper.editor_action_addSelectionToNextFindMatch",
         "when": "editorTextFocus"
+      },
+      {
+        "key": "ctrl+c",
+        "mac": "cmd+c",
+        "command": "keypress-notifications.wrapper.filesExplorer_copy",
+        "when": "filesExplorerFocus"
+      },
+      {
+        "key": "ctrl+x",
+        "mac": "cmd+x",
+        "command": "keypress-notifications.wrapper.filesExplorer_cut",
+        "when": "filesExplorerFocus"
+      },
+      {
+        "key": "ctrl+v",
+        "mac": "cmd+v",
+        "command": "keypress-notifications.wrapper.filesExplorer_paste",
+        "when": "filesExplorerFocus"
+      },
+      {
+        "key": "ctrl+z",
+        "mac": "cmd+z",
+        "command": "keypress-notifications.wrapper.undo",
+        "when": "editorFocus"
+      },
+      {
+        "key": "ctrl+y",
+        "mac": "cmd+shift+z",
+        "command": "keypress-notifications.wrapper.redo",
+        "when": "editorFocus"
+      },
+      {
+        "key": "ctrl+a",
+        "mac": "cmd+a",
+        "command": "keypress-notifications.wrapper.editor_action_selectAll",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "ctrl+f",
+        "mac": "cmd+f",
+        "command": "keypress-notifications.wrapper.actions_find",
+        "when": "editorFocus"
+      },
+      {
+        "key": "ctrl+h",
+        "mac": "cmd+h",
+        "command": "keypress-notifications.wrapper.editor_action_startFindReplaceAction",
+        "when": "editorFocus && !editorReadonly"
+      },
+      {
+        "key": "alt+up",
+        "command": "keypress-notifications.wrapper.editor_action_moveLinesUpAction",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "alt+down",
+        "command": "keypress-notifications.wrapper.editor_action_moveLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "shift+alt+up",
+        "command": "keypress-notifications.wrapper.editor_action_copyLinesUpAction",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "shift+alt+down",
+        "command": "keypress-notifications.wrapper.editor_action_copyLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "ctrl+shift+k",
+        "mac": "cmd+shift+k",
+        "command": "keypress-notifications.wrapper.editor_action_deleteLines",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "ctrl+.",
+        "mac": "cmd+.",
+        "command": "keypress-notifications.wrapper.editor_action_quickFix",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "key": "ctrl+\\",
+        "mac": "cmd+\\",
+        "command": "keypress-notifications.wrapper.workbench_action_splitEditor",
+        "when": ""
+      },
+      {
+        "key": "ctrl+shift+t",
+        "mac": "cmd+shift+t",
+        "command": "keypress-notifications.wrapper.workbench_action_reopenClosedEditor",
+        "when": ""
+      },
+      {
+        "key": "ctrl+shift+o",
+        "mac": "cmd+shift+o",
+        "command": "keypress-notifications.wrapper.workbench_action_gotoSymbol",
+        "when": ""
+      },
+      {
+        "key": "ctrl+,",
+        "mac": "cmd+,",
+        "command": "keypress-notifications.wrapper.workbench_action_openSettings",
+        "when": ""
+      },
+      {
+        "key": "ctrl+shift+g",
+        "mac": "cmd+shift+g",
+        "command": "keypress-notifications.wrapper.workbench_view_scm",
+        "when": ""
+      },
+      {
+        "key": "ctrl+shift+x",
+        "mac": "cmd+shift+x",
+        "command": "keypress-notifications.wrapper.workbench_view_extensions",
+        "when": ""
+      },
+      {
+        "key": "ctrl+shift+d",
+        "mac": "cmd+shift+d",
+        "command": "keypress-notifications.wrapper.workbench_view_debug",
+        "when": ""
+      },
+      {
+        "key": "ctrl+shift+m",
+        "mac": "cmd+shift+m",
+        "command": "keypress-notifications.wrapper.workbench_actions_view_problems",
+        "when": ""
+      },
+      {
+        "key": "ctrl+shift+`",
+        "command": "keypress-notifications.wrapper.workbench_action_terminal_new",
+        "when": ""
       }
     ]
   },
