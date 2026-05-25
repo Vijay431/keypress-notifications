@@ -113,7 +113,7 @@ flowchart TD
     C --> D["EnableCommand"]
     C --> E["DisableCommand"]
     C --> F["ShowOutputChannelCommand"]
-    B --> G["KeypressService\nwraps 19 known commands\nshows notifications"]
+    B --> G["KeypressService\nwraps 42 known commands\nshows notifications"]
     B --> H["ConfigurationService\nsettings & change events"]
     B --> I["AccessibilityService\nscreen reader announcements"]
 ```
@@ -144,19 +144,48 @@ flowchart TD
 
 | Service               | Source File                               | Purpose                                                     |
 | --------------------- | ----------------------------------------- | ----------------------------------------------------------- |
-| KeypressService       | `src/services/KeypressService.ts`         | Wraps 19 known VS Code commands; shows notifications        |
+| KeypressService       | `src/services/KeypressService.ts`         | Wraps 42 known VS Code commands across editor, Explorer, and workbench; shows notifications |
 | ConfigurationService  | `src/services/ConfigurationService.ts`    | VS Code settings access and change events                   |
 | AccessibilityService  | `src/services/AccessibilityService.ts`    | Screen reader announcements and ARIA helpers                |
 
-### Keybinding Wrappers (19)
+### Keybinding Wrappers (42)
 
-The core feature: `KeypressService` registers wrapper commands for exactly 19 known VS Code commands. When a user triggers one of these keybindings, the wrapper executes the original command and shows a VS Code notification.
+The core feature: `KeypressService` registers wrapper commands for a curated set of known VS Code commands. When a user triggers one of these keybindings, the wrapper executes the original command and shows a VS Code notification. `package.json` `contributes.keybindings` is the canonical list; `COMMAND_KEY_MAP` in `KeypressService.ts` maps each command ID to its human-readable key label.
+
+**Editor**
 
 | Shortcut              | Wrapped Command                                            |
 | --------------------- | ---------------------------------------------------------- |
 | Ctrl+C / Cmd+C        | `editor.action.clipboardCopyAction`                        |
 | Ctrl+X / Cmd+X        | `editor.action.clipboardCutAction`                         |
 | Ctrl+V / Cmd+V        | `editor.action.clipboardPasteAction`                       |
+| Ctrl+Z / Cmd+Z        | `undo`                                                     |
+| Ctrl+Y / Cmd+Shift+Z  | `redo`                                                     |
+| Ctrl+A / Cmd+A        | `editor.action.selectAll`                                  |
+| Ctrl+F / Cmd+F        | `actions.find`                                             |
+| Ctrl+H / Cmd+H        | `editor.action.startFindReplaceAction`                     |
+| Alt+Up                | `editor.action.moveLinesUpAction`                          |
+| Alt+Down              | `editor.action.moveLinesDownAction`                        |
+| Shift+Alt+Up          | `editor.action.copyLinesUpAction`                          |
+| Shift+Alt+Down        | `editor.action.copyLinesDownAction`                        |
+| Ctrl+Shift+K          | `editor.action.deleteLines`                                |
+| Ctrl+. / Cmd+.        | `editor.action.quickFix`                                   |
+| Shift+Alt+F           | `editor.action.formatDocument`                             |
+| Ctrl+/  / Cmd+/       | `editor.action.commentLine`                                |
+| Ctrl+D / Cmd+D        | `editor.action.addSelectionToNextFindMatch`                |
+
+**Explorer**
+
+| Shortcut              | Wrapped Command                                            |
+| --------------------- | ---------------------------------------------------------- |
+| Ctrl+C / Cmd+C        | `filesExplorer.copy`  (when: `filesExplorerFocus`)         |
+| Ctrl+X / Cmd+X        | `filesExplorer.cut`   (when: `filesExplorerFocus`)         |
+| Ctrl+V / Cmd+V        | `filesExplorer.paste` (when: `filesExplorerFocus`)         |
+
+**Workbench / navigation**
+
+| Shortcut              | Wrapped Command                                            |
+| --------------------- | ---------------------------------------------------------- |
 | Ctrl+Shift+P          | `workbench.action.showCommands`                            |
 | Ctrl+P / Cmd+P        | `workbench.action.quickOpen`                               |
 | Ctrl+S / Cmd+S        | `workbench.action.files.save`                              |
@@ -170,9 +199,20 @@ The core feature: `KeypressService` registers wrapper commands for exactly 19 kn
 | Ctrl+J / Cmd+J        | `workbench.action.togglePanel`                             |
 | Ctrl+W / Cmd+W        | `workbench.action.closeActiveEditor`                       |
 | Ctrl+Shift+N          | `workbench.action.newWindow`                               |
-| Shift+Alt+F           | `editor.action.formatDocument`                             |
-| Ctrl+/  / Cmd+/       | `editor.action.commentLine`                                |
-| Ctrl+D / Cmd+D        | `editor.action.addSelectionToNextFindMatch`                |
+| Ctrl+\\ / Cmd+\\      | `workbench.action.splitEditor`                             |
+| Ctrl+Shift+T          | `workbench.action.reopenClosedEditor`                      |
+| Ctrl+Shift+O          | `workbench.action.gotoSymbol`                              |
+| Ctrl+, / Cmd+,        | `workbench.action.openSettings`                            |
+| Ctrl+Shift+G          | `workbench.view.scm`                                       |
+| Ctrl+Shift+X          | `workbench.view.extensions`                                |
+| Ctrl+Shift+D          | `workbench.view.debug`                                     |
+| Ctrl+Shift+M          | `workbench.actions.view.problems`                          |
+
+**Terminal**
+
+| Shortcut              | Wrapped Command                                            |
+| --------------------- | ---------------------------------------------------------- |
+| Ctrl+Shift+`          | `workbench.action.terminal.new`                            |
 
 ---
 
@@ -180,12 +220,12 @@ The core feature: `KeypressService` registers wrapper commands for exactly 19 kn
 
 ### KeypressService — Bounded Wrapper Registration
 
-`KeypressService` registers wrapper commands for a fixed set of 19 known commands (listed above). The wrapper pattern:
+`KeypressService` registers wrapper commands for a curated set of 42 known commands (see the Keybinding Wrappers tables above). The wrapper pattern:
 
-1. A `keypress-notifications.wrapper.<command_id_with_dots_replaced>` command is registered.
+1. A `keypress-notifications.wrapper.<command_id_with_dots_replaced_by_underscores>` command is registered.
 2. When triggered, it executes the original command via `vscode.commands.executeCommand`.
-3. It then shows a `vscode.window.showInformationMessage` notification with the shortcut key label.
-4. Registration is bounded to exactly these 19 commands — not all VS Code commands.
+3. It then shows a `vscode.window.showInformationMessage` notification with the shortcut key label (derived from `COMMAND_KEY_MAP`).
+4. Registration is bounded to this curated set — not all VS Code commands. To add coverage: add an entry to `COMMAND_KEY_MAP` in `KeypressService.ts` and a matching entry in `package.json` `contributes.keybindings`.
 
 ### DI Container Pattern
 

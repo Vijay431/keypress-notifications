@@ -23,6 +23,7 @@ export class KeypressService implements IKeypressService {
   private readonly pendingTimers = new Set<ReturnType<typeof setTimeout>>();
 
   private static readonly COMMAND_KEY_MAP: Record<string, string> = {
+    // Original 19
     'editor.action.clipboardCopyAction': 'Ctrl+C',
     'editor.action.clipboardCutAction': 'Ctrl+X',
     'editor.action.clipboardPasteAction': 'Ctrl+V',
@@ -42,6 +43,33 @@ export class KeypressService implements IKeypressService {
     'editor.action.formatDocument': 'Shift+Alt+F',
     'editor.action.commentLine': 'Ctrl+/',
     'editor.action.addSelectionToNextFindMatch': 'Ctrl+D',
+    // Explorer
+    'filesExplorer.copy': 'Ctrl+C',
+    'filesExplorer.cut': 'Ctrl+X',
+    'filesExplorer.paste': 'Ctrl+V',
+    // Editing
+    'undo': 'Ctrl+Z',
+    'redo': 'Ctrl+Y',
+    'editor.action.selectAll': 'Ctrl+A',
+    'actions.find': 'Ctrl+F',
+    'editor.action.startFindReplaceAction': 'Ctrl+H',
+    'editor.action.moveLinesUpAction': 'Alt+Up',
+    'editor.action.moveLinesDownAction': 'Alt+Down',
+    'editor.action.copyLinesUpAction': 'Shift+Alt+Up',
+    'editor.action.copyLinesDownAction': 'Shift+Alt+Down',
+    'editor.action.deleteLines': 'Ctrl+Shift+K',
+    'editor.action.quickFix': 'Ctrl+.',
+    // Workbench / navigation
+    'workbench.action.splitEditor': 'Ctrl+\\',
+    'workbench.action.reopenClosedEditor': 'Ctrl+Shift+T',
+    'workbench.action.gotoSymbol': 'Ctrl+Shift+O',
+    'workbench.action.openSettings': 'Ctrl+,',
+    'workbench.view.scm': 'Ctrl+Shift+G',
+    'workbench.view.extensions': 'Ctrl+Shift+X',
+    'workbench.view.debug': 'Ctrl+Shift+D',
+    'workbench.actions.view.problems': 'Ctrl+Shift+M',
+    // Terminal
+    'workbench.action.terminal.new': 'Ctrl+Shift+`',
   };
 
   private constructor(

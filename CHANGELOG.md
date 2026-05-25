@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- **KeypressService:** expanded from 19 to 42 wrapped commands, adding coverage across the Explorer and workbench. New notifications fire for: Explorer copy/cut/paste (`filesExplorer.*`), undo/redo, select-all, find, find-replace, move/copy lines up/down, delete line, quick-fix, split editor, reopen closed editor, go to symbol, open settings, SCM view, Extensions view, Debug view, Problems view, and new terminal.
+
 ### Changed
 - **License:** changed from Proprietary to MIT (open source).
 - **ExtensionManager:** services now injected via constructor instead of DI lazy getters, matching project DI conventions; double-dispose on `context.subscriptions` removed; dev-mode banner now uses `context.extensionMode === ExtensionMode.Development` instead of `process.env.NODE_ENV`.

@@ -2,7 +2,7 @@
 
 [![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/VijayGangatharan.keypress-notifications?label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
 
-A VS Code extension that shows a notification whenever you press one of the 19 most common keyboard shortcuts — handy for demos, pair programming, and learning new keybindings.
+A VS Code extension that shows a notification whenever you press one of the 42 most common keyboard shortcuts — handy for demos, pair programming, and learning new keybindings.
 
 ---
 
@@ -12,14 +12,44 @@ A VS Code extension that shows a notification whenever you press one of the 19 m
 
 Every time you trigger one of the supported shortcuts, a VS Code information notification appears — e.g. **"You've pressed Ctrl+C"**.
 
-Supported shortcuts:
+Supported shortcuts (Ctrl = Cmd on macOS):
+
+**Editor**
 
 | Shortcut | Action |
 |---|---|
 | Ctrl+C | Copy |
 | Ctrl+X | Cut |
 | Ctrl+V | Paste |
+| Ctrl+Z | Undo |
+| Ctrl+Y | Redo |
+| Ctrl+A | Select All |
+| Ctrl+F | Find |
+| Ctrl+H | Find & Replace |
+| Alt+Up | Move Line Up |
+| Alt+Down | Move Line Down |
+| Shift+Alt+Up | Copy Line Up |
+| Shift+Alt+Down | Copy Line Down |
+| Ctrl+Shift+K | Delete Line |
+| Ctrl+. | Quick Fix |
+| Shift+Alt+F | Format Document |
+| Ctrl+/ | Toggle Line Comment |
+| Ctrl+D | Add Selection to Next Match |
+
+**Explorer**
+
+| Shortcut | Action |
+|---|---|
+| Ctrl+C | Copy File/Folder |
+| Ctrl+X | Cut File/Folder |
+| Ctrl+V | Paste File/Folder |
+
+**Workbench / navigation**
+
+| Shortcut | Action |
+|---|---|
 | Ctrl+S | Save |
+| Ctrl+K S | Save All |
 | Ctrl+Shift+P | Command Palette |
 | Ctrl+P | Quick Open |
 | Ctrl+Shift+F | Find in Files |
@@ -31,12 +61,20 @@ Supported shortcuts:
 | Ctrl+Shift+N | New Window |
 | Ctrl+N | New File |
 | Ctrl+O | Open File |
-| Shift+Alt+F | Format Document |
-| Ctrl+/ | Toggle Line Comment |
-| Ctrl+D | Add Selection to Next Match |
-| Ctrl+K S | Save All |
+| Ctrl+\\ | Split Editor |
+| Ctrl+Shift+T | Reopen Closed Editor |
+| Ctrl+Shift+O | Go to Symbol |
+| Ctrl+, | Open Settings |
+| Ctrl+Shift+G | Source Control |
+| Ctrl+Shift+X | Extensions |
+| Ctrl+Shift+D | Debug |
+| Ctrl+Shift+M | Problems |
 
-On macOS, the extension uses Cmd-based variants automatically.
+**Terminal**
+
+| Shortcut | Action |
+|---|---|
+| Ctrl+Shift+\` | New Terminal |
 
 ### Configuration
 
