@@ -16,6 +16,7 @@
 - **CI workflows:** `persist-credentials: false` added to all `actions/checkout` steps (ci, release, all-contributors, labels-sync, pr-commit-size) to prevent token persistence.
 - **pr-commit-size:** `github.base_ref` moved into an `env:` variable to eliminate template-injection code-execution risk.
 - **release:** workflow-level `contents: write` permission narrowed to `contents: read`; `contents: write` promoted to the `create-release` job only.
+- **ci:** removed `cache: pnpm` from all `actions/setup-node` steps; restore-only jobs never run `pnpm install`, so setup-node's post-job store-save failed with `Path Validation Error` and broke the `Warm node_modules cache` matrix. `node_modules` (`actions/cache`, keyed on runner OS + Node version + `pnpm-lock.yaml`) is now the sole dependency cache.
 
 ### Tests
 - **extension.test.ts:** fixed `any` types, tautological assertion (`ext.isActive || true`), and replaced fixed `setTimeout` waits with a `waitFor()` polling helper to de-flake the integration suite.
@@ -30,6 +31,7 @@
 - Scheduled GitHub Actions cache cleanup removes caches not used for 7 days or more every 3 days at 08:00 IST.
 - pnpm-based daily security audit workflow (`security-audit.yml`) replaces the removed npm-based one; respects `pnpm-workspace.yaml` overrides so phantom high-severity reports no longer occur.
 - `audit` job in `ci.yml` runs `pnpm audit --audit-level=high` on every PR/push; `dependency-review` job blocks high-severity dependency introductions on pull requests.
+- `size/override` label added to `.github/labels.yml` — the documented escape hatch for the PR commit-size hard-fail on intentionally large PRs.
 
 ### Removed
 - npm-based `security-audit.yml` (was on `main`, generated false-positive daily alerts because npm ignores pnpm overrides).
