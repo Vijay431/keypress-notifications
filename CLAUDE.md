@@ -238,7 +238,7 @@ This project follows [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html). Pre-re
 - Community automation lives in `.github/workflows/stale.yml`, `.github/workflows/labels-sync.yml`, `.github/workflows/all-contributors.yml`, and `.github/workflows/cache-cleanup.yml`.
 - Release publishing requires `VSCE_PAT` and `OVSX_PAT`.
 
-CI and release workflows cache pnpm package data through `actions/setup-node` and warm `node_modules` through `actions/cache`. Keep cache keys tied to `pnpm-lock.yaml` so stale dependency installs do not leak across lockfile changes.
+CI caches dependencies solely by warming `node_modules` through `actions/cache`, keyed on `hashFiles('pnpm-lock.yaml')`. Do not enable `cache: pnpm` on `actions/setup-node` — restore-only jobs never run `pnpm install`, so its post-job store-save step fails with `Path Validation Error` (the pnpm store path never gets created). Keep cache keys tied to `pnpm-lock.yaml` so stale dependency installs do not leak across lockfile changes.
 
 ### How Release Detects Pre-release
 

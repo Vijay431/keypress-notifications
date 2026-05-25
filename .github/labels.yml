@@ -49,3 +49,6 @@
 - name: refactoring
   color: 'd4c5f9'
   description: Code quality or architecture improvement.
+- name: size/override
+  color: 'ededed'
+  description: Bypass the PR commit-size hard-fail for intentionally large PRs.

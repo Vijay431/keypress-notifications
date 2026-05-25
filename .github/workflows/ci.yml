@@ -36,10 +36,6 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node-version }}
-          cache: pnpm
-          cache-dependency-path: |
-            pnpm-lock.yaml
-            package.json
 
       - name: Cache node_modules
         id: cache-node-modules
@@ -71,10 +67,6 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '22.x'
-          cache: pnpm
-          cache-dependency-path: |
-            pnpm-lock.yaml
-            package.json
 
       - name: Restore node_modules
         uses: actions/cache/restore@v5
@@ -105,10 +97,6 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '22.x'
-          cache: pnpm
-          cache-dependency-path: |
-            pnpm-lock.yaml
-            package.json
 
       - name: Restore node_modules
         uses: actions/cache/restore@v5
@@ -139,10 +127,6 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '22.x'
-          cache: pnpm
-          cache-dependency-path: |
-            pnpm-lock.yaml
-            package.json
 
       - name: Install System Dependencies
         run: sudo apt-get install -y xvfb
@@ -179,10 +163,6 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '22.x'
-          cache: pnpm
-          cache-dependency-path: |
-            pnpm-lock.yaml
-            package.json
 
       - name: Restore node_modules
         uses: actions/cache/restore@v5
@@ -234,10 +214,6 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node-version }}
-          cache: pnpm
-          cache-dependency-path: |
-            pnpm-lock.yaml
-            package.json
 
       - name: Restore node_modules
         uses: actions/cache/restore@v5
