@@ -20,7 +20,7 @@
 
 ### Tests
 - **extension.test.ts:** fixed `any` types, tautological assertion (`ext.isActive || true`), and replaced fixed `setTimeout` waits with a `waitFor()` polling helper to de-flake the integration suite.
-- **DIContainer.test.ts / ExtensionManager.test.ts:** all `it()` descriptions now start with `should ` per project convention.
+- **DIContainer.test.ts / ExtensionManager.test.ts:** all `it()` descriptions now start with `should` per project convention.
 - **tsconfig.test.json:** `src/**/*` removed from `include` so relaxed test compiler flags no longer apply to source files.
 - `logo.png` recompressed: resized 1120×1120 → 256×256 and palette-quantized (~102 KB → ~5 KB).
 - `vsce`/`ovsx` `dependencies` set to `false`; extension is fully esbuild-bundled with no runtime deps so vsce no longer scans node_modules during packaging.
