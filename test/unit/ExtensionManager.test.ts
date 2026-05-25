@@ -20,9 +20,9 @@ vi.mock('vscode', () => ({
     onDidChangeConfiguration: () => ({ dispose: vi.fn() }),
   },
   ConfigurationTarget: { Global: 1 },
+  ExtensionMode: { Development: 1, Test: 2, Production: 3 },
 }));
 
-// We'll provide mock services via the DI container mock
 const mockLogger = {
   debug: vi.fn(),
   info: vi.fn(),
@@ -65,49 +65,30 @@ const mockAccessibilityService = {
   announceError: vi.fn(async () => {}),
 };
 
-vi.mock('../../src/di', () => ({
-  TYPES: {
-    Logger: Symbol('Logger'),
-    ConfigurationService: Symbol('ConfigurationService'),
-    KeypressService: Symbol('KeypressService'),
-    AccessibilityService: Symbol('AccessibilityService'),
-  },
-  getService: vi.fn((token: symbol) => {
-    const name = token.toString();
-    if (name.includes('Logger')) return mockLogger;
-    if (name.includes('ConfigurationService')) return mockConfigService;
-    if (name.includes('KeypressService')) return mockKeypressService;
-    if (name.includes('AccessibilityService')) return mockAccessibilityService;
-    throw new Error(`Unknown token: ${name}`);
-  }),
-}));
-
 describe('ExtensionManager', () => {
-  let context: { subscriptions: { dispose(): void }[] };
+  let context: { subscriptions: { dispose(): void }[]; extensionMode: number };
 
   beforeEach(() => {
     vi.clearAllMocks();
     configChangedHandler = undefined;
-    context = { subscriptions: [] };
-    // Restore default mock implementations
+    context = { subscriptions: [], extensionMode: 3 }; // Production mode by default
     mockConfigService.isEnabled.mockReturnValue(true);
     mockConfigService.getConfiguration.mockReturnValue({ enabled: true, minimumKeys: 2, excludedCommands: [], showCommandName: false, logLevel: 1 });
     mockKeypressService.initialize.mockResolvedValue(undefined);
     mockRegisterCommand.mockImplementation((_id: string, _handler: unknown) => ({ dispose: vi.fn() }));
   });
 
-  it('activate(context) calls keypressService.initialize()', async () => {
+  it('should call keypressService.initialize() on activate', async () => {
     const { ExtensionManager } = await import('../../src/managers/ExtensionManager');
-    const manager = new ExtensionManager();
+    const manager = new ExtensionManager(mockLogger, mockConfigService, mockKeypressService, mockAccessibilityService);
     await manager.activate(context);
     expect(mockKeypressService.initialize).toHaveBeenCalledOnce();
   });
 
-  it('activate(context) registers 3 commands via CommandRegistry', async () => {
+  it('should register 3 commands via CommandRegistry on activate', async () => {
     const { ExtensionManager } = await import('../../src/managers/ExtensionManager');
-    const manager = new ExtensionManager();
+    const manager = new ExtensionManager(mockLogger, mockConfigService, mockKeypressService, mockAccessibilityService);
     await manager.activate(context);
-    // CommandRegistry calls vscode.commands.registerCommand for each command
     expect(mockRegisterCommand).toHaveBeenCalledTimes(3);
     const registeredIds = mockRegisterCommand.mock.calls.map((c) => c[0]);
     expect(registeredIds).toContain('keypress-notifications.showOutputChannel');
@@ -115,37 +96,36 @@ describe('ExtensionManager', () => {
     expect(registeredIds).toContain('keypress-notifications.disable');
   });
 
-  it('activate(context) pushes disposables to context.subscriptions', async () => {
+  it('should push disposables to context.subscriptions on activate', async () => {
     const { ExtensionManager } = await import('../../src/managers/ExtensionManager');
-    const manager = new ExtensionManager();
+    const manager = new ExtensionManager(mockLogger, mockConfigService, mockKeypressService, mockAccessibilityService);
     await manager.activate(context);
     expect(context.subscriptions.length).toBeGreaterThan(0);
   });
 
-  it('deactivate() logs "Deactivating..." via logger.info', async () => {
+  it('should log "Deactivating..." on deactivate', async () => {
     const { ExtensionManager } = await import('../../src/managers/ExtensionManager');
-    const manager = new ExtensionManager();
+    const manager = new ExtensionManager(mockLogger, mockConfigService, mockKeypressService, mockAccessibilityService);
     await manager.activate(context);
     vi.clearAllMocks();
     manager.deactivate();
     expect(mockLogger.info).toHaveBeenCalledWith(expect.stringContaining('Deactivating'));
   });
 
-  it('config change triggers keypressService.enable() when isEnabled returns true', async () => {
+  it('should call keypressService.enable() on config change when isEnabled is true', async () => {
     const { ExtensionManager } = await import('../../src/managers/ExtensionManager');
-    const manager = new ExtensionManager();
+    const manager = new ExtensionManager(mockLogger, mockConfigService, mockKeypressService, mockAccessibilityService);
     await manager.activate(context);
     mockConfigService.isEnabled.mockReturnValue(true);
     expect(configChangedHandler).toBeDefined();
     configChangedHandler!();
-    // allow async microtasks
     await new Promise(r => setTimeout(r, 10));
     expect(mockKeypressService.enable).toHaveBeenCalled();
   });
 
-  it('config change triggers keypressService.disable() when isEnabled returns false', async () => {
+  it('should call keypressService.disable() on config change when isEnabled is false', async () => {
     const { ExtensionManager } = await import('../../src/managers/ExtensionManager');
-    const manager = new ExtensionManager();
+    const manager = new ExtensionManager(mockLogger, mockConfigService, mockKeypressService, mockAccessibilityService);
     await manager.activate(context);
     mockConfigService.isEnabled.mockReturnValue(false);
     expect(configChangedHandler).toBeDefined();
@@ -154,10 +134,10 @@ describe('ExtensionManager', () => {
     expect(mockKeypressService.disable).toHaveBeenCalled();
   });
 
-  it('activate() shows error message and rethrows when keypressService.initialize() throws', async () => {
+  it('should show error message and rethrow when keypressService.initialize() throws', async () => {
     mockKeypressService.initialize.mockRejectedValue(new Error('init failed'));
     const { ExtensionManager } = await import('../../src/managers/ExtensionManager');
-    const manager = new ExtensionManager();
+    const manager = new ExtensionManager(mockLogger, mockConfigService, mockKeypressService, mockAccessibilityService);
     await expect(manager.activate(context)).rejects.toThrow('init failed');
     expect(mockShowErrorMessage).toHaveBeenCalledWith(
       expect.stringContaining('Failed to activate'),

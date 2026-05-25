@@ -18,8 +18,7 @@
   },
   "include": [
     "test/runTests.ts",
-    "test/suite/**/*",
-    "src/**/*"
+    "test/suite/**/*"
   ],
   "exclude": ["node_modules"]
 }

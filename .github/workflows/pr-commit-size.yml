@@ -18,14 +18,17 @@ jobs:
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Check PR Size
         id: check
         shell: bash
+        env:
+          BASE_REF: ${{ github.base_ref }}
         run: |
           MAX_FILES=10
           MAX_LINES=400
-          STATS=$(git diff --numstat origin/${{ github.base_ref }}...HEAD)
+          STATS=$(git diff --numstat "origin/${BASE_REF}...HEAD")
           # Build exclusion pattern from scripts/commit-size-excludes.txt (skip blank lines and # comments)
           EXCLUDES_FILE="scripts/commit-size-excludes.txt"
           if [ -f "$EXCLUDES_FILE" ]; then

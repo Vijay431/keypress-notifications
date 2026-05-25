@@ -10,6 +10,7 @@ interface Migration {
 
 export class ConfigMigrator {
   private static readonly CURRENT_VERSION = 1;
+  private static readonly MIGRATION_VERSION_KEY = '__kn_migrationVersion';
 
   private static readonly migrations: Migration[] = [
     // Future migrations added here
@@ -20,7 +21,7 @@ export class ConfigMigrator {
     config: Record<string, unknown>,
     logger: ILogger,
   ): Record<string, unknown> {
-    const storedVersion = (config['__kn_migrationVersion'] as number | undefined) ?? 0;
+    const storedVersion = (config[ConfigMigrator.MIGRATION_VERSION_KEY] as number | undefined) ?? 0;
 
     if (storedVersion >= ConfigMigrator.CURRENT_VERSION) {
       return config;
@@ -39,7 +40,7 @@ export class ConfigMigrator {
       }
     }
 
-    migrated['__kn_migrationVersion'] = ConfigMigrator.CURRENT_VERSION;
+    migrated[ConfigMigrator.MIGRATION_VERSION_KEY] = ConfigMigrator.CURRENT_VERSION;
     return migrated;
   }
 

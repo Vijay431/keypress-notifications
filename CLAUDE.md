@@ -193,6 +193,7 @@ The core feature: `KeypressService` registers wrapper commands for exactly 19 kn
 - Services are instantiated via static factory methods (`ServiceName.create(...)`) or `ServiceName.getInstance()` — not `new ServiceName()`.
 - DI tokens are `symbol` constants defined in `src/di/types.ts`; interfaces live in `src/di/interfaces/`.
 - Child containers (`container.createChild()`) are supported for test isolation.
+- **`ExtensionManager`** receives its 4 service dependencies (`ILogger`, `IConfigurationService`, `IKeypressService`, `IAccessibilityService`) via constructor injection. `extension.ts` resolves them from the container using `getService<T>(TYPES.X)` after `initializeContainer()`. Do not use lazy getters (`get serviceName()`) that call `getService` inside the class.
 
 ### Command Handler Pattern
 
