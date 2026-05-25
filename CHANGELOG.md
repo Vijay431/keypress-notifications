@@ -1,25 +1,5 @@
 # 📝 Changelog
 
-## [Unreleased]
-
-### Changed
-
-- **deps:** bump `eslint` from `^9.31.0` to `^10.4.0` (aligns with existing `@eslint/js ^10.0.0` peer)
-- **deps:** bump `lint-staged` from `^15.0.0` to `^17.0.5`
-- **deps:** bump `eslint-plugin-security` from `^3.0.1` to `^4.0.0`
-- **deps:** bump `esbuild` from `^0.25.8` to `^0.28.0`
-- **deps:** bump `eslint-plugin-mocha` from `^11.1.0` to `^11.3.0`
-- **deps:** bump `tsx` from `^4.19.2` to `^4.22.3`
-- **deps:** bump `@vscode/test-cli` from `^0.0.11` to `^0.0.12`
-- **deps:** bump `mocha` from `^11.7.1` to `^11.7.6`
-- **ci:** bump `pnpm/action-setup` from v5 to v6 across all workflows
-- **ci:** bump `actions/upload-artifact` to v7 in `release.yml` and `security-audit.yml`
-- **ci:** bump `actions/download-artifact` to v8 in `release.yml`
-- **ci:** bump `actions/github-script` to v9 in `security-audit.yml`
-- **ci:** bump `actions/dependency-review-action` to v5 in `ci.yml`
-
----
-
 ## [2.0.0]
 
 ### Added
@@ -43,6 +23,19 @@
 - **License:** changed from Proprietary to MIT (open source).
 - **ExtensionManager:** services now injected via constructor instead of DI lazy getters, matching project DI conventions; double-dispose on `context.subscriptions` removed; dev-mode banner now uses `context.extensionMode === ExtensionMode.Development` instead of `process.env.NODE_ENV`.
 - **NOTICE.md:** dependency license statement updated to accurately reflect multi-license devDependency set (MIT, ISC, Apache-2.0, BSD, BlueOak-1.0.0, EPL-2.0).
+- **deps:** bump `eslint` from `^9.31.0` to `^10.4.0` (aligns with existing `@eslint/js ^10.0.0` peer)
+- **deps:** bump `lint-staged` from `^15.0.0` to `^17.0.5`
+- **deps:** bump `eslint-plugin-security` from `^3.0.1` to `^4.0.0`
+- **deps:** bump `esbuild` from `^0.25.8` to `^0.28.0`
+- **deps:** bump `eslint-plugin-mocha` from `^11.1.0` to `^11.3.0`
+- **deps:** bump `tsx` from `^4.19.2` to `^4.22.3`
+- **deps:** bump `@vscode/test-cli` from `^0.0.11` to `^0.0.12`
+- **deps:** bump `mocha` from `^11.7.1` to `^11.7.6`
+- **ci:** bump `pnpm/action-setup` from v5 to v6 across all workflows
+- **ci:** bump `actions/upload-artifact` to v7 in `release.yml` and `security-audit.yml`
+- **ci:** bump `actions/download-artifact` to v8 in `release.yml`
+- **ci:** bump `actions/github-script` to v9 in `security-audit.yml`
+- **ci:** bump `actions/dependency-review-action` to v5 in `ci.yml`
 
 ### Fixed
 
