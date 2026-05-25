@@ -6,6 +6,7 @@
 - **KeypressService:** expanded from 19 to 42 wrapped commands, adding coverage across the Explorer and workbench. New notifications fire for: Explorer copy/cut/paste (`filesExplorer.*`), undo/redo, select-all, find, find-replace, move/copy lines up/down, delete line, quick-fix, split editor, reopen closed editor, go to symbol, open settings, SCM view, Extensions view, Debug view, Problems view, and new terminal.
 
 ### Changed
+- **Docs:** README and Marketplace metadata rewritten for discoverability — pain-point pitch, install badges, demo media slot, "Who it's for" use cases, expanded keywords, `Education` category, gallery banner.
 - **License:** changed from Proprietary to MIT (open source).
 - **ExtensionManager:** services now injected via constructor instead of DI lazy getters, matching project DI conventions; double-dispose on `context.subscriptions` removed; dev-mode banner now uses `context.extensionMode === ExtensionMode.Development` instead of `process.env.NODE_ENV`.
 - **NOTICE.md:** dependency license statement updated to accurately reflect multi-license devDependency set (MIT, ISC, Apache-2.0, BSD, BlueOak-1.0.0, EPL-2.0).

@@ -1,7 +1,7 @@
 {
   "name": "keypress-notifications",
   "displayName": "Keypress Notifications",
-  "description": "Simple VS Code extension that shows notifications when you execute common multi-key combinations (Ctrl+C, Ctrl+Shift+P, etc.).",
+  "description": "Never lose track of which shortcut you pressed. Keypress Notifications shows an on-screen toast for 42 common VS Code keybindings — perfect for screencasts, tutorials, pair programming, streaming, accessibility, and learning shortcuts.",
   "version": "2.0.0",
   "license": "MIT",
   "publisher": "VijayGangatharan",
@@ -19,18 +19,36 @@
   },
   "homepage": "https://github.com/Vijay431/keypress-notifications#readme",
   "keywords": [
-    "vscode",
-    "extension",
     "keypress",
     "notifications",
-    "clipboard",
+    "keybinding",
+    "shortcut",
+    "hotkey",
+    "screencast",
+    "screen-recording",
+    "tutorial",
+    "teaching",
+    "presentation",
+    "pair-programming",
+    "live-coding",
+    "streaming",
+    "accessibility",
+    "screen-reader",
+    "cheatsheet",
+    "toast",
     "productivity",
-    "typescript",
-    "enterprise"
+    "vscode",
+    "extension"
   ],
   "categories": [
-    "Other"
+    "Other",
+    "Education"
   ],
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "qna": "marketplace",
   "engines": {
     "node": ">=22.13.0",
     "vscode": ">=1.111.0",
