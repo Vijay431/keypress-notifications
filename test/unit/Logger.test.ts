@@ -21,7 +21,7 @@ describe('Logger', () => {
     vi.clearAllMocks();
     // Reset the singleton between tests
     const { Logger } = await import('../../src/utils/logger');
-    (Logger as unknown as { instance: undefined }).instance = undefined;
+    Logger._resetInstance();
   });
 
   it('getInstance() returns a singleton', async () => {

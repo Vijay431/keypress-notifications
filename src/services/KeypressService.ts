@@ -22,7 +22,7 @@ export class KeypressService implements IKeypressService {
   private readonly disposables: vscode.Disposable[] = [];
   private readonly pendingTimers = new Set<ReturnType<typeof setTimeout>>();
 
-  private readonly commandKeyMap: Record<string, string> = {
+  private static readonly COMMAND_KEY_MAP: Record<string, string> = {
     'editor.action.clipboardCopyAction': 'Ctrl+C',
     'editor.action.clipboardCutAction': 'Ctrl+X',
     'editor.action.clipboardPasteAction': 'Ctrl+V',
@@ -96,7 +96,7 @@ export class KeypressService implements IKeypressService {
    * Discover VS Code commands and create dynamic wrappers
    */
   private async discoverAndWrapCommands(): Promise<void> {
-    const knownCommands = Object.keys(this.commandKeyMap);
+    const knownCommands = Object.keys(KeypressService.COMMAND_KEY_MAP);
 
     this.logger.debug(`Registering wrappers for ${knownCommands.length} known shortcut commands`);
 
@@ -170,7 +170,7 @@ export class KeypressService implements IKeypressService {
   private inferKeysFromCommand(commandId: string): string {
     // Check if we have a direct mapping
     // eslint-disable-next-line security/detect-object-injection
-    const mapping = this.commandKeyMap[commandId];
+    const mapping = KeypressService.COMMAND_KEY_MAP[commandId];
     if (mapping) {
       return this.adjustForPlatform(mapping);
     }

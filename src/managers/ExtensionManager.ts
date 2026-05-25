@@ -87,7 +87,8 @@ export class ExtensionManager {
 
       this.logger.info('Keypress Notifications extension activated successfully');
 
-      if (context.extensionMode === vscode.ExtensionMode.Development && this.configService.isEnabled()) {
+      if (context.extensionMode === vscode.ExtensionMode.Development
+        && this.configService.isEnabled()) {
         vscode.window.showInformationMessage('Keypress Notifications extension is now active');
       }
     } catch (error) {
@@ -116,14 +117,5 @@ export class ExtensionManager {
 
   public deactivate(): void {
     this.logger.info('Deactivating Keypress Notifications extension');
-    this.dispose();
-  }
-
-  private dispose(): void {
-    this.commandRegistry?.dispose();
-    for (const d of this.disposables) {
-      try { d.dispose(); } catch { /* ignore */ }
-    }
-    this.disposables.length = 0;
   }
 }

@@ -8,6 +8,9 @@
 - **NOTICE.md:** dependency license statement updated to accurately reflect multi-license devDependency set (MIT, ISC, Apache-2.0, BSD, BlueOak-1.0.0, EPL-2.0).
 
 ### Fixed
+- **ExtensionManager:** removed redundant `dispose()` method that double-disposed `commandRegistry` and all services already managed by `context.subscriptions`.
+- **KeypressService:** `commandKeyMap` hoisted to `private static readonly COMMAND_KEY_MAP` to avoid per-instance allocation.
+- **Logger:** added `_resetInstance()` static method for test isolation, replacing unsafe `as unknown as` cast in unit tests.
 - **CommandRegistry:** `registerCommand` now disposes the existing `vscode.Disposable` before re-registering the same command ID, preventing a disposable leak.
 - **ConfigMigrator:** magic string `'__kn_migrationVersion'` hoisted to a `static readonly` class constant.
 - **CI workflows:** `persist-credentials: false` added to all `actions/checkout` steps (ci, release, all-contributors, labels-sync, pr-commit-size) to prevent token persistence.
