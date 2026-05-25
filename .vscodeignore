@@ -14,6 +14,7 @@ coverage/
 # ============================================
 node_modules/
 pnpm-lock.yaml
+pnpm-workspace.yaml
 
 # ============================================
 # Development & CI/CD Configuration
@@ -41,6 +42,7 @@ tsconfig.test.json
 # ============================================
 .vscode/
 .vscode-test/
+.vscode-test.mjs
 .vscodeignore
 .worktrees/
 .auto-claude/
@@ -53,6 +55,7 @@ tsconfig.test.json
 # ============================================
 *.vsix
 debug.log
+dist/meta.json
 
 # ============================================
 # Documentation & Content

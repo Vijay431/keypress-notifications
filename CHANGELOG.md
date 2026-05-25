@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Changed
+- `logo.png` recompressed: resized 1120×1120 → 256×256 and palette-quantized (~102 KB → ~5 KB).
+- `vsce`/`ovsx` `dependencies` set to `false`; extension is fully esbuild-bundled with no runtime deps so vsce no longer scans node_modules during packaging.
+- `dist/meta.json`, `pnpm-workspace.yaml`, and `.vscode-test.mjs` excluded from the `.vsix` via `.vscodeignore`; total package size drops from ~118 KB to ~20 KB.
+- Build output now prints a single standard budget warning (`⚠️  WARNING: bundle X KB exceeds budget Y KB (+Z KB)`) only when the bundle exceeds the 50 KB target; removed verbose under-budget message.
+
 ### Added
 - Scheduled GitHub Actions cache cleanup removes caches not used for 7 days or more every 3 days at 08:00 IST.
 - pnpm-based daily security audit workflow (`security-audit.yml`) replaces the removed npm-based one; respects `pnpm-workspace.yaml` overrides so phantom high-severity reports no longer occur.
