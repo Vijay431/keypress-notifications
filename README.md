@@ -5,11 +5,12 @@
 </p>
 
 [![CI](https://github.com/Vijay431/keypress-notifications/actions/workflows/ci.yml/badge.svg)](https://github.com/Vijay431/keypress-notifications/actions/workflows/ci.yml)
-[![VS Code Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/VijayGangatharan.keypress-notifications?label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
-[![VS Code Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/VijayGangatharan.keypress-notifications)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
-[![VS Code Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/VijayGangatharan.keypress-notifications)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
-[![Open VSX Version](https://img.shields.io/open-vsx/v/VijayGangatharan/keypress-notifications?label=Open%20VSX)](https://open-vsx.org/extension/VijayGangatharan/keypress-notifications)
+[![VS Code Marketplace](https://vsmarketplacebadges.dev/version-short/VijayGangatharan.keypress-notifications.svg)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
+[![Open VSX Registry](https://img.shields.io/open-vsx/v/VijayGangatharan/keypress-notifications)](https://open-vsx.org/extension/VijayGangatharan/keypress-notifications)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Installs](https://vsmarketplacebadges.dev/installs-short/VijayGangatharan.keypress-notifications.svg)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
+[![Downloads](https://vsmarketplacebadges.dev/downloads-short/VijayGangatharan.keypress-notifications.svg)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
+[![Rating](https://vsmarketplacebadges.dev/rating-short/VijayGangatharan.keypress-notifications.svg)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications&ssr=false#review-details)
 
 **Never lose track of which shortcut you just pressed.**
 
