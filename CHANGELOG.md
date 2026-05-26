@@ -19,6 +19,7 @@
 
 ### Changed
 
+- **CI:** matrix reduced from 30 jobs to 9 jobs: dropped macOS/Windows runners and VS Code `insiders` build variant. All jobs run on `ubuntu-latest` only. Extension has no native addons and ships a single `.vsix`, so multi-OS build runners provide no additional signal.
 - **Logo:** replaced extension icon with new neon-blue keyboard + notification design.
 - **Docs:** README and Marketplace metadata rewritten for discoverability — pain-point pitch, install badges, demo media slot, "Who it's for" use cases, expanded keywords, `Education` category, gallery banner.
 - **License:** changed from Proprietary to MIT (open source).
