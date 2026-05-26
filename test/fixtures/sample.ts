@@ -3,16 +3,16 @@
 
 // Interface definition - try copying this entire interface
 interface User {
-  readonly id: number;          // Select and copy this line
-  name: string;                 // Try cutting this property
-  email?: string;               // Test with optional properties
+  readonly id: number; // Select and copy this line
+  name: string; // Try cutting this property
+  email?: string; // Test with optional properties
   preferences: UserPreferences; // Complex type reference
 }
 
 // Type alias for testing
 type UserPreferences = {
-  theme: 'light' | 'dark';      // Union types for testing
-  notifications: boolean;       // Try copying boolean type
+  theme: 'light' | 'dark'; // Union types for testing
+  notifications: boolean; // Try copying boolean type
   language: string;
 };
 
@@ -26,41 +26,42 @@ interface Repository<T> {
 
 // Sample class with TypeScript features
 class UserService implements Repository<User> {
-  private users: User[] = [];   // Private field - try copying
-  
-  constructor(private logger: Console) { // Constructor parameter properties
+  private users: User[] = []; // Private field - try copying
+
+  constructor(private logger: Console) {
+    // Constructor parameter properties
     this.logger.log('UserService initialized');
   }
-  
+
   // Async method - test copying async/await syntax
   async findById(id: number): Promise<User | null> {
-    const user = this.users.find(u => u.id === id);
+    const user = this.users.find((u) => u.id === id);
     return user || null;
   }
-  
+
   // Method with destructuring - good for selection testing
   async save(user: User): Promise<User> {
     const { id, name } = user;
-    
+
     if (!name.trim()) {
       throw new Error('Name is required');
     }
-    
-    const existingIndex = this.users.findIndex(u => u.id === id);
+
+    const existingIndex = this.users.findIndex((u) => u.id === id);
     if (existingIndex >= 0) {
       this.users[existingIndex] = user;
     } else {
       this.users.push(user);
     }
-    
+
     return user;
   }
-  
+
   // Arrow function property - try copying this
   delete = async (id: number): Promise<void> => {
-    this.users = this.users.filter(u => u.id !== id);
-  }
-  
+    this.users = this.users.filter((u) => u.id !== id);
+  };
+
   async findAll(): Promise<User[]> {
     return [...this.users]; // Spread operator
   }
@@ -68,17 +69,14 @@ class UserService implements Repository<User> {
 
 // Enum for testing
 enum Status {
-  PENDING = 'pending',      // Try copying enum values
-  COMPLETED = 'completed',  // Test cutting and pasting enums
-  CANCELLED = 'cancelled'
+  PENDING = 'pending', // Try copying enum values
+  COMPLETED = 'completed', // Test cutting and pasting enums
+  CANCELLED = 'cancelled',
 }
 
 // Generic function with constraints
-function createPair<T extends string | number>(
-  first: T,
-  second: T
-): [T, T] {
-  return [first, second];   // Tuple return type
+function createPair<T extends string | number>(first: T, second: T): [T, T] {
+  return [first, second]; // Tuple return type
 }
 
 // Complex type with mapped types and conditionals
@@ -102,15 +100,15 @@ const sampleUser: User = {
   preferences: {
     theme: 'dark',
     notifications: true,
-    language: 'en'
-  }
+    language: 'en',
+  },
 };
 
 const sampleResponse: ApiResponse<User> = {
   data: sampleUser,
   status: 200,
   message: 'Success',
-  timestamp: new Date()
+  timestamp: new Date(),
 };
 
 // Advanced TypeScript features for testing
@@ -118,11 +116,11 @@ namespace Utils {
   export function formatUser(user: User): string {
     return `${user.name} (${user.email || 'No email'})`;
   }
-  
+
   export const DEFAULT_PREFERENCES: UserPreferences = {
     theme: 'light',
     notifications: true,
-    language: 'en'
+    language: 'en',
   };
 }
 
@@ -156,5 +154,5 @@ export {
   Utils,
   TestService,
   sampleUser,
-  sampleResponse
+  sampleResponse,
 };

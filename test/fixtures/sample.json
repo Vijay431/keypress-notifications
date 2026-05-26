@@ -22,13 +22,7 @@
     "webpack-cli": "^5.1.0",
     "webpack-dev-server": "^4.15.0"
   },
-  "keywords": [
-    "react",
-    "typescript",
-    "webpack",
-    "jest",
-    "testing"
-  ],
+  "keywords": ["react", "typescript", "webpack", "jest", "testing"],
   "author": {
     "name": "Test Author",
     "email": "test@example.com",
@@ -49,32 +43,19 @@
     "apiUrl": "https://api.example.com"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
+    "extends": ["react-app", "react-app/jest"],
     "rules": {
       "no-console": "warn",
       "no-unused-vars": "error"
     }
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   },
   "jest": {
     "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.js"
-    ],
+    "setupFilesAfterEnv": ["<rootDir>/src/setupTests.js"],
     "moduleNameMapping": {
       "\\.(css|less|scss|sass)$": "identity-obj-proxy"
     }

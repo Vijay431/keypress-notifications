@@ -40,7 +40,7 @@ What is the potential impact of this vulnerability?
 - [ ] Information disclosure
 - [ ] Code execution
 - [ ] Data corruption
-- [ ] Other: ______
+- [ ] Other: **\_\_**
 
 **Severity:**
 
@@ -59,14 +59,14 @@ Which part of the extension is affected?
 - [ ] ExtensionManager
 - [ ] DI container
 - [ ] Logger / output channel
-- [ ] Other: ______
+- [ ] Other: **\_\_**
 
 ## Reproduction Steps
 
 If applicable, how can this vulnerability be demonstrated?
 
-1. ___
-2. ___
+1. ***
+2. ***
 3. See vulnerability
 
 ## Environment

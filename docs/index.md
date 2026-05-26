@@ -176,12 +176,12 @@ We welcome contributions! Check out our guides:
 
 ### ⚙️ Configuration Quick Reference
 
-| Setting            | Type    | Default | Description                              |
-| ------------------ | ------- | ------- | ---------------------------------------- |
-| `enabled`          | boolean | `true`  | Enable/disable notifications             |
-| `minimumKeys`      | number  | `2`     | Minimum keys to trigger notification     |
-| `excludedCommands` | array   | `[]`    | Commands to exclude from notifications   |
-| `showCommandName`  | boolean | `false` | Show command name in notifications       |
+| Setting            | Type    | Default | Description                            |
+| ------------------ | ------- | ------- | -------------------------------------- |
+| `enabled`          | boolean | `true`  | Enable/disable notifications           |
+| `minimumKeys`      | number  | `2`     | Minimum keys to trigger notification   |
+| `excludedCommands` | array   | `[]`    | Commands to exclude from notifications |
+| `showCommandName`  | boolean | `false` | Show command name in notifications     |
 
 ---
 

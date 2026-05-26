@@ -1,4 +1,4 @@
-import  { type LogLevel } from '../../types/extension';
+import { type LogLevel } from '../../types/extension';
 
 export interface ILogger {
   debug(message: string, data?: unknown): void;

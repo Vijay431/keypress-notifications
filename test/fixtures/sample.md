@@ -7,20 +7,23 @@ This file contains various markdown elements to test copy/cut/paste operations w
 Try selecting and copying different heading levels:
 
 ### Subheading Level 3
+
 #### Subheading Level 4
+
 ##### Subheading Level 5
 
 ## Text Formatting
 
 Test with **bold text** - try copying just the bold part or the entire phrase.
-Test with *italic text* - select and copy the italic formatting.
-Test with ***bold and italic*** combined formatting.
+Test with _italic text_ - select and copy the italic formatting.
+Test with **_bold and italic_** combined formatting.
 Test with `inline code` - copy the code snippet.
 Test with ~~strikethrough text~~ - try cutting this line.
 
 ## Lists for Selection Testing
 
 ### Unordered List
+
 - First item - try copying this entire line
 - Second item with [a link](https://example.com) - test copying the link
 - Third item with `inline code` - copy just the code part
@@ -28,6 +31,7 @@ Test with ~~strikethrough text~~ - try cutting this line.
   - Another nested item with **bold text**
 
 ### Ordered List
+
 1. Step one - select and copy
 2. Step two with multiple lines
    that continue here - try copying the entire item
@@ -57,7 +61,7 @@ interface TestInterface {
 
 const testObject: TestInterface = {
   name: 'test',
-  value: 42
+  value: 42,
 };
 ```
 
@@ -65,8 +69,8 @@ const testObject: TestInterface = {
 
 Try copying rows, columns, or individual cells:
 
-| Column 1 | Column 2 | Column 3 |
-|----------|----------|----------|
+| Column 1      | Column 2      | Column 3      |
+| ------------- | ------------- | ------------- |
 | Row 1, Cell 1 | Row 1, Cell 2 | Row 1, Cell 3 |
 | Row 2, Cell 1 | Row 2, Cell 2 | Row 2, Cell 3 |
 | Row 3, Cell 1 | Row 3, Cell 2 | Row 3, Cell 3 |
@@ -75,12 +79,13 @@ Try copying rows, columns, or individual cells:
 
 > This is a blockquote for testing selection.
 > Try copying the entire quote or just parts of it.
-> 
+>
 > Multiple paragraphs in blockquotes can be tested too.
 
 ## Links and References
 
 Test copying different types of links:
+
 - Inline link: [VS Code Extension API](https://code.visualstudio.com/api)
 - Reference link: [Extension Testing Guide][testing-guide]
 - Direct URL: https://github.com/microsoft/vscode
@@ -101,13 +106,14 @@ This is a long paragraph designed to test various selection scenarios. You can t
 
 ## Mixed Content
 
-Here's a paragraph with **bold**, *italic*, `code`, and [links](https://example.com) mixed together. Try copying different combinations of these elements to test the extension's behavior with formatted text.
+Here's a paragraph with **bold**, _italic_, `code`, and [links](https://example.com) mixed together. Try copying different combinations of these elements to test the extension's behavior with formatted text.
 
 ---
 
 **Testing Instructions:**
+
 1. Select any text in this file
 2. Use Ctrl+C to copy
-3. Use Ctrl+X to cut  
+3. Use Ctrl+X to cut
 4. Use Ctrl+V to paste
 5. Observe the notifications from the Keypress Notifications extension

@@ -7,11 +7,25 @@ vi.mock('vscode', () => ({
 }));
 
 describe('ConfigMigrator', () => {
-  let logger: { debug: ReturnType<typeof vi.fn>; info: ReturnType<typeof vi.fn>; warn: ReturnType<typeof vi.fn>; error: ReturnType<typeof vi.fn>; show: ReturnType<typeof vi.fn>; dispose: ReturnType<typeof vi.fn> };
+  let logger: {
+    debug: ReturnType<typeof vi.fn>;
+    info: ReturnType<typeof vi.fn>;
+    warn: ReturnType<typeof vi.fn>;
+    error: ReturnType<typeof vi.fn>;
+    show: ReturnType<typeof vi.fn>;
+    dispose: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
-    logger = { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn(), show: vi.fn(), dispose: vi.fn() };
+    logger = {
+      debug: vi.fn(),
+      info: vi.fn(),
+      warn: vi.fn(),
+      error: vi.fn(),
+      show: vi.fn(),
+      dispose: vi.fn(),
+    };
   });
 
   it('getCurrentVersion() returns a number >= 1', async () => {
@@ -57,7 +71,11 @@ describe('ConfigMigrator', () => {
 
   it('original config properties are preserved after migration', async () => {
     const { ConfigMigrator } = await import('../../src/utils/config-migrator');
-    const input: Record<string, unknown> = { enabled: true, minimumKeys: 3, excludedCommands: ['foo'] };
+    const input: Record<string, unknown> = {
+      enabled: true,
+      minimumKeys: 3,
+      excludedCommands: ['foo'],
+    };
     const result = ConfigMigrator.migrate(input, logger);
     expect(result['enabled']).toBe(true);
     expect(result['minimumKeys']).toBe(3);

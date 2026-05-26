@@ -15,15 +15,32 @@ vi.mock('vscode', () => ({
   ConfigurationTarget: { Global: 1 },
 }));
 
-const makeLogger = () => ({ debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn(), show: vi.fn(), dispose: vi.fn() });
-const makeA11y = () => ({ announce: vi.fn(async () => {}), announceSuccess: vi.fn(async () => {}), announceError: vi.fn(async () => {}) });
+const makeLogger = () => ({
+  debug: vi.fn(),
+  info: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn(),
+  show: vi.fn(),
+  dispose: vi.fn(),
+});
+const makeA11y = () => ({
+  announce: vi.fn(async () => {}),
+  announceSuccess: vi.fn(async () => {}),
+  announceError: vi.fn(async () => {}),
+});
 const makeConfig = (enabled = true) => ({
   isEnabled: () => enabled,
   getMinimumKeys: () => 2,
   getExcludedCommands: (): string[] => [],
   shouldShowCommandName: () => false,
   getLogLevel: () => 1,
-  getConfiguration: () => ({ enabled, minimumKeys: 2, excludedCommands: [], showCommandName: false, logLevel: 1 }),
+  getConfiguration: () => ({
+    enabled,
+    minimumKeys: 2,
+    excludedCommands: [],
+    showCommandName: false,
+    logLevel: 1,
+  }),
   onConfigurationChanged: () => ({ dispose: vi.fn() }),
   updateConfiguration: vi.fn(async () => {}),
   dispose: vi.fn(),
@@ -36,7 +53,9 @@ describe('BaseCommandHandler protected logging methods', () => {
     const a11y = makeA11y();
 
     class TestCmd extends BaseCommandHandler {
-      constructor() { super('Test', logger, a11y); }
+      constructor() {
+        super('Test', logger, a11y);
+      }
       async execute() {
         this.logDebug('dbg', { x: 1 });
         this.logWarn('wrn');
@@ -89,7 +108,8 @@ describe('ShowOutputChannelCommand', () => {
   });
 
   it('execute() returns success', async () => {
-    const { ShowOutputChannelCommand } = await import('../../src/commands/ShowOutputChannelCommand');
+    const { ShowOutputChannelCommand } =
+      await import('../../src/commands/ShowOutputChannelCommand');
     const cmd = new ShowOutputChannelCommand(makeLogger(), makeA11y(), makeConfig());
     const result = await cmd.execute();
     expect(result.success).toBe(true);

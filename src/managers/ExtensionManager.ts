@@ -3,10 +3,10 @@ import * as vscode from 'vscode';
 import { DisableCommand } from '../commands/DisableCommand';
 import { EnableCommand } from '../commands/EnableCommand';
 import { ShowOutputChannelCommand } from '../commands/ShowOutputChannelCommand';
-import  { type IAccessibilityService } from '../di/interfaces/IAccessibilityService';
-import  { type IConfigurationService } from '../di/interfaces/IConfigurationService';
-import  { type IKeypressService } from '../di/interfaces/IKeypressService';
-import  { type ILogger } from '../di/interfaces/ILogger';
+import { type IAccessibilityService } from '../di/interfaces/IAccessibilityService';
+import { type IConfigurationService } from '../di/interfaces/IConfigurationService';
+import { type IKeypressService } from '../di/interfaces/IKeypressService';
+import { type ILogger } from '../di/interfaces/ILogger';
 
 import { CommandRegistry } from './CommandRegistry';
 
@@ -39,25 +39,26 @@ export class ExtensionManager {
           title: 'Show Status',
           category: 'Keypress Notifications',
           icon: '$(output)',
-          handlerFactory: () => new ShowOutputChannelCommand(
-            this.logger, this.accessibilityService, this.configService,
-          ),
+          handlerFactory: () =>
+            new ShowOutputChannelCommand(
+              this.logger,
+              this.accessibilityService,
+              this.configService,
+            ),
         },
         {
           id: 'keypress-notifications.enable',
           title: 'Enable',
           category: 'Keypress Notifications',
-          handlerFactory: () => new EnableCommand(
-            this.logger, this.accessibilityService, this.configService,
-          ),
+          handlerFactory: () =>
+            new EnableCommand(this.logger, this.accessibilityService, this.configService),
         },
         {
           id: 'keypress-notifications.disable',
           title: 'Disable',
           category: 'Keypress Notifications',
-          handlerFactory: () => new DisableCommand(
-            this.logger, this.accessibilityService, this.configService,
-          ),
+          handlerFactory: () =>
+            new DisableCommand(this.logger, this.accessibilityService, this.configService),
         },
       ]);
 
@@ -80,15 +81,17 @@ export class ExtensionManager {
 
       // Push all disposables to context
       this.disposables.push({ dispose: () => this.commandRegistry?.dispose() });
-      this.disposables.forEach(d => context.subscriptions.push(d));
+      this.disposables.forEach((d) => context.subscriptions.push(d));
 
       // Set initial enabled context
       await this.updateEnabledContext();
 
       this.logger.info('Keypress Notifications extension activated successfully');
 
-      if (context.extensionMode === vscode.ExtensionMode.Development
-        && this.configService.isEnabled()) {
+      if (
+        context.extensionMode === vscode.ExtensionMode.Development &&
+        this.configService.isEnabled()
+      ) {
         vscode.window.showInformationMessage('Keypress Notifications extension is now active');
       }
     } catch (error) {

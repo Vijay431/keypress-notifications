@@ -1,6 +1,6 @@
 import type * as vscode from 'vscode';
 
-import  { type ExtensionConfig, type LogLevel } from '../../types/extension';
+import { type ExtensionConfig, type LogLevel } from '../../types/extension';
 
 export interface IConfigurationService {
   getConfiguration(): ExtensionConfig;

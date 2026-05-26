@@ -2,10 +2,10 @@
 
 This project is built with the help of the following contributors.
 
-| Name                                             | Role                | Contribution Areas                                       |
-| ------------------------------------------------ | ------------------- | -------------------------------------------------------- |
-| [Vijay Gangatharan](https://github.com/Vijay431) | Author & Maintainer | Code, docs, design, infrastructure, maintenance          |
-| [Claude (Anthropic)](https://claude.ai)          | AI Pair Programmer  | Code, docs, tests, review                                |
+| Name                                             | Role                | Contribution Areas                              |
+| ------------------------------------------------ | ------------------- | ----------------------------------------------- |
+| [Vijay Gangatharan](https://github.com/Vijay431) | Author & Maintainer | Code, docs, design, infrastructure, maintenance |
+| [Claude (Anthropic)](https://claude.ai)          | AI Pair Programmer  | Code, docs, tests, review                       |
 
 ## How to Contribute
 

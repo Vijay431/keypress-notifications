@@ -19,7 +19,9 @@ describe('CommandRegistry', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Reset registerCommand to return a fresh disposable spy each call
-    mockRegisterCommand.mockImplementation((_id: string, _handler: unknown) => ({ dispose: vi.fn() }));
+    mockRegisterCommand.mockImplementation((_id: string, _handler: unknown) => ({
+      dispose: vi.fn(),
+    }));
   });
 
   const makeMetadata = (id = 'test.command', successResult = true, throwOnExecute = false) => {
@@ -78,8 +80,8 @@ describe('CommandRegistry', () => {
     registry.registerCommands([m1, m2]);
     const all = registry.getRegisteredCommands();
     expect(all).toHaveLength(2);
-    expect(all.map(m => m.id)).toContain('cmd.a');
-    expect(all.map(m => m.id)).toContain('cmd.b');
+    expect(all.map((m) => m.id)).toContain('cmd.a');
+    expect(all.map((m) => m.id)).toContain('cmd.b');
   });
 
   it('unregisterCommand(id) disposes the disposable and removes it (hasCommand returns false)', async () => {
@@ -109,13 +111,13 @@ describe('CommandRegistry', () => {
     registry.registerCommand(meta);
 
     // Retrieve the registered handler from the mock and invoke it
-    const registeredHandler = mockRegisterCommand.mock.calls[0]?.[1] as (() => Promise<void>) | undefined;
+    const registeredHandler = mockRegisterCommand.mock.calls[0]?.[1] as
+      | (() => Promise<void>)
+      | undefined;
     expect(registeredHandler).toBeDefined();
     await registeredHandler!();
 
-    expect(mockShowErrorMessage).toHaveBeenCalledWith(
-      expect.stringContaining('handler exploded'),
-    );
+    expect(mockShowErrorMessage).toHaveBeenCalledWith(expect.stringContaining('handler exploded'));
   });
 
   it('result.success === false → showErrorMessage is called', async () => {
@@ -124,7 +126,9 @@ describe('CommandRegistry', () => {
     const meta = makeMetadata('fail.cmd', false, false);
     registry.registerCommand(meta);
 
-    const registeredHandler = mockRegisterCommand.mock.calls[0]?.[1] as (() => Promise<void>) | undefined;
+    const registeredHandler = mockRegisterCommand.mock.calls[0]?.[1] as
+      | (() => Promise<void>)
+      | undefined;
     expect(registeredHandler).toBeDefined();
     await registeredHandler!();
 

@@ -41,7 +41,7 @@ What's wrong with the current code?
 - [ ] Poor error handling
 - [ ] Violates DRY/SOLID principles
 - [ ] Type safety issues
-- [ ] Other: ______
+- [ ] Other: **\_\_**
 
 ## Proposed Refactoring
 
@@ -72,7 +72,7 @@ How will this refactoring improve the code?
 - [ ] Reduced complexity
 - [ ] Better type safety
 - [ ] Better error handling
-- [ ] Other: ______
+- [ ] Other: **\_\_**
 
 ## Impact Assessment
 

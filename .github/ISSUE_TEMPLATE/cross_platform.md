@@ -26,16 +26,16 @@ assignees: ''
 
 **Issue Occurs On:**
 
-- [ ] Windows (version: ______)
-- [ ] macOS (version: ______)
-- [ ] Linux (distro: ______)
+- [ ] Windows (version: **\_\_**)
+- [ ] macOS (version: **\_\_**)
+- [ ] Linux (distro: **\_\_**)
 - [ ] Multiple platforms
 
 **Works On:**
 
-- [ ] Windows (version: ______)
-- [ ] macOS (version: ______)
-- [ ] Linux (distro: ______)
+- [ ] Windows (version: **\_\_**)
+- [ ] macOS (version: **\_\_**)
+- [ ] Linux (distro: **\_\_**)
 - [ ] None (broken on all)
 
 ## Issue Description
@@ -50,9 +50,9 @@ How does behavior differ between platforms?
 
 ## Reproduction Steps
 
-1. On ______ platform
-2. Press ______ key combination
-3. ___
+1. On **\_\_** platform
+2. Press **\_\_** key combination
+3. ***
 4. See platform-specific issue
 
 ## Error Messages
