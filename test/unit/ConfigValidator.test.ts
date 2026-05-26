@@ -2,7 +2,14 @@ import { describe, it, expect, vi } from 'vitest';
 import { ConfigValidator } from '../../src/utils/config-validator';
 import { LogLevel } from '../../src/types/extension';
 
-const logger = { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn(), show: vi.fn(), dispose: vi.fn() };
+const logger = {
+  debug: vi.fn(),
+  info: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn(),
+  show: vi.fn(),
+  dispose: vi.fn(),
+};
 
 describe('ConfigValidator', () => {
   const validConfig = {
@@ -42,7 +49,10 @@ describe('ConfigValidator', () => {
 
   it('filters non-string items from excludedCommands', () => {
     // @ts-expect-error testing invalid input
-    const result = ConfigValidator.validate({ ...validConfig, excludedCommands: ['cmd', 42, null] }, logger);
+    const result = ConfigValidator.validate(
+      { ...validConfig, excludedCommands: ['cmd', 42, null] },
+      logger,
+    );
     expect(result.excludedCommands).toEqual(['cmd']);
   });
 

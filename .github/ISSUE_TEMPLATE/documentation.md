@@ -25,7 +25,7 @@ assignees: ''
 - [ ] CONTRIBUTING.md
 - [ ] Extension settings documentation
 - [ ] Troubleshooting guide
-- [ ] Other: ______
+- [ ] Other: **\_\_**
 
 **Specific Section:**
 Link or describe the exact section that needs attention.

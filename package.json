@@ -18,7 +18,7 @@
     "url": "https://github.com/Vijay431/keypress-notifications/issues"
   },
   "homepage": "https://github.com/Vijay431/keypress-notifications#readme",
-    "keywords": [
+  "keywords": [
     "keypress",
     "notifications",
     "screencast",
@@ -88,7 +88,12 @@
         "keypress-notifications.logLevel": {
           "type": "string",
           "default": "info",
-          "enum": ["debug", "info", "warn", "error"],
+          "enum": [
+            "debug",
+            "info",
+            "warn",
+            "error"
+          ],
           "description": "Log level for Keypress Notifications extension"
         }
       }
@@ -124,7 +129,8 @@
       {
         "key": "ctrl+shift+p",
         "mac": "cmd+shift+p",
-        "command": "keypress-notifications.wrapper.workbench_action_showCommands"      },
+        "command": "keypress-notifications.wrapper.workbench_action_showCommands"
+      },
       {
         "key": "ctrl+p",
         "mac": "cmd+p",
@@ -146,30 +152,37 @@
       {
         "key": "ctrl+n",
         "mac": "cmd+n",
-        "command": "keypress-notifications.wrapper.workbench_action_files_newUntitledFile"      },
+        "command": "keypress-notifications.wrapper.workbench_action_files_newUntitledFile"
+      },
       {
         "key": "ctrl+o",
         "mac": "cmd+o",
-        "command": "keypress-notifications.wrapper.workbench_action_files_openFile"      },
+        "command": "keypress-notifications.wrapper.workbench_action_files_openFile"
+      },
       {
         "key": "ctrl+shift+f",
         "mac": "cmd+shift+f",
-        "command": "keypress-notifications.wrapper.workbench_action_findInFiles"      },
+        "command": "keypress-notifications.wrapper.workbench_action_findInFiles"
+      },
       {
         "key": "ctrl+g",
         "mac": "cmd+g",
-        "command": "keypress-notifications.wrapper.workbench_action_gotoLine"      },
+        "command": "keypress-notifications.wrapper.workbench_action_gotoLine"
+      },
       {
         "key": "ctrl+b",
         "mac": "cmd+b",
-        "command": "keypress-notifications.wrapper.workbench_action_toggleSidebarVisibility"      },
+        "command": "keypress-notifications.wrapper.workbench_action_toggleSidebarVisibility"
+      },
       {
         "key": "ctrl+`",
-        "command": "keypress-notifications.wrapper.workbench_action_terminal_toggleTerminal"      },
+        "command": "keypress-notifications.wrapper.workbench_action_terminal_toggleTerminal"
+      },
       {
         "key": "ctrl+j",
         "mac": "cmd+j",
-        "command": "keypress-notifications.wrapper.workbench_action_togglePanel"      },
+        "command": "keypress-notifications.wrapper.workbench_action_togglePanel"
+      },
       {
         "key": "ctrl+w",
         "mac": "cmd+w",
@@ -179,7 +192,8 @@
       {
         "key": "ctrl+shift+n",
         "mac": "cmd+shift+n",
-        "command": "keypress-notifications.wrapper.workbench_action_newWindow"      },
+        "command": "keypress-notifications.wrapper.workbench_action_newWindow"
+      },
       {
         "key": "shift+alt+f",
         "command": "keypress-notifications.wrapper.editor_action_formatDocument",
@@ -280,38 +294,47 @@
       {
         "key": "ctrl+\\",
         "mac": "cmd+\\",
-        "command": "keypress-notifications.wrapper.workbench_action_splitEditor"      },
+        "command": "keypress-notifications.wrapper.workbench_action_splitEditor"
+      },
       {
         "key": "ctrl+shift+t",
         "mac": "cmd+shift+t",
-        "command": "keypress-notifications.wrapper.workbench_action_reopenClosedEditor"      },
+        "command": "keypress-notifications.wrapper.workbench_action_reopenClosedEditor"
+      },
       {
         "key": "ctrl+shift+o",
         "mac": "cmd+shift+o",
-        "command": "keypress-notifications.wrapper.workbench_action_gotoSymbol"      },
+        "command": "keypress-notifications.wrapper.workbench_action_gotoSymbol"
+      },
       {
         "key": "ctrl+,",
         "mac": "cmd+,",
-        "command": "keypress-notifications.wrapper.workbench_action_openSettings"      },
+        "command": "keypress-notifications.wrapper.workbench_action_openSettings"
+      },
       {
         "key": "ctrl+shift+g",
         "mac": "cmd+shift+g",
-        "command": "keypress-notifications.wrapper.workbench_view_scm"      },
+        "command": "keypress-notifications.wrapper.workbench_view_scm"
+      },
       {
         "key": "ctrl+shift+x",
         "mac": "cmd+shift+x",
-        "command": "keypress-notifications.wrapper.workbench_view_extensions"      },
+        "command": "keypress-notifications.wrapper.workbench_view_extensions"
+      },
       {
         "key": "ctrl+shift+d",
         "mac": "cmd+shift+d",
-        "command": "keypress-notifications.wrapper.workbench_view_debug"      },
+        "command": "keypress-notifications.wrapper.workbench_view_debug"
+      },
       {
         "key": "ctrl+shift+m",
         "mac": "cmd+shift+m",
-        "command": "keypress-notifications.wrapper.workbench_actions_view_problems"      },
+        "command": "keypress-notifications.wrapper.workbench_actions_view_problems"
+      },
       {
         "key": "ctrl+shift+`",
-        "command": "keypress-notifications.wrapper.workbench_action_terminal_new"      }
+        "command": "keypress-notifications.wrapper.workbench_action_terminal_new"
+      }
     ]
   },
   "main": "./dist/extension.js",

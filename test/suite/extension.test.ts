@@ -8,7 +8,7 @@ async function waitFor(predicate: () => boolean, timeoutMs = 3000): Promise<void
     if (Date.now() - start > timeoutMs) {
       throw new Error(`waitFor timed out after ${timeoutMs}ms`);
     }
-    await new Promise<void>(resolve => setTimeout(resolve, 50));
+    await new Promise<void>((resolve) => setTimeout(resolve, 50));
   }
 }
 
@@ -52,122 +52,134 @@ suite('Keypress Notifications E2E Tests', () => {
         'keypress-notifications.disable',
       ];
 
-      expectedCommands.forEach(command => {
-        assert.ok(
-          commands.includes(command),
-          `Command ${command} should be registered`,
-        );
+      expectedCommands.forEach((command) => {
+        assert.ok(commands.includes(command), `Command ${command} should be registered`);
       });
     });
 
     test('should have wrapper commands registered', async () => {
       const commands = await vscode.commands.getCommands();
 
-      const wrapperCommands = commands.filter(cmd =>
-        cmd.startsWith('keypress-notifications.wrapper.')
+      const wrapperCommands = commands.filter((cmd) =>
+        cmd.startsWith('keypress-notifications.wrapper.'),
       );
 
-      assert.ok(wrapperCommands.length > 0, `Should have registered dynamic wrapper commands, found ${wrapperCommands.length}`);
+      assert.ok(
+        wrapperCommands.length > 0,
+        `Should have registered dynamic wrapper commands, found ${wrapperCommands.length}`,
+      );
     });
   });
 
   suite('Keypress Detection Tests', () => {
     test('should show "You\'ve pressed Ctrl+C" for copy command', async () => {
-      await vscode.commands.executeCommand('keypress-notifications.wrapper.editor_action_clipboardCopyAction');
+      await vscode.commands.executeCommand(
+        'keypress-notifications.wrapper.editor_action_clipboardCopyAction',
+      );
       await waitFor(() => notificationMessages.length > 0);
 
       const notification = notificationMessages[0];
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+C' : 'Ctrl+C';
       assert.ok(
         notification && notification.includes(expectedKeys),
-        `Expected notification with "${expectedKeys}", got: "${notification}"`
+        `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith('You\'ve pressed'),
-        `Expected notification to start with "You've pressed", got: "${notification}"`
+        notification && notification.startsWith("You've pressed"),
+        `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
 
     test('should show "You\'ve pressed Ctrl+V" for paste command', async () => {
-      await vscode.commands.executeCommand('keypress-notifications.wrapper.editor_action_clipboardPasteAction');
+      await vscode.commands.executeCommand(
+        'keypress-notifications.wrapper.editor_action_clipboardPasteAction',
+      );
       await waitFor(() => notificationMessages.length > 0);
 
       const notification = notificationMessages[0];
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+V' : 'Ctrl+V';
       assert.ok(
         notification && notification.includes(expectedKeys),
-        `Expected notification with "${expectedKeys}", got: "${notification}"`
+        `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith('You\'ve pressed'),
-        `Expected notification to start with "You've pressed", got: "${notification}"`
+        notification && notification.startsWith("You've pressed"),
+        `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
 
     test('should show "You\'ve pressed Ctrl+X" for cut command', async () => {
-      await vscode.commands.executeCommand('keypress-notifications.wrapper.editor_action_clipboardCutAction');
+      await vscode.commands.executeCommand(
+        'keypress-notifications.wrapper.editor_action_clipboardCutAction',
+      );
       await waitFor(() => notificationMessages.length > 0);
 
       const notification = notificationMessages[0];
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+X' : 'Ctrl+X';
       assert.ok(
         notification && notification.includes(expectedKeys),
-        `Expected notification with "${expectedKeys}", got: "${notification}"`
+        `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith('You\'ve pressed'),
-        `Expected notification to start with "You've pressed", got: "${notification}"`
+        notification && notification.startsWith("You've pressed"),
+        `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
 
     test('should show "You\'ve pressed Ctrl+P" for quick open command', async () => {
-      await vscode.commands.executeCommand('keypress-notifications.wrapper.workbench_action_quickOpen');
+      await vscode.commands.executeCommand(
+        'keypress-notifications.wrapper.workbench_action_quickOpen',
+      );
       await waitFor(() => notificationMessages.length > 0);
 
       const notification = notificationMessages[0];
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+P' : 'Ctrl+P';
       assert.ok(
         notification && notification.includes(expectedKeys),
-        `Expected notification with "${expectedKeys}", got: "${notification}"`
+        `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith('You\'ve pressed'),
-        `Expected notification to start with "You've pressed", got: "${notification}"`
+        notification && notification.startsWith("You've pressed"),
+        `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
 
     test('should show "You\'ve pressed Ctrl+Shift+P" for command palette', async () => {
-      await vscode.commands.executeCommand('keypress-notifications.wrapper.workbench_action_showCommands');
+      await vscode.commands.executeCommand(
+        'keypress-notifications.wrapper.workbench_action_showCommands',
+      );
       await waitFor(() => notificationMessages.length > 0);
 
       const notification = notificationMessages[0];
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+Shift+P' : 'Ctrl+Shift+P';
       assert.ok(
         notification && notification.includes(expectedKeys),
-        `Expected notification with "${expectedKeys}", got: "${notification}"`
+        `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith('You\'ve pressed'),
-        `Expected notification to start with "You've pressed", got: "${notification}"`
+        notification && notification.startsWith("You've pressed"),
+        `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
 
     test('should handle platform-specific key mappings correctly', async () => {
       const isMac = process.platform === 'darwin';
 
-      await vscode.commands.executeCommand('keypress-notifications.wrapper.editor_action_clipboardCopyAction');
+      await vscode.commands.executeCommand(
+        'keypress-notifications.wrapper.editor_action_clipboardCopyAction',
+      );
       await waitFor(() => notificationMessages.length > 0);
 
       const notification = notificationMessages[0];
       if (isMac) {
         assert.ok(
           notification && notification.includes('Cmd+C'),
-          `On Mac, should show Cmd+C, got: "${notification}"`
+          `On Mac, should show Cmd+C, got: "${notification}"`,
         );
       } else {
         assert.ok(
           notification && notification.includes('Ctrl+C'),
-          `On non-Mac, should show Ctrl+C, got: "${notification}"`
+          `On non-Mac, should show Ctrl+C, got: "${notification}"`,
         );
       }
     });
@@ -199,7 +211,7 @@ suite('Keypress Notifications E2E Tests', () => {
 
     test('should not interfere with VS Code core functionality', async () => {
       await vscode.commands.executeCommand('workbench.action.quickOpen');
-      await new Promise<void>(resolve => setTimeout(resolve, 100));
+      await new Promise<void>((resolve) => setTimeout(resolve, 100));
       await vscode.commands.executeCommand('workbench.action.closeQuickOpen');
 
       assert.ok(true, 'VS Code core functionality should not be affected');

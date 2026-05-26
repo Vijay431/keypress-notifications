@@ -27,22 +27,22 @@ How does this affect your workflow?
 
 ## Reproduction Steps
 
-1. Open ______ (workspace/file type)
-2. Press ______ (key combination)
-3. ___
+1. Open **\_\_** (workspace/file type)
+2. Press **\_\_** (key combination)
+3. ***
 4. See performance issue
 
 ## Performance Metrics
 
 **Observed Performance:**
 
-- Operation took approximately: ______
-- Memory usage: ______
-- CPU usage: ______
+- Operation took approximately: **\_\_**
+- Memory usage: **\_\_**
+- CPU usage: **\_\_**
 
 **Expected Performance:**
 
-- Should take: ______
+- Should take: **\_\_**
 
 ## Environment
 
@@ -62,8 +62,8 @@ How does this affect your workflow?
 
 **Has this always been an issue?**
 
-- [ ] Yes, from version ______
-- [ ] No, started after version ______
+- [ ] Yes, from version **\_\_**
+- [ ] No, started after version **\_\_**
 
 ## Optimization Suggestions
 

@@ -1,7 +1,7 @@
-import  { type IAccessibilityService } from './interfaces/IAccessibilityService';
-import  { type IConfigurationService } from './interfaces/IConfigurationService';
-import  { type IKeypressService } from './interfaces/IKeypressService';
-import  { type ILogger } from './interfaces/ILogger';
+import { type IAccessibilityService } from './interfaces/IAccessibilityService';
+import { type IConfigurationService } from './interfaces/IConfigurationService';
+import { type IKeypressService } from './interfaces/IKeypressService';
+import { type ILogger } from './interfaces/ILogger';
 import { TYPES } from './types';
 
 type ServiceFactory<T> = () => T;

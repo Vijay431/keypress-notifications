@@ -100,53 +100,30 @@ tsconfig.test.json              # TypeScript config for compiling integration te
 
 - **`package.json` `contributes`** — canonical source for all command IDs, settings, and keybindings (VS Code loads it directly).
 - **`README.md`** — canonical user-facing narrative.
-- **`CLAUDE.md`** — canonical architecture and dev conventions.
+- **`ARCHITECTURE.md`** — canonical architecture and technical documentation.
+- **`CLAUDE.md`** — canonical dev conventions.
 
 ### Architecture Diagrams
 
-**Runtime Architecture**
-
-```mermaid
-flowchart TD
-    A["extension"] --> B["ExtensionManager"]
-    B --> C["CommandRegistry"]
-    C --> D["EnableCommand"]
-    C --> E["DisableCommand"]
-    C --> F["ShowOutputChannelCommand"]
-    B --> G["KeypressService\nwraps 42 known commands\nshows notifications"]
-    B --> H["ConfigurationService\nsettings & change events"]
-    B --> I["AccessibilityService\nscreen reader announcements"]
-```
-
-**Codebase Structure**
-
-```mermaid
-flowchart TD
-    A["extension"] --> B["managers\nExtensionManager, CommandRegistry"]
-    B --> C["di\ncontainer, interfaces"]
-    C --> D["Services\nKeypressService\nConfigurationService\nAccessibilityService"]
-    C --> E["Commands\nEnableCommand\nDisableCommand\nShowOutputChannelCommand"]
-    D --> F["utils, types"]
-    E --> F
-```
+> **Note:** Architecture diagrams and detailed technical documentation have been moved to [ARCHITECTURE.md](ARCHITECTURE.md). Please refer to that file for the system overview, data flow, component boundaries, and runtime/codebase Mermaid diagrams.
 
 ### User-Facing Commands (3)
 
 `package.json` `contributes.commands` is the canonical command-ID list.
 
-| Feature            | Command ID                                     |
-| ------------------ | ---------------------------------------------- |
-| Enable             | `keypress-notifications.enable`                |
-| Disable            | `keypress-notifications.disable`               |
-| Show Status        | `keypress-notifications.showOutputChannel`     |
+| Feature     | Command ID                                 |
+| ----------- | ------------------------------------------ |
+| Enable      | `keypress-notifications.enable`            |
+| Disable     | `keypress-notifications.disable`           |
+| Show Status | `keypress-notifications.showOutputChannel` |
 
 ### Infrastructure Services (3)
 
-| Service               | Source File                               | Purpose                                                     |
-| --------------------- | ----------------------------------------- | ----------------------------------------------------------- |
-| KeypressService       | `src/services/KeypressService.ts`         | Wraps 42 known VS Code commands across editor, Explorer, and workbench; shows notifications |
-| ConfigurationService  | `src/services/ConfigurationService.ts`    | VS Code settings access and change events                   |
-| AccessibilityService  | `src/services/AccessibilityService.ts`    | Screen reader announcements and ARIA helpers                |
+| Service              | Source File                            | Purpose                                                                                     |
+| -------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------- |
+| KeypressService      | `src/services/KeypressService.ts`      | Wraps 42 known VS Code commands across editor, Explorer, and workbench; shows notifications |
+| ConfigurationService | `src/services/ConfigurationService.ts` | VS Code settings access and change events                                                   |
+| AccessibilityService | `src/services/AccessibilityService.ts` | Screen reader announcements and ARIA helpers                                                |
 
 ### Keybinding Wrappers (42)
 
@@ -154,65 +131,65 @@ The core feature: `KeypressService` registers wrapper commands for a curated set
 
 **Editor**
 
-| Shortcut              | Wrapped Command                                            |
-| --------------------- | ---------------------------------------------------------- |
-| Ctrl+C / Cmd+C        | `editor.action.clipboardCopyAction`                        |
-| Ctrl+X / Cmd+X        | `editor.action.clipboardCutAction`                         |
-| Ctrl+V / Cmd+V        | `editor.action.clipboardPasteAction`                       |
-| Ctrl+Z / Cmd+Z        | `undo`                                                     |
-| Ctrl+Y / Cmd+Shift+Z  | `redo`                                                     |
-| Ctrl+A / Cmd+A        | `editor.action.selectAll`                                  |
-| Ctrl+F / Cmd+F        | `actions.find`                                             |
-| Ctrl+H / Cmd+H        | `editor.action.startFindReplaceAction`                     |
-| Alt+Up                | `editor.action.moveLinesUpAction`                          |
-| Alt+Down              | `editor.action.moveLinesDownAction`                        |
-| Shift+Alt+Up          | `editor.action.copyLinesUpAction`                          |
-| Shift+Alt+Down        | `editor.action.copyLinesDownAction`                        |
-| Ctrl+Shift+K          | `editor.action.deleteLines`                                |
-| Ctrl+. / Cmd+.        | `editor.action.quickFix`                                   |
-| Shift+Alt+F           | `editor.action.formatDocument`                             |
-| Ctrl+/  / Cmd+/       | `editor.action.commentLine`                                |
-| Ctrl+D / Cmd+D        | `editor.action.addSelectionToNextFindMatch`                |
+| Shortcut             | Wrapped Command                             |
+| -------------------- | ------------------------------------------- |
+| Ctrl+C / Cmd+C       | `editor.action.clipboardCopyAction`         |
+| Ctrl+X / Cmd+X       | `editor.action.clipboardCutAction`          |
+| Ctrl+V / Cmd+V       | `editor.action.clipboardPasteAction`        |
+| Ctrl+Z / Cmd+Z       | `undo`                                      |
+| Ctrl+Y / Cmd+Shift+Z | `redo`                                      |
+| Ctrl+A / Cmd+A       | `editor.action.selectAll`                   |
+| Ctrl+F / Cmd+F       | `actions.find`                              |
+| Ctrl+H / Cmd+H       | `editor.action.startFindReplaceAction`      |
+| Alt+Up               | `editor.action.moveLinesUpAction`           |
+| Alt+Down             | `editor.action.moveLinesDownAction`         |
+| Shift+Alt+Up         | `editor.action.copyLinesUpAction`           |
+| Shift+Alt+Down       | `editor.action.copyLinesDownAction`         |
+| Ctrl+Shift+K         | `editor.action.deleteLines`                 |
+| Ctrl+. / Cmd+.       | `editor.action.quickFix`                    |
+| Shift+Alt+F          | `editor.action.formatDocument`              |
+| Ctrl+/ / Cmd+/       | `editor.action.commentLine`                 |
+| Ctrl+D / Cmd+D       | `editor.action.addSelectionToNextFindMatch` |
 
 **Explorer**
 
-| Shortcut              | Wrapped Command                                            |
-| --------------------- | ---------------------------------------------------------- |
-| Ctrl+C / Cmd+C        | `filesExplorer.copy`  (when: `filesExplorerFocus`)         |
-| Ctrl+X / Cmd+X        | `filesExplorer.cut`   (when: `filesExplorerFocus`)         |
-| Ctrl+V / Cmd+V        | `filesExplorer.paste` (when: `filesExplorerFocus`)         |
+| Shortcut       | Wrapped Command                                    |
+| -------------- | -------------------------------------------------- |
+| Ctrl+C / Cmd+C | `filesExplorer.copy` (when: `filesExplorerFocus`)  |
+| Ctrl+X / Cmd+X | `filesExplorer.cut` (when: `filesExplorerFocus`)   |
+| Ctrl+V / Cmd+V | `filesExplorer.paste` (when: `filesExplorerFocus`) |
 
 **Workbench / navigation**
 
-| Shortcut              | Wrapped Command                                            |
-| --------------------- | ---------------------------------------------------------- |
-| Ctrl+Shift+P          | `workbench.action.showCommands`                            |
-| Ctrl+P / Cmd+P        | `workbench.action.quickOpen`                               |
-| Ctrl+S / Cmd+S        | `workbench.action.files.save`                              |
-| Ctrl+K Ctrl+S         | `workbench.action.files.saveAll`                           |
-| Ctrl+N / Cmd+N        | `workbench.action.files.newUntitledFile`                   |
-| Ctrl+O / Cmd+O        | `workbench.action.files.openFile`                          |
-| Ctrl+Shift+F          | `workbench.action.findInFiles`                             |
-| Ctrl+G / Cmd+G        | `workbench.action.gotoLine`                                |
-| Ctrl+B / Cmd+B        | `workbench.action.toggleSidebarVisibility`                 |
-| Ctrl+`                | `workbench.action.terminal.toggleTerminal`                 |
-| Ctrl+J / Cmd+J        | `workbench.action.togglePanel`                             |
-| Ctrl+W / Cmd+W        | `workbench.action.closeActiveEditor`                       |
-| Ctrl+Shift+N          | `workbench.action.newWindow`                               |
-| Ctrl+\\ / Cmd+\\      | `workbench.action.splitEditor`                             |
-| Ctrl+Shift+T          | `workbench.action.reopenClosedEditor`                      |
-| Ctrl+Shift+O          | `workbench.action.gotoSymbol`                              |
-| Ctrl+, / Cmd+,        | `workbench.action.openSettings`                            |
-| Ctrl+Shift+G          | `workbench.view.scm`                                       |
-| Ctrl+Shift+X          | `workbench.view.extensions`                                |
-| Ctrl+Shift+D          | `workbench.view.debug`                                     |
-| Ctrl+Shift+M          | `workbench.actions.view.problems`                          |
+| Shortcut         | Wrapped Command                            |
+| ---------------- | ------------------------------------------ |
+| Ctrl+Shift+P     | `workbench.action.showCommands`            |
+| Ctrl+P / Cmd+P   | `workbench.action.quickOpen`               |
+| Ctrl+S / Cmd+S   | `workbench.action.files.save`              |
+| Ctrl+K Ctrl+S    | `workbench.action.files.saveAll`           |
+| Ctrl+N / Cmd+N   | `workbench.action.files.newUntitledFile`   |
+| Ctrl+O / Cmd+O   | `workbench.action.files.openFile`          |
+| Ctrl+Shift+F     | `workbench.action.findInFiles`             |
+| Ctrl+G / Cmd+G   | `workbench.action.gotoLine`                |
+| Ctrl+B / Cmd+B   | `workbench.action.toggleSidebarVisibility` |
+| Ctrl+`           | `workbench.action.terminal.toggleTerminal` |
+| Ctrl+J / Cmd+J   | `workbench.action.togglePanel`             |
+| Ctrl+W / Cmd+W   | `workbench.action.closeActiveEditor`       |
+| Ctrl+Shift+N     | `workbench.action.newWindow`               |
+| Ctrl+\\ / Cmd+\\ | `workbench.action.splitEditor`             |
+| Ctrl+Shift+T     | `workbench.action.reopenClosedEditor`      |
+| Ctrl+Shift+O     | `workbench.action.gotoSymbol`              |
+| Ctrl+, / Cmd+,   | `workbench.action.openSettings`            |
+| Ctrl+Shift+G     | `workbench.view.scm`                       |
+| Ctrl+Shift+X     | `workbench.view.extensions`                |
+| Ctrl+Shift+D     | `workbench.view.debug`                     |
+| Ctrl+Shift+M     | `workbench.actions.view.problems`          |
 
 **Terminal**
 
-| Shortcut              | Wrapped Command                                            |
-| --------------------- | ---------------------------------------------------------- |
-| Ctrl+Shift+`          | `workbench.action.terminal.new`                            |
+| Shortcut     | Wrapped Command                 |
+| ------------ | ------------------------------- |
+| Ctrl+Shift+` | `workbench.action.terminal.new` |
 
 ---
 
@@ -255,13 +232,13 @@ TypeScript strict mode is enabled. Do not use `any`. Use `unknown` with narrowin
 
 ## Settings Reference
 
-| Key                                        | Type    | Default  | Description                                        |
-| ------------------------------------------ | ------- | -------- | -------------------------------------------------- |
-| `keypress-notifications.enabled`           | boolean | `true`   | Enable/disable the extension                       |
-| `keypress-notifications.minimumKeys`       | number  | `2`      | Minimum keys in combination to show notification   |
-| `keypress-notifications.excludedCommands`  | array   | `[]`     | Commands to exclude from notifications             |
-| `keypress-notifications.showCommandName`   | boolean | `false`  | Show the command name in the notification          |
-| `keypress-notifications.logLevel`          | enum    | `"info"` | Log level: `debug`, `info`, `warn`, `error`        |
+| Key                                       | Type    | Default  | Description                                      |
+| ----------------------------------------- | ------- | -------- | ------------------------------------------------ |
+| `keypress-notifications.enabled`          | boolean | `true`   | Enable/disable the extension                     |
+| `keypress-notifications.minimumKeys`      | number  | `2`      | Minimum keys in combination to show notification |
+| `keypress-notifications.excludedCommands` | array   | `[]`     | Commands to exclude from notifications           |
+| `keypress-notifications.showCommandName`  | boolean | `false`  | Show the command name in the notification        |
+| `keypress-notifications.logLevel`         | enum    | `"info"` | Log level: `debug`, `info`, `warn`, `error`      |
 
 ---
 

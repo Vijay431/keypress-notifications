@@ -2,7 +2,7 @@ import {
   type IAccessibilityService,
   type VerbosityLevel,
 } from '../di/interfaces/IAccessibilityService';
-import  { type ILogger } from '../di/interfaces/ILogger';
+import { type ILogger } from '../di/interfaces/ILogger';
 import { Logger } from '../utils/logger';
 
 export class AccessibilityService implements IAccessibilityService {

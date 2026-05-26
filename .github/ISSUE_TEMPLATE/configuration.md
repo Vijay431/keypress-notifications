@@ -49,7 +49,7 @@ Which specific settings are not working?
 - [ ] `keypress-notifications.excludedCommands`
 - [ ] `keypress-notifications.showCommandName`
 - [ ] `keypress-notifications.logLevel`
-- [ ] Other: ______
+- [ ] Other: **\_\_**
 
 ## Environment
 
@@ -62,7 +62,7 @@ Which specific settings are not working?
 
 ## Reproduction Steps
 
-1. Change setting to ______
+1. Change setting to **\_\_**
 2. Reload VS Code / Restart
 3. Try to trigger notification
 4. Configuration doesn't take effect
@@ -90,7 +90,7 @@ Which specific settings are not working?
 
 **Did it work before?**
 
-- [ ] Yes, worked with extension version ______
+- [ ] Yes, worked with extension version **\_\_**
 - [ ] No, never worked
 
 **Recent Changes:**

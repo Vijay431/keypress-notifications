@@ -36,31 +36,9 @@ Pull requests should include a clear description, linked issues when applicable,
 
 ## Architecture
 
-### Runtime Architecture
+> **Note:** The definitive source of truth for architectural decisions, system overview, data flow, component boundaries, and runtime/codebase Mermaid diagrams is now located in [ARCHITECTURE.md](ARCHITECTURE.md).
 
-```mermaid
-flowchart TD
-    A["extension"] --> B["ExtensionManager"]
-    B --> C["CommandRegistry"]
-    C --> D["EnableCommand"]
-    C --> E["DisableCommand"]
-    C --> F["ShowOutputChannelCommand"]
-    B --> G["KeypressService\nwraps 19 known commands\nshows notifications"]
-    B --> H["ConfigurationService\nsettings & change events"]
-    B --> I["AccessibilityService\nscreen reader announcements"]
-```
-
-### Codebase Structure
-
-```mermaid
-flowchart TD
-    A["extension"] --> B["managers\nExtensionManager"]
-    B --> C["di\ncontainer, interfaces"]
-    C --> D["Services\nKeypressService\nConfigurationService\nAccessibilityService"]
-    C --> E["Commands\nEnableCommand\nDisableCommand\nShowOutputChannelCommand"]
-    D --> F["utils, types"]
-    E --> F
-```
+Please consult `ARCHITECTURE.md` for architectural context before proposing sweeping design changes or when navigating complex module boundaries.
 
 ## Security & Configuration Tips
 

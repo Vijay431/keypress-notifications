@@ -16,9 +16,6 @@
     "noFallthroughCasesInSwitch": false,
     "noEmitOnError": true
   },
-  "include": [
-    "test/runTests.ts",
-    "test/suite/**/*"
-  ],
+  "include": ["test/runTests.ts", "test/suite/**/*"],
   "exclude": ["node_modules"]
 }

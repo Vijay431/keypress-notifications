@@ -2,7 +2,10 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 vi.mock('vscode', () => ({
   commands: {
-    getCommands: vi.fn(async () => ['editor.action.clipboardCopyAction', 'workbench.action.showCommands']),
+    getCommands: vi.fn(async () => [
+      'editor.action.clipboardCopyAction',
+      'workbench.action.showCommands',
+    ]),
     registerCommand: vi.fn(() => ({ dispose: vi.fn() })),
     executeCommand: vi.fn(),
   },
@@ -22,14 +25,27 @@ describe('KeypressService — inferKeysFromCommand', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    const logger = { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn(), show: vi.fn(), dispose: vi.fn() };
+    const logger = {
+      debug: vi.fn(),
+      info: vi.fn(),
+      warn: vi.fn(),
+      error: vi.fn(),
+      show: vi.fn(),
+      dispose: vi.fn(),
+    };
     const configService = {
       isEnabled: () => true,
       getMinimumKeys: () => 2,
       getExcludedCommands: (): string[] => [],
       shouldShowCommandName: () => false,
       getLogLevel: () => 0,
-      getConfiguration: () => ({ enabled: true, minimumKeys: 2, excludedCommands: [], showCommandName: false, logLevel: 1 }),
+      getConfiguration: () => ({
+        enabled: true,
+        minimumKeys: 2,
+        excludedCommands: [],
+        showCommandName: false,
+        logLevel: 1,
+      }),
       onConfigurationChanged: () => ({ dispose: vi.fn() }),
       updateConfiguration: vi.fn(),
       dispose: vi.fn(),
@@ -46,7 +62,8 @@ describe('KeypressService — inferKeysFromCommand', () => {
   it('detects clipboard copy as Ctrl+C (or Cmd+C on darwin)', () => {
     const notificationSpy = vi.spyOn(
       // @ts-expect-error -- accessing private for test
-      service, 'inferKeysFromCommand'
+      service,
+      'inferKeysFromCommand',
     );
     service.detectKeyPress('editor.action.clipboardCopyAction');
     expect(notificationSpy).toHaveBeenCalledWith('editor.action.clipboardCopyAction');
@@ -59,13 +76,30 @@ describe('KeypressService — inferKeysFromCommand', () => {
       getExcludedCommands: () => ['editor.action.clipboardCopyAction'],
       shouldShowCommandName: () => false,
       getLogLevel: () => 1,
-      getConfiguration: () => ({ enabled: true, minimumKeys: 2, excludedCommands: ['editor.action.clipboardCopyAction'], showCommandName: false, logLevel: 1 }),
+      getConfiguration: () => ({
+        enabled: true,
+        minimumKeys: 2,
+        excludedCommands: ['editor.action.clipboardCopyAction'],
+        showCommandName: false,
+        logLevel: 1,
+      }),
       onConfigurationChanged: () => ({ dispose: vi.fn() }),
       updateConfiguration: vi.fn(),
       dispose: vi.fn(),
     };
-    const logger = { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn(), show: vi.fn(), dispose: vi.fn() };
-    const accessibilityService = { announce: vi.fn(async () => {}), announceSuccess: vi.fn(async () => {}), announceError: vi.fn(async () => {}) };
+    const logger = {
+      debug: vi.fn(),
+      info: vi.fn(),
+      warn: vi.fn(),
+      error: vi.fn(),
+      show: vi.fn(),
+      dispose: vi.fn(),
+    };
+    const accessibilityService = {
+      announce: vi.fn(async () => {}),
+      announceSuccess: vi.fn(async () => {}),
+      announceError: vi.fn(async () => {}),
+    };
 
     return import('../../src/services/KeypressService').then(({ KeypressService }) => {
       const svc = KeypressService.create(logger, configServiceWithExclusion, accessibilityService);
@@ -105,14 +139,27 @@ describe('KeypressService — new COMMAND_KEY_MAP entries', () => {
     const vscode = await import('vscode');
     showInfoMock = vi.mocked(vscode.window.showInformationMessage);
 
-    const logger = { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn(), show: vi.fn(), dispose: vi.fn() };
+    const logger = {
+      debug: vi.fn(),
+      info: vi.fn(),
+      warn: vi.fn(),
+      error: vi.fn(),
+      show: vi.fn(),
+      dispose: vi.fn(),
+    };
     const configService = {
       isEnabled: () => true,
       getMinimumKeys: () => 1, // 1 so single-modifier labels pass the multi-key check
       getExcludedCommands: (): string[] => [],
       shouldShowCommandName: () => false,
       getLogLevel: () => 0,
-      getConfiguration: () => ({ enabled: true, minimumKeys: 1, excludedCommands: [], showCommandName: false, logLevel: 1 }),
+      getConfiguration: () => ({
+        enabled: true,
+        minimumKeys: 1,
+        excludedCommands: [],
+        showCommandName: false,
+        logLevel: 1,
+      }),
       onConfigurationChanged: () => ({ dispose: vi.fn() }),
       updateConfiguration: vi.fn(),
       dispose: vi.fn(),
@@ -135,9 +182,7 @@ describe('KeypressService — new COMMAND_KEY_MAP entries', () => {
     showInfoMock.mockClear();
     service.detectKeyPress(commandId);
     vi.advanceTimersByTime(100);
-    expect(showInfoMock).toHaveBeenCalledWith(
-      expect.stringContaining(expectedLabel),
-    );
+    expect(showInfoMock).toHaveBeenCalledWith(expect.stringContaining(expectedLabel));
   };
 
   // Explorer

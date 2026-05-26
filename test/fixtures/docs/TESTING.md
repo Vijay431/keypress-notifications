@@ -3,7 +3,7 @@
 ## Manual Testing Checklist
 
 - [ ] Test copy operation (Ctrl+C)
-- [ ] Test cut operation (Ctrl+X) 
+- [ ] Test cut operation (Ctrl+X)
 - [ ] Test paste operation (Ctrl+V)
 - [ ] Verify notifications appear
 - [ ] Test with different file types
