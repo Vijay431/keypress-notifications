@@ -272,7 +272,7 @@ This project follows [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html). Pre-re
 ### Automation Layout
 
 - `.github/workflows/ci.yml` runs PR/main quality gates: lint, unit coverage, integration tests, and build matrix.
-- `.github/workflows/security-pr.yml` runs on every PR and push to main/v2: `pnpm audit --audit-level=high` (blocks on high/critical CVEs) and `actions/dependency-review-action` (PR only — diff-based advisory check + license policy gate).
+- `.github/workflows/security-pr.yml` runs on every PR and push to `main`/`v2`: `pnpm audit --audit-level=high` (blocks on high/critical CVEs) and `actions/dependency-review-action` (PR only — diff-based advisory check + license policy gate).
 - `.github/workflows/security-daily.yml` runs daily at 02:00 UTC and on `pnpm-lock.yaml`/`package.json` changes on `main`; uses `pnpm audit` (respects pnpm overrides) and creates an issue only when high/critical vulnerabilities are found.
 - `.github/workflows/release.yml` runs only on `v*` tag pushes: package, verify, publish to VS Code Marketplace and Open VSX, and create a GitHub Release.
 - `.github/workflows/cache-cleanup.yml` runs every 3 days at 08:00 IST and removes GitHub Actions cache entries not used for 7 days or more.
