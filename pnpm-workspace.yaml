@@ -9,3 +9,7 @@ overrides:
   postcss: '>=8.5.10'
   diff: '>=8.0.3'
   tmp: '>=0.2.4'
+
+peerDependencyRules:
+  allowedVersions:
+    'eslint-plugin-import>eslint': '10'

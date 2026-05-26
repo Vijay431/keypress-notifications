@@ -59,7 +59,7 @@ That's it. No configuration needed for the default experience.
 | ❌ Without it | ✅ With Keypress Notifications |
 | --- | --- |
 | No on-screen feedback when you press a shortcut | Toast notification confirms every triggered keybinding |
-| Screencasts: viewers see the result but not the key | Shortcut label always visible on screen |
+| Screencasts: viewers see the result but not the key | Toast shows the shortcut label as you press it |
 | Pair programming: partner misses your keystrokes | Your keys are visible without any extra screen-share setup |
 | Learning shortcuts: muscle memory can't form without feedback | Instant reinforcement each time you press the right combo |
 | Accessibility: no text confirmation alongside a screen reader | On-screen text for every action |

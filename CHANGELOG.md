@@ -36,6 +36,8 @@
 - **ci:** bump `actions/download-artifact` to v8 in `release.yml`
 - **ci:** bump `actions/github-script` to v9 in `security-audit.yml`
 - **ci:** bump `actions/dependency-review-action` to v5 in `ci.yml`
+- **engines:** raise minimum Node.js from `>=22.13.0` to `>=22.22.1` (aligns with `lint-staged@17` engine requirement)
+- **deps:** suppress `eslint-plugin-import` peer conflict for eslint 10 via `peerDependencyRules` in `pnpm-workspace.yaml`
 
 ### Fixed
 
