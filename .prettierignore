@@ -8,10 +8,5 @@ coverage/
 node_modules/
 pnpm-lock.yaml
 
-# Jekyll site
-docs/_site/
-docs/.bundle/
-docs/vendor/
-
 # Tooling caches
 .vscode-test/

@@ -13,10 +13,5 @@ pnpm-lock.yaml
 .code-review-graph/
 .vscode-test/
 
-# Jekyll site build artifacts
-docs/_site/
-docs/.bundle/
-docs/vendor/
-
 # Local-only docs
 TODO.md

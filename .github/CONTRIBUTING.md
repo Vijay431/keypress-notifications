@@ -303,7 +303,7 @@ npm run format
 
 ### Getting Help
 
-1. **Check documentation** in README and docs/
+1. **Check documentation** in README
 2. **Search existing issues** for similar problems
 3. **Ask in GitHub Discussions** for general questions
 4. **Create detailed issue** for bugs or feature requests
