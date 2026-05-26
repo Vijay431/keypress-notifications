@@ -20,6 +20,7 @@ test/**/*.js.map
 .automaker/
 .sisyphus
 .auto-claude-security.json
+.antigravitycli/
 
 # Logs
 *.log
