@@ -1,11 +1,5 @@
 # 📝 Changelog
 
-## [Unreleased]
-
-### Changed
-
-- **Logo:** replaced extension icon with new neon-blue keyboard + notification design.
-
 ## [2.0.0]
 
 ### Added
@@ -25,6 +19,7 @@
 
 ### Changed
 
+- **Logo:** replaced extension icon with new neon-blue keyboard + notification design.
 - **Docs:** README and Marketplace metadata rewritten for discoverability — pain-point pitch, install badges, demo media slot, "Who it's for" use cases, expanded keywords, `Education` category, gallery banner.
 - **License:** changed from Proprietary to MIT (open source).
 - **ExtensionManager:** services now injected via constructor instead of DI lazy getters, matching project DI conventions; double-dispose on `context.subscriptions` removed; dev-mode banner now uses `context.extensionMode === ExtensionMode.Development` instead of `process.env.NODE_ENV`.
