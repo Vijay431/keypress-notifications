@@ -2,8 +2,6 @@ name: Cache Cleanup
 
 on:
   schedule:
-    # Runs every 3 days at 08:00 IST (02:30 UTC) — purge caches idle for 7+ days.
-    - cron: '30 2 */3 * *'
     # Runs daily at 07:30 IST (02:00 UTC) — purge caches for deleted branches/closed PRs.
     - cron: '0 2 * * *'
   workflow_dispatch:
@@ -13,51 +11,6 @@ permissions:
   actions: write
 
 jobs:
-  cleanup:
-    name: Remove Stale GitHub Actions Caches
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 2 */3 * *'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Delete caches not used for 7 days
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPOSITORY: ${{ github.repository }}
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          cutoff_epoch="$(date -u -d '7 days ago' +%s)"
-          cutoff_iso="$(date -u -d "@${cutoff_epoch}" +%Y-%m-%dT%H:%M:%SZ)"
-          deleted_count=0
-
-          echo "Removing GitHub Actions caches last accessed on or before ${cutoff_iso}."
-
-          while IFS= read -r cache_json; do
-            cache_id="$(jq -r '.id' <<< "${cache_json}")"
-            cache_key="$(jq -r '.key' <<< "${cache_json}")"
-            cache_ref="$(jq -r '.ref' <<< "${cache_json}")"
-            cache_size="$(jq -r '.size_in_bytes' <<< "${cache_json}")"
-            last_accessed_at="$(jq -r '.last_accessed_at' <<< "${cache_json}")"
-
-            if [[ "${last_accessed_at}" == "null" || -z "${last_accessed_at}" ]]; then
-              echo "Skipping cache ${cache_id} (${cache_key}); last_accessed_at is missing."
-              continue
-            fi
-
-            last_accessed_epoch="$(date -u -d "${last_accessed_at}" +%s)"
-            if (( last_accessed_epoch <= cutoff_epoch )); then
-              echo "Deleting cache id=${cache_id} key=${cache_key} ref=${cache_ref} size=${cache_size} last_accessed_at=${last_accessed_at}"
-              gh api --method DELETE "repos/${REPOSITORY}/actions/caches/${cache_id}" >/dev/null
-              deleted_count=$((deleted_count + 1))
-            fi
-          done < <(gh api --paginate "repos/${REPOSITORY}/actions/caches?per_page=100" --jq '.actions_caches[] | @json')
-
-          if (( deleted_count == 0 )); then
-            echo "No caches older than or equal to 7 days found."
-          else
-            echo "Deleted ${deleted_count} stale cache(s)."
-          fi
-
   prune-orphan-branch-caches:
     name: Remove Caches for Deleted Branches and Closed PRs
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 2 * * *'

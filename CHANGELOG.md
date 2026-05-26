@@ -5,7 +5,6 @@
 ### Added
 
 - **KeypressService:** expanded from 19 to 42 wrapped commands, adding coverage across the Explorer and workbench. New notifications fire for: Explorer copy/cut/paste (`filesExplorer.*`), undo/redo, select-all, find, find-replace, move/copy lines up/down, delete line, quick-fix, split editor, reopen closed editor, go to symbol, open settings, SCM view, Extensions view, Debug view, Problems view, and new terminal.
-- Scheduled GitHub Actions cache cleanup removes caches not used for 7 days or more every 3 days at 08:00 IST.
 - Daily cache sweep (07:30 IST) removes caches tied to deleted branches or closed PRs; protected branches (`main`, `v2`) are always skipped.
 - pnpm-based daily security workflow (`security-daily.yml`) replaces the removed npm-based one; respects `pnpm-workspace.yaml` overrides so phantom high-severity reports no longer occur.
 - `security-pr.yml` runs `pnpm audit --audit-level=high` on every PR and push to `main`/`v2`; its `dependency-review` job blocks high-severity dependency introductions on pull requests.
