@@ -1,5 +1,11 @@
 # 📝 Changelog
 
+## [Unreleased]
+
+### Changed
+
+- **Logo:** replaced extension icon with new neon-blue keyboard + notification design.
+
 ## [2.0.0]
 
 ### Added
