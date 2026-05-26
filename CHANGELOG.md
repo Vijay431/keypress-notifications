@@ -5,9 +5,9 @@
 ### Added
 
 - **KeypressService:** expanded from 19 to 42 wrapped commands, adding coverage across the Explorer and workbench. New notifications fire for: Explorer copy/cut/paste (`filesExplorer.*`), undo/redo, select-all, find, find-replace, move/copy lines up/down, delete line, quick-fix, split editor, reopen closed editor, go to symbol, open settings, SCM view, Extensions view, Debug view, Problems view, and new terminal.
-- Scheduled GitHub Actions cache cleanup removes caches not used for 7 days or more every 3 days at 08:00 IST.
-- pnpm-based daily security audit workflow (`security-audit.yml`) replaces the removed npm-based one; respects `pnpm-workspace.yaml` overrides so phantom high-severity reports no longer occur.
-- `audit` job in `ci.yml` runs `pnpm audit --audit-level=high` on every PR/push; `dependency-review` job blocks high-severity dependency introductions on pull requests.
+- Daily cache sweep (07:30 IST) removes caches tied to deleted branches or closed PRs; protected branches (`main`, `v2`) are always skipped.
+- pnpm-based daily security workflow (`security-daily.yml`) replaces the removed npm-based one; respects `pnpm-workspace.yaml` overrides so phantom high-severity reports no longer occur.
+- `security-pr.yml` runs `pnpm audit --audit-level=high` on every PR and push to `main`/`v2`; its `dependency-review` job blocks high-severity dependency introductions on pull requests.
 - `size/override` label added to `.github/labels.yml` — the documented escape hatch for the PR commit-size hard-fail on intentionally large PRs.
 - VS Code 1.111.0 engine target with @types/vscode ^1.111.0 and @types/node ^22
 - 19 contributes.keybindings entries — core notification feature now fires in production
@@ -19,6 +19,8 @@
 
 ### Changed
 
+- **CI:** matrix reduced from 30 jobs to 9 jobs: dropped macOS/Windows runners and VS Code `insiders` build variant. All jobs run on `ubuntu-latest` only. Extension has no native addons and ships a single `.vsix`, so multi-OS build runners provide no additional signal.
+- **Logo:** replaced extension icon with new neon-blue keyboard + notification design.
 - **Docs:** README and Marketplace metadata rewritten for discoverability — pain-point pitch, install badges, demo media slot, "Who it's for" use cases, expanded keywords, `Education` category, gallery banner.
 - **License:** changed from Proprietary to MIT (open source).
 - **ExtensionManager:** services now injected via constructor instead of DI lazy getters, matching project DI conventions; double-dispose on `context.subscriptions` removed; dev-mode banner now uses `context.extensionMode === ExtensionMode.Development` instead of `process.env.NODE_ENV`.
@@ -32,9 +34,9 @@
 - **deps:** bump `@vscode/test-cli` from `^0.0.11` to `^0.0.12`
 - **deps:** bump `mocha` from `^11.7.1` to `^11.7.6`
 - **ci:** bump `pnpm/action-setup` from v5 to v6 across all workflows
-- **ci:** bump `actions/upload-artifact` to v7 in `release.yml` and `security-audit.yml`
+- **ci:** bump `actions/upload-artifact` to v7 in `release.yml` and `security-daily.yml`
 - **ci:** bump `actions/download-artifact` to v8 in `release.yml`
-- **ci:** bump `actions/github-script` to v9 in `security-audit.yml`
+- **ci:** bump `actions/github-script` to v9 in `security-daily.yml`
 - **ci:** bump `actions/dependency-review-action` to v5 in `ci.yml`
 - **engines:** raise minimum Node.js from `>=22.13.0` to `>=22.22.1` (aligns with `lint-staged@17` engine requirement)
 - **deps:** suppress `eslint-plugin-import` peer conflict for eslint 10 via `peerDependencyRules` in `pnpm-workspace.yaml`

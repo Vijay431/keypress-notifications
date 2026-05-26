@@ -2,8 +2,8 @@ name: Cache Cleanup
 
 on:
   schedule:
-    # Runs every 3 days at 08:00 IST (02:30 UTC).
-    - cron: '30 2 */3 * *'
+    # Runs daily at 07:30 IST (02:00 UTC) — purge caches for deleted branches/closed PRs.
+    - cron: '0 2 * * *'
   workflow_dispatch:
 
 permissions:
@@ -11,11 +11,12 @@ permissions:
   actions: write
 
 jobs:
-  cleanup:
-    name: Remove Stale GitHub Actions Caches
+  prune-orphan-branch-caches:
+    name: Remove Caches for Deleted Branches and Closed PRs
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 2 * * *'
     runs-on: ubuntu-latest
     steps:
-      - name: Delete caches not used for 7 days
+      - name: Delete caches whose branch or PR no longer exists
         env:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
@@ -23,34 +24,51 @@ jobs:
         run: |
           set -euo pipefail
 
-          cutoff_epoch="$(date -u -d '7 days ago' +%s)"
-          cutoff_iso="$(date -u -d "@${cutoff_epoch}" +%Y-%m-%dT%H:%M:%SZ)"
+          PROTECTED_BRANCHES=("main" "v2")
           deleted_count=0
+          skipped_count=0
 
-          echo "Removing GitHub Actions caches last accessed on or before ${cutoff_iso}."
+          is_protected() {
+            local branch="$1"
+            for protected in "${PROTECTED_BRANCHES[@]}"; do
+              [[ "${branch}" == "${protected}" ]] && return 0
+            done
+            return 1
+          }
 
           while IFS= read -r cache_json; do
-            cache_id="$(jq -r '.id' <<< "${cache_json}")"
+            cache_id="$(jq -r '.id'  <<< "${cache_json}")"
             cache_key="$(jq -r '.key' <<< "${cache_json}")"
             cache_ref="$(jq -r '.ref' <<< "${cache_json}")"
-            cache_size="$(jq -r '.size_in_bytes' <<< "${cache_json}")"
-            last_accessed_at="$(jq -r '.last_accessed_at' <<< "${cache_json}")"
 
-            if [[ "${last_accessed_at}" == "null" || -z "${last_accessed_at}" ]]; then
-              echo "Skipping cache ${cache_id} (${cache_key}); last_accessed_at is missing."
-              continue
+            if [[ "${cache_ref}" == refs/heads/* ]]; then
+              branch="${cache_ref#refs/heads/}"
+
+              if is_protected "${branch}"; then
+                echo "Skipping protected branch cache: ${cache_key} (ref=${cache_ref})"
+                skipped_count=$((skipped_count + 1))
+                continue
+              fi
+
+              http_status="$(gh api "repos/${REPOSITORY}/branches/${branch}" \
+                --silent -i 2>/dev/null | head -1 | awk '{print $2}' || echo '404')"
+              if [[ "${http_status}" == "404" ]]; then
+                echo "Deleting cache id=${cache_id} key=${cache_key}; branch '${branch}' no longer exists."
+                gh api --method DELETE "repos/${REPOSITORY}/actions/caches/${cache_id}" >/dev/null
+                deleted_count=$((deleted_count + 1))
+              fi
+
+            elif [[ "${cache_ref}" == refs/pull/*/merge ]]; then
+              pr_number="$(echo "${cache_ref}" | sed 's|refs/pull/\([0-9]*\)/merge|\1|')"
+              pr_state="$(gh api "repos/${REPOSITORY}/pulls/${pr_number}" --jq '.state' 2>/dev/null || echo 'unknown')"
+
+              if [[ "${pr_state}" == "closed" ]]; then
+                echo "Deleting cache id=${cache_id} key=${cache_key}; PR #${pr_number} is closed."
+                gh api --method DELETE "repos/${REPOSITORY}/actions/caches/${cache_id}" >/dev/null
+                deleted_count=$((deleted_count + 1))
+              fi
             fi
 
-            last_accessed_epoch="$(date -u -d "${last_accessed_at}" +%s)"
-            if (( last_accessed_epoch <= cutoff_epoch )); then
-              echo "Deleting cache id=${cache_id} key=${cache_key} ref=${cache_ref} size=${cache_size} last_accessed_at=${last_accessed_at}"
-              gh api --method DELETE "repos/${REPOSITORY}/actions/caches/${cache_id}" >/dev/null
-              deleted_count=$((deleted_count + 1))
-            fi
           done < <(gh api --paginate "repos/${REPOSITORY}/actions/caches?per_page=100" --jq '.actions_caches[] | @json')
 
-          if (( deleted_count == 0 )); then
-            echo "No caches older than or equal to 7 days found."
-          else
-            echo "Deleted ${deleted_count} stale cache(s)."
-          fi
+          echo "Done. Deleted=${deleted_count} Skipped=${skipped_count}."

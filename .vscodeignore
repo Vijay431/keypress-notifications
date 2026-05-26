@@ -49,6 +49,7 @@ tsconfig.test.json
 .automaker/
 .claude/
 .sisyphus
+.antigravitycli/
 
 # ============================================
 # Build Artifacts & Logs

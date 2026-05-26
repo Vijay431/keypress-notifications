@@ -1,5 +1,9 @@
 # Keypress Notifications
 
+<p align="center">
+  <img src="logo.png" alt="Keypress Notifications" width="128" />
+</p>
+
 [![CI](https://github.com/Vijay431/keypress-notifications/actions/workflows/ci.yml/badge.svg)](https://github.com/Vijay431/keypress-notifications/actions/workflows/ci.yml)
 [![VS Code Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/VijayGangatharan.keypress-notifications?label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)
 [![VS Code Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/VijayGangatharan.keypress-notifications)](https://marketplace.visualstudio.com/items?itemName=VijayGangatharan.keypress-notifications)

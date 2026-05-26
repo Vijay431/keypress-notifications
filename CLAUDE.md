@@ -64,7 +64,7 @@ src/
     ShowOutputChannelCommand.ts # keypress-notifications.showOutputChannel
     index.ts
   services/
-    KeypressService.ts          # wraps 19 known commands; shows notifications on execution
+    KeypressService.ts          # wraps 42 known commands; shows notifications on execution
     ConfigurationService.ts     # VS Code settings access and change events
     AccessibilityService.ts     # screen reader announcements and ARIA helpers
     index.ts
@@ -74,13 +74,13 @@ src/
     interfaces/                 # all service interfaces
     index.ts
   types/
-    config.ts
     extension.ts
-    vscode.ts
+    index.ts
   utils/
     logger.ts
-    configValidator.ts
-    accessibilityHelper.ts
+    config-validator.ts
+    config-migrator.ts
+    index.ts
 public/                         # packaged extension assets (images, screenshots)
 test/
   __mocks__/vscode.ts           # minimal vscode mock for Vitest unit tests
@@ -271,14 +271,15 @@ This project follows [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html). Pre-re
 
 ### Automation Layout
 
-- `.github/workflows/ci.yml` runs PR/main quality gates: lint, unit coverage, integration tests, build matrix, `pnpm audit --audit-level=high` (audit job), and dependency review (dependency-review job, PR only).
+- `.github/workflows/ci.yml` runs PR/main quality gates: lint, unit coverage, integration tests, and build matrix.
+- `.github/workflows/security-pr.yml` runs on every PR and push to `main`/`v2`: `pnpm audit --audit-level=high` (blocks on high/critical CVEs) and `actions/dependency-review-action` (PR only — diff-based advisory check + license policy gate).
+- `.github/workflows/security-daily.yml` runs daily at 02:00 UTC and on `pnpm-lock.yaml`/`package.json` changes on `main`; uses `pnpm audit` (respects pnpm overrides) and creates an issue only when high/critical vulnerabilities are found.
 - `.github/workflows/release.yml` runs only on `v*` tag pushes: package, verify, publish to VS Code Marketplace and Open VSX, and create a GitHub Release.
-- `.github/workflows/security-audit.yml` runs daily at 02:00 UTC and on `pnpm-lock.yaml`/`package.json` changes on `main`; uses `pnpm audit` (respects pnpm overrides) and creates an issue only when high/critical vulnerabilities are found.
-- `.github/workflows/cache-cleanup.yml` runs every 3 days at 08:00 IST and removes GitHub Actions cache entries not used for 7 days or more.
+- `.github/workflows/cache-cleanup.yml` removes caches whose branch has been deleted or whose PR is closed (protected branches `main` and `v2` are always skipped); age-based cleanup is handled by repository settings.
 - Community automation lives in `.github/workflows/stale.yml`, `.github/workflows/labels-sync.yml`, `.github/workflows/all-contributors.yml`, and `.github/workflows/cache-cleanup.yml`.
 - Release publishing requires `VSCE_PAT` and `OVSX_PAT`.
 
-CI caches dependencies solely by warming `node_modules` through `actions/cache`, keyed on `node-modules-${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('pnpm-lock.yaml') }}`. Do not enable `cache: pnpm` on `actions/setup-node` — restore-only jobs never run `pnpm install`, so its post-job store-save step fails with `Path Validation Error` (the pnpm store path never gets created). Keep the OS and Node version in the key so native modules built for one environment never restore into another, and keep it tied to `pnpm-lock.yaml` so stale dependency installs do not leak across lockfile changes.
+CI caches dependencies solely by warming `node_modules` through `actions/cache`, keyed on `node-modules-${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('pnpm-lock.yaml') }}`. Do not enable `cache: pnpm` on `actions/setup-node` — restore-only jobs never run `pnpm install`, so its post-job store-save step fails with `Path Validation Error` (the pnpm store path never gets created). Keep the Node version in the key so caches don't bleed across Node 22/24/26, and keep it tied to `pnpm-lock.yaml` so stale dependency installs do not leak across lockfile changes. All CI jobs run on `ubuntu-latest` only — the extension has no native addons and publishes a single `.vsix`, so macOS/Windows build runners add cost with zero additional signal.
 
 ### How Release Detects Pre-release
 
