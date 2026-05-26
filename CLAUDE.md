@@ -64,7 +64,7 @@ src/
     ShowOutputChannelCommand.ts # keypress-notifications.showOutputChannel
     index.ts
   services/
-    KeypressService.ts          # wraps 19 known commands; shows notifications on execution
+    KeypressService.ts          # wraps 42 known commands; shows notifications on execution
     ConfigurationService.ts     # VS Code settings access and change events
     AccessibilityService.ts     # screen reader announcements and ARIA helpers
     index.ts
@@ -74,13 +74,13 @@ src/
     interfaces/                 # all service interfaces
     index.ts
   types/
-    config.ts
     extension.ts
-    vscode.ts
+    index.ts
   utils/
     logger.ts
-    configValidator.ts
-    accessibilityHelper.ts
+    config-validator.ts
+    config-migrator.ts
+    index.ts
 public/                         # packaged extension assets (images, screenshots)
 test/
   __mocks__/vscode.ts           # minimal vscode mock for Vitest unit tests
@@ -279,7 +279,7 @@ This project follows [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html). Pre-re
 - Community automation lives in `.github/workflows/stale.yml`, `.github/workflows/labels-sync.yml`, `.github/workflows/all-contributors.yml`, and `.github/workflows/cache-cleanup.yml`.
 - Release publishing requires `VSCE_PAT` and `OVSX_PAT`.
 
-CI caches dependencies solely by warming `node_modules` through `actions/cache`, keyed on `node-modules-${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('pnpm-lock.yaml') }}`. Do not enable `cache: pnpm` on `actions/setup-node` — restore-only jobs never run `pnpm install`, so its post-job store-save step fails with `Path Validation Error` (the pnpm store path never gets created). Keep the OS and Node version in the key so native modules built for one environment never restore into another, and keep it tied to `pnpm-lock.yaml` so stale dependency installs do not leak across lockfile changes.
+CI caches dependencies solely by warming `node_modules` through `actions/cache`, keyed on `node-modules-${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('pnpm-lock.yaml') }}`. Do not enable `cache: pnpm` on `actions/setup-node` — restore-only jobs never run `pnpm install`, so its post-job store-save step fails with `Path Validation Error` (the pnpm store path never gets created). Keep the Node version in the key so caches don't bleed across Node 22/24/26, and keep it tied to `pnpm-lock.yaml` so stale dependency installs do not leak across lockfile changes. All CI jobs run on `ubuntu-latest` only — the extension has no native addons and publishes a single `.vsix`, so macOS/Windows build runners add cost with zero additional signal.
 
 ### How Release Detects Pre-release
 

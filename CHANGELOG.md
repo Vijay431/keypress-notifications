@@ -2,6 +2,10 @@
 
 ## [2.0.0]
 
+### Changed
+
+- CI matrix reduced from 30 jobs to 9 jobs: dropped macOS/Windows runners and VS Code `insiders` build variant. All jobs run on `ubuntu-latest` only. Extension has no native addons and ships a single `.vsix`, so multi-OS build runners provide no additional signal.
+
 ### Added
 
 - **KeypressService:** expanded from 19 to 42 wrapped commands, adding coverage across the Explorer and workbench. New notifications fire for: Explorer copy/cut/paste (`filesExplorer.*`), undo/redo, select-all, find, find-replace, move/copy lines up/down, delete line, quick-fix, split editor, reopen closed editor, go to symbol, open settings, SCM view, Extensions view, Debug view, Problems view, and new terminal.
