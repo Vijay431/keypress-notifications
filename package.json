@@ -423,7 +423,7 @@
     "@vscode/test-electron": "^2.5.2",
     "@vscode/vsce": "^3.6.1",
     "esbuild": "^0.28.0",
-    "eslint": "^10.4.0",
+    "eslint": "^10.4.1",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-mocha": "^11.3.0",
     "eslint-plugin-node": "^11.1.0",
