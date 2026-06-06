@@ -437,7 +437,7 @@
     "rimraf": "^6.0.0",
     "ovsx": "^0.10.12",
     "prettier": "^3.6.2",
-    "tsx": "^4.22.3",
+    "tsx": "^4.22.4",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
     "vitest": "^3.2.4"
