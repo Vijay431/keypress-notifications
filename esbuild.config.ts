@@ -10,7 +10,7 @@ const createConfig = (isProduction = false): esbuild.BuildOptions => ({
   external: ['vscode'],
   format: 'cjs',
   platform: 'node',
-  target: 'node16',
+  target: 'node22',
   sourcemap: isProduction ? false : 'inline',
   minify: isProduction,
   treeShaking: true,
