@@ -59,7 +59,7 @@ describe('KeypressService — inferKeysFromCommand', () => {
     service = KeypressService.create(logger, configService, accessibilityService);
   });
 
-  it('detects clipboard copy as Ctrl+C (or Cmd+C on darwin)', () => {
+  it('should detect clipboard copy as Ctrl+C (or Cmd+C on darwin)', () => {
     const notificationSpy = vi.spyOn(
       // @ts-expect-error -- accessing private for test
       service,
@@ -69,7 +69,7 @@ describe('KeypressService — inferKeysFromCommand', () => {
     expect(notificationSpy).toHaveBeenCalledWith('editor.action.clipboardCopyAction');
   });
 
-  it('excluded commands do not trigger notification', () => {
+  it('should not trigger notification for excluded commands', () => {
     const configServiceWithExclusion = {
       isEnabled: () => true,
       getMinimumKeys: () => 2,
@@ -110,7 +110,7 @@ describe('KeypressService — inferKeysFromCommand', () => {
     });
   });
 
-  it('getState() returns expected shape', () => {
+  it('should return expected shape from getState()', () => {
     const state = service.getState();
     expect(state).toHaveProperty('enabled');
     expect(state).toHaveProperty('actionBufferLength');
@@ -120,7 +120,7 @@ describe('KeypressService — inferKeysFromCommand', () => {
     expect(typeof state.lastActionTime).toBe('number');
   });
 
-  it('enable() sets enabled to true', async () => {
+  it('should set enabled to true on enable()', async () => {
     await service.disable();
     expect(service.getState().enabled).toBe(false);
     await service.enable();
@@ -260,5 +260,165 @@ describe('KeypressService — new COMMAND_KEY_MAP entries', () => {
   // Terminal
   it('should map workbench.action.terminal.new to Ctrl+Shift+` label', () => {
     notifiesLabel('workbench.action.terminal.new', 'Ctrl+Shift+`');
+  });
+});
+
+describe('KeypressService — platform labels, chords, command names', () => {
+  let showInfoMock: ReturnType<typeof vi.fn>;
+  let service: import('../../src/services/KeypressService').KeypressService | undefined;
+  const originalPlatform = process.platform;
+
+  const setPlatform = (value: string) => {
+    Object.defineProperty(process, 'platform', { value, configurable: true });
+  };
+
+  const build = async (minimumKeys: number, showCommandName = false) => {
+    const vscode = await import('vscode');
+    showInfoMock = vi.mocked(vscode.window.showInformationMessage);
+    showInfoMock.mockClear();
+    const logger = {
+      debug: vi.fn(),
+      info: vi.fn(),
+      warn: vi.fn(),
+      error: vi.fn(),
+      show: vi.fn(),
+      dispose: vi.fn(),
+    };
+    const configService = {
+      isEnabled: () => true,
+      getMinimumKeys: () => minimumKeys,
+      getExcludedCommands: (): string[] => [],
+      shouldShowCommandName: () => showCommandName,
+      getLogLevel: () => 0,
+      getConfiguration: () => ({
+        enabled: true,
+        minimumKeys,
+        excludedCommands: [],
+        showCommandName,
+        logLevel: 1,
+      }),
+      onConfigurationChanged: () => ({ dispose: vi.fn() }),
+      updateConfiguration: vi.fn(),
+      dispose: vi.fn(),
+    };
+    const accessibilityService = {
+      announce: vi.fn(async () => {}),
+      announceSuccess: vi.fn(async () => {}),
+      announceError: vi.fn(async () => {}),
+    };
+    const { KeypressService } = await import('../../src/services/KeypressService');
+    service = KeypressService.create(logger, configService, accessibilityService);
+    return service;
+  };
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    setPlatform(originalPlatform);
+    vi.useRealTimers();
+    service?.dispose();
+  });
+
+  it('should keep Linux labels unchanged', async () => {
+    setPlatform('linux');
+    const svc = await build(1);
+    svc.detectKeyPress('editor.action.moveLinesUpAction');
+    vi.advanceTimersByTime(100);
+    expect(showInfoMock).toHaveBeenCalledWith("You've pressed Alt+Up");
+  });
+
+  it('should map redo to Cmd+Shift+Z on darwin', async () => {
+    setPlatform('darwin');
+    const svc = await build(1);
+    svc.detectKeyPress('redo');
+    vi.advanceTimersByTime(100);
+    expect(showInfoMock).toHaveBeenCalledWith("You've pressed Cmd+Shift+Z");
+  });
+
+  it('should map Ctrl to Cmd on darwin', async () => {
+    setPlatform('darwin');
+    const svc = await build(1);
+    svc.detectKeyPress('editor.action.clipboardCopyAction');
+    vi.advanceTimersByTime(100);
+    expect(showInfoMock).toHaveBeenCalledWith("You've pressed Cmd+C");
+  });
+
+  it('should map Alt to Option on darwin', async () => {
+    setPlatform('darwin');
+    const svc = await build(1);
+    svc.detectKeyPress('editor.action.copyLinesUpAction');
+    vi.advanceTimersByTime(100);
+    expect(showInfoMock).toHaveBeenCalledWith("You've pressed Shift+Option+Up");
+  });
+
+  it('should map saveAll to Option+Cmd+S on darwin and Ctrl+K S elsewhere', async () => {
+    setPlatform('darwin');
+    let svc = await build(1);
+    svc.detectKeyPress('workbench.action.files.saveAll');
+    vi.advanceTimersByTime(100);
+    expect(showInfoMock).toHaveBeenCalledWith("You've pressed Option+Cmd+S");
+
+    setPlatform('linux');
+    svc = await build(1);
+    svc.detectKeyPress('workbench.action.files.saveAll');
+    vi.advanceTimersByTime(100);
+    expect(showInfoMock).toHaveBeenCalledWith("You've pressed Ctrl+K S");
+  });
+
+  it('should count Ctrl+K S as three keys for minimumKeys=3', async () => {
+    setPlatform('linux');
+    const svc = await build(3);
+    svc.detectKeyPress('workbench.action.files.saveAll');
+    vi.advanceTimersByTime(100);
+    expect(showInfoMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not notify Ctrl+C for minimumKeys=3', async () => {
+    setPlatform('linux');
+    const svc = await build(3);
+    svc.detectKeyPress('editor.action.clipboardCopyAction');
+    vi.advanceTimersByTime(100);
+    expect(showInfoMock).not.toHaveBeenCalled();
+  });
+
+  it('should append command id when showCommandName is true', async () => {
+    setPlatform('linux');
+    const svc = await build(2, true);
+    svc.detectKeyPress('editor.action.clipboardCopyAction');
+    vi.advanceTimersByTime(100);
+    expect(showInfoMock).toHaveBeenCalledWith(
+      "You've pressed Ctrl+C (editor.action.clipboardCopyAction)",
+    );
+  });
+
+  it('should omit command id when showCommandName is false', async () => {
+    setPlatform('linux');
+    const svc = await build(2, false);
+    svc.detectKeyPress('editor.action.clipboardCopyAction');
+    vi.advanceTimersByTime(100);
+    expect(showInfoMock).toHaveBeenCalledWith("You've pressed Ctrl+C");
+  });
+
+  it('should join labels and ids for sequences when showCommandName is true', async () => {
+    setPlatform('linux');
+    const svc = await build(2, true);
+    svc.detectKeyPress('editor.action.clipboardCopyAction');
+    vi.advanceTimersByTime(10);
+    svc.detectKeyPress('editor.action.clipboardPasteAction');
+    expect(showInfoMock).toHaveBeenCalledWith(
+      "You've pressed Ctrl+C → Ctrl+V (editor.action.clipboardCopyAction → editor.action.clipboardPasteAction)",
+    );
+  });
+
+  it('should join labels only for sequences when showCommandName is false', async () => {
+    setPlatform('linux');
+    const svc = await build(2, false);
+    svc.detectKeyPress('editor.action.clipboardCopyAction');
+    vi.advanceTimersByTime(10);
+    svc.detectKeyPress('editor.action.clipboardPasteAction');
+    expect(showInfoMock).toHaveBeenCalledWith("You've pressed Ctrl+C → Ctrl+V");
   });
 });
