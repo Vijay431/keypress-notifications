@@ -100,8 +100,6 @@
 
 - pnpm workspace overrides added for serialize-javascript, diff, tmp, fast-uri, postcss, brace-expansion — reduces pnpm audit to 0 vulnerabilities
 
----
-
 <details>
 <summary><h2>[1.0.0]</h2></summary>
 
