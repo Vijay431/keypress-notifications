@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 
-import { ILogger, LogLevel } from '../types/extension';
+import { type ILogger } from '../di/interfaces/ILogger';
+import { LogLevel } from '../types/extension';
 
 export class Logger implements ILogger {
   private static instance: Logger | undefined;

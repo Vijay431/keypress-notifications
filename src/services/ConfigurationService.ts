@@ -3,7 +3,6 @@ import * as vscode from 'vscode';
 import { type IConfigurationService } from '../di/interfaces/IConfigurationService';
 import { type ILogger } from '../di/interfaces/ILogger';
 import { ExtensionConfig, LogLevel } from '../types/extension';
-import { Logger } from '../utils/logger';
 
 const LOG_LEVEL_MAP: Readonly<Record<string, LogLevel>> = {
   debug: LogLevel.DEBUG,
@@ -13,17 +12,10 @@ const LOG_LEVEL_MAP: Readonly<Record<string, LogLevel>> = {
 };
 
 export class ConfigurationService implements IConfigurationService {
-  private static instance: ConfigurationService | undefined;
   private readonly configSection = 'keypress-notifications';
   private readonly disposables: vscode.Disposable[] = [];
 
   private constructor(private readonly logger: ILogger) {}
-
-  /** @deprecated Use DI injection instead */
-  public static getInstance(): ConfigurationService {
-    ConfigurationService.instance ??= new ConfigurationService(Logger.getInstance());
-    return ConfigurationService.instance;
-  }
 
   public static create(logger: ILogger): ConfigurationService {
     return new ConfigurationService(logger);

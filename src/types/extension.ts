@@ -22,16 +22,3 @@ export interface ExtensionConfig {
   showCommandName: boolean;
   logLevel: LogLevel;
 }
-
-/**
- * Logger interface for consistent logging across the extension
- */
-export interface ILogger {
-  error(message: string, ...args: unknown[]): void;
-  warn(message: string, ...args: unknown[]): void;
-  info(message: string, ...args: unknown[]): void;
-  debug(message: string, ...args: unknown[]): void;
-  show(): void;
-  dispose(): void;
-  setLogLevel?(level: LogLevel): void;
-}
