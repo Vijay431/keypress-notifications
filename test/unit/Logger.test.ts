@@ -24,21 +24,21 @@ describe('Logger', () => {
     Logger._resetInstance();
   });
 
-  it('getInstance() returns a singleton', async () => {
+  it('should return a singleton from getInstance()', async () => {
     const { Logger } = await import('../../src/utils/logger');
     const a = Logger.getInstance();
     const b = Logger.getInstance();
     expect(a).toBe(b);
   });
 
-  it('create() returns the same singleton as getInstance()', async () => {
+  it('should return the same singleton from create() as getInstance()', async () => {
     const { Logger } = await import('../../src/utils/logger');
     const a = Logger.getInstance();
     const b = Logger.create();
     expect(a).toBe(b);
   });
 
-  it('debug at INFO log level (default) does NOT call appendLine (filtered)', async () => {
+  it('should not call appendLine for debug at default INFO level', async () => {
     const { Logger } = await import('../../src/utils/logger');
     const logger = Logger.getInstance();
     // Default level is INFO, so DEBUG is filtered
@@ -46,14 +46,14 @@ describe('Logger', () => {
     expect(mockAppendLine).not.toHaveBeenCalled();
   });
 
-  it('info at INFO log level DOES call appendLine', async () => {
+  it('should call appendLine for info at INFO level', async () => {
     const { Logger } = await import('../../src/utils/logger');
     const logger = Logger.getInstance();
     logger.info('some info message');
     expect(mockAppendLine).toHaveBeenCalledWith(expect.stringContaining('some info message'));
   });
 
-  it('setLogLevel(DEBUG) allows debug() to call appendLine', async () => {
+  it('should call appendLine for debug() after setLogLevel(DEBUG)', async () => {
     const { Logger } = await import('../../src/utils/logger');
     const { LogLevel } = await import('../../src/types/extension');
     const logger = Logger.getInstance();
@@ -62,28 +62,28 @@ describe('Logger', () => {
     expect(mockAppendLine).toHaveBeenCalledWith(expect.stringContaining('debug message'));
   });
 
-  it('warn() calls appendLine with the message', async () => {
+  it('should call appendLine with the message on warn()', async () => {
     const { Logger } = await import('../../src/utils/logger');
     const logger = Logger.getInstance();
     logger.warn('warning message');
     expect(mockAppendLine).toHaveBeenCalledWith(expect.stringContaining('warning message'));
   });
 
-  it('error() calls appendLine with the message', async () => {
+  it('should call appendLine with the message on error()', async () => {
     const { Logger } = await import('../../src/utils/logger');
     const logger = Logger.getInstance();
     logger.error('error message');
     expect(mockAppendLine).toHaveBeenCalledWith(expect.stringContaining('error message'));
   });
 
-  it('show() calls outputChannel.show()', async () => {
+  it('should call outputChannel.show() on show()', async () => {
     const { Logger } = await import('../../src/utils/logger');
     const logger = Logger.getInstance();
     logger.show();
     expect(mockShow).toHaveBeenCalled();
   });
 
-  it('dispose() calls outputChannel.dispose()', async () => {
+  it('should call outputChannel.dispose() on dispose()', async () => {
     const { Logger } = await import('../../src/utils/logger');
     const logger = Logger.getInstance();
     logger.dispose();

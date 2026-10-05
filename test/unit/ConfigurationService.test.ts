@@ -41,42 +41,42 @@ describe('ConfigurationService', () => {
     };
   });
 
-  it('isEnabled() returns true by default', async () => {
+  it('should return true from isEnabled() by default', async () => {
     mockGet.mockImplementation((_key: string, def?: unknown) => def);
     const { ConfigurationService } = await import('../../src/services/ConfigurationService');
     const svc = ConfigurationService.create(logger);
     expect(svc.isEnabled()).toBe(true);
   });
 
-  it('getMinimumKeys() returns 2 by default', async () => {
+  it('should return 2 from getMinimumKeys() by default', async () => {
     mockGet.mockImplementation((_key: string, def?: unknown) => def);
     const { ConfigurationService } = await import('../../src/services/ConfigurationService');
     const svc = ConfigurationService.create(logger);
     expect(svc.getMinimumKeys()).toBe(2);
   });
 
-  it('getExcludedCommands() returns [] by default', async () => {
+  it('should return [] from getExcludedCommands() by default', async () => {
     mockGet.mockImplementation((_key: string, def?: unknown) => def);
     const { ConfigurationService } = await import('../../src/services/ConfigurationService');
     const svc = ConfigurationService.create(logger);
     expect(svc.getExcludedCommands()).toEqual([]);
   });
 
-  it('shouldShowCommandName() returns false by default', async () => {
+  it('should return false from shouldShowCommandName() by default', async () => {
     mockGet.mockImplementation((_key: string, def?: unknown) => def);
     const { ConfigurationService } = await import('../../src/services/ConfigurationService');
     const svc = ConfigurationService.create(logger);
     expect(svc.shouldShowCommandName()).toBe(false);
   });
 
-  it('getLogLevel() returns LogLevel.INFO by default', async () => {
+  it('should return LogLevel.INFO from getLogLevel() by default', async () => {
     mockGet.mockImplementation((_key: string, def?: unknown) => def);
     const { ConfigurationService } = await import('../../src/services/ConfigurationService');
     const svc = ConfigurationService.create(logger);
     expect(svc.getLogLevel()).toBe(LogLevel.INFO);
   });
 
-  it('updateConfiguration calls vscode config.update', async () => {
+  it('should call vscode config.update on updateConfiguration', async () => {
     const { ConfigurationService } = await import('../../src/services/ConfigurationService');
     const svc = ConfigurationService.create(logger);
     await svc.updateConfiguration('enabled', false);
