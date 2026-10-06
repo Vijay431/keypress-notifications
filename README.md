@@ -41,7 +41,7 @@ Keypress Notifications plugs that gap. Every time you trigger one of **42 common
 ### Visuals
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Vijay431/keypress-notifications/main/public/demo.gif" alt="Keypress Notifications demo" />
+  <img src="https://raw.githubusercontent.com/Vijay431/keypress-notifications/main/public/demos/demo.gif" alt="Keypress Notifications demo" />
   <br/>
   <em>On-screen toast for every supported keybinding</em>
 </div>
