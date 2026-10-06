@@ -6,7 +6,7 @@ Keypress Notifications is a VS Code extension built to provide immediate on-scre
 
 ### Data Flow
 
-1. A user triggers a known VS Code keybinding (e.g., `Ctrl+S`).
+1. A user triggers a known VS Code keybinding (e.g., `Ctrl+S`). Wrapper keybindings carry `keypress-notifications.enabled` in their `when` clause, so while the extension is disabled the native binding applies and no wrapper runs.
 2. VS Code intercepts the shortcut and invokes our wrapper command (e.g., `keypress-notifications.wrapper.workbench_action_files_save`) registered by the `CommandRegistry`.
 3. The `KeypressService` executes the original VS Code command (`workbench.action.files.save`) via the Extension API.
 4. Concurrently, the `KeypressService` invokes the VS Code Window API to display a non-blocking toast notification containing the corresponding shortcut label (e.g., "You've pressed Ctrl+S").
@@ -59,7 +59,7 @@ The repository is organized to separate concerns, primarily living inside `/src`
   - `KeypressService.ts`: Wraps 42 known VS Code commands and handles the notification logic.
   - `ConfigurationService.ts`: Interfaces with VS Code settings and listens for changes.
   - `AccessibilityService.ts`: Helper logic for screen reader announcements.
-- `/src/utils/`: Shared utilities including the `logger.ts` singleton and configuration validators.
+- `/src/utils/`: Shared utilities including the `logger.ts` singleton.
 - `/test/`: Split into `unit/` (Vitest with mocked VS Code API) and `suite/` (Mocha integration tests against a live VS Code host).
 
 ## 3. Data Model & Storage
@@ -73,7 +73,7 @@ All configuration and state are persisted natively in the VS Code Workspace/User
 - **`keypress-notifications.enabled`**: Boolean flag to toggle notifications.
 - **`keypress-notifications.minimumKeys`**: Integer defining the minimum number of keys in a shortcut combination.
 - **`keypress-notifications.excludedCommands`**: Array of string command IDs to skip.
-- **`keypress-notifications.showCommandName`**: Boolean flag to append the VS Code command ID to the toast message.
+- **`keypress-notifications.showCommandName`**: Boolean flag to append the VS Code command ID, in parentheses, to the toast message.
 - **`keypress-notifications.logLevel`**: Enum (`debug`, `info`, `warn`, `error`) mapped to a numeric logger state.
 
 ## 4. API & Interface Specifications
@@ -106,7 +106,7 @@ The `KeypressService` dynamically generates wrapper commands for 42 native VS Co
 4. Build the extension bundle: `pnpm run build` (or `pnpm run watch` for continuous compilation).
 5. Launch the Extension Development Host: Open the workspace in VS Code and press **F5**.
 
-_Note: The extension uses `esbuild` for rapid bundling without relying on webpack or rollup._
+_Note: The extension uses `esbuild` (target `node22`) for rapid bundling without relying on webpack or rollup._
 
 ## 6. Testing & Quality Assurance
 

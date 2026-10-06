@@ -106,11 +106,6 @@ export class ExtensionManager {
     this.logger.debug(`Configuration changed — enabled: ${String(isEnabled)}`);
     this.logger.setLogLevel(this.configService.getLogLevel());
     await this.updateEnabledContext();
-    if (isEnabled) {
-      await this.keypressService.enable();
-    } else {
-      await this.keypressService.disable();
-    }
   }
 
   private async updateEnabledContext(): Promise<void> {

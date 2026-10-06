@@ -41,7 +41,7 @@ Keypress Notifications plugs that gap. Every time you trigger one of **42 common
 ### Visuals
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Vijay431/keypress-notifications/main/public/demo.gif" alt="Keypress Notifications demo" />
+  <img src="https://raw.githubusercontent.com/Vijay431/keypress-notifications/main/public/demos/demo.gif" alt="Keypress Notifications demo" />
   <br/>
   <em>On-screen toast for every supported keybinding</em>
 </div>
@@ -100,13 +100,13 @@ Open the Command Palette (`Ctrl+Shift+P`) and search for:
 
 All settings live under the `keypress-notifications.*` namespace in your VS Code `settings.json`:
 
-| Setting            | Type     | Default  | Description                                                         |
-| ------------------ | -------- | -------- | ------------------------------------------------------------------- |
-| `enabled`          | boolean  | `true`   | Enable or disable notifications                                     |
-| `minimumKeys`      | number   | `2`      | Minimum number of keys in a combination before a notification fires |
-| `excludedCommands` | string[] | `[]`     | Commands to suppress notifications for                              |
-| `showCommandName`  | boolean  | `false`  | Include the VS Code command ID in the notification message          |
-| `logLevel`         | string   | `"info"` | Logging verbosity: `"debug"`, `"info"`, `"warn"`, or `"error"`      |
+| Setting            | Type     | Default  | Description                                                                                            |
+| ------------------ | -------- | -------- | ------------------------------------------------------------------------------------------------------ |
+| `enabled`          | boolean  | `true`   | Enable or disable notifications                                                                        |
+| `minimumKeys`      | number   | `2`      | Minimum number of keys in a combination before a notification fires                                    |
+| `excludedCommands` | string[] | `[]`     | Commands to suppress notifications for                                                                 |
+| `showCommandName`  | boolean  | `false`  | Append the command ID in parentheses, e.g. `You've pressed Ctrl+C (editor.action.clipboardCopyAction)` |
+| `logLevel`         | string   | `"info"` | Logging verbosity: `"debug"`, `"info"`, `"warn"`, or `"error"`                                         |
 
 ### Supported Shortcuts
 
@@ -147,7 +147,7 @@ The extension covers 42 common commands across the Editor, Explorer, Workbench, 
 | Shortcut | Action |
 |---|---|
 | Ctrl+S | Save |
-| Ctrl+K S | Save All |
+| Ctrl+K S (Mac: Option+Cmd+S) | Save All |
 | Ctrl+Shift+P | Command Palette |
 | Ctrl+P | Quick Open |
 | Ctrl+Shift+F | Find in Files |

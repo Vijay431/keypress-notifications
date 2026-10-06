@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { suite, test, suiteSetup, suiteTeardown, setup } from 'mocha';
+import { suite, test, suiteSetup, suiteTeardown, setup, teardown } from 'mocha';
 
 async function waitFor(predicate: () => boolean, timeoutMs = 3000): Promise<void> {
   const start = Date.now();
@@ -12,6 +12,28 @@ async function waitFor(predicate: () => boolean, timeoutMs = 3000): Promise<void
   }
 }
 
+const CONFIG_SECTION = 'keypress-notifications';
+const COPY_WRAPPER = 'keypress-notifications.wrapper.editor_action_clipboardCopyAction';
+
+function sleep(ms: number): Promise<void> {
+  return new Promise<void>((resolve) => setTimeout(resolve, ms));
+}
+
+async function setConfig(key: string, value: boolean): Promise<void> {
+  await vscode.workspace
+    .getConfiguration(CONFIG_SECTION)
+    .update(key, value, vscode.ConfigurationTarget.Global);
+  await waitFor(
+    () => vscode.workspace.getConfiguration(CONFIG_SECTION).get<boolean>(key) === value,
+  );
+  await sleep(100);
+}
+
+async function ensureEnabled(): Promise<void> {
+  await vscode.commands.executeCommand('keypress-notifications.enable');
+  await setConfig('enabled', true);
+}
+
 suite('Keypress Notifications E2E Tests', () => {
   let notificationMessages: string[] = [];
   let originalShowInformationMessage: typeof vscode.window.showInformationMessage;
@@ -21,6 +43,8 @@ suite('Keypress Notifications E2E Tests', () => {
       const ext = vscode.extensions.getExtension('VijayGangatharan.keypress-notifications');
       return ext?.isActive ?? false;
     }, 10000);
+
+    await ensureEnabled();
 
     originalShowInformationMessage = vscode.window.showInformationMessage;
     vscode.window.showInformationMessage = async (message: string, ...items: unknown[]) => {
@@ -34,7 +58,8 @@ suite('Keypress Notifications E2E Tests', () => {
     vscode.window.showInformationMessage = originalShowInformationMessage;
   });
 
-  setup(() => {
+  setup(async () => {
+    await ensureEnabled();
     notificationMessages = [];
   });
 
@@ -68,6 +93,14 @@ suite('Keypress Notifications E2E Tests', () => {
         wrapperCommands.length > 0,
         `Should have registered dynamic wrapper commands, found ${wrapperCommands.length}`,
       );
+    });
+
+    test('should register exactly 42 wrapper commands', async () => {
+      const commands = await vscode.commands.getCommands();
+      const wrapperCommands = commands.filter((cmd) =>
+        cmd.startsWith('keypress-notifications.wrapper.'),
+      );
+      assert.strictEqual(wrapperCommands.length, 42);
     });
   });
 
@@ -185,6 +218,40 @@ suite('Keypress Notifications E2E Tests', () => {
     });
   });
 
+  suite('Disabled State', () => {
+    teardown(async () => {
+      await ensureEnabled();
+    });
+
+    test('should not show notification when disabled', async () => {
+      await setConfig('enabled', false);
+
+      await vscode.commands.executeCommand(COPY_WRAPPER);
+      await sleep(300);
+
+      assert.deepStrictEqual(notificationMessages, []);
+    });
+  });
+
+  suite('Show Command Name', () => {
+    teardown(async () => {
+      await setConfig('showCommandName', false);
+    });
+
+    test('should include command id in notification when showCommandName is true', async () => {
+      await setConfig('showCommandName', true);
+
+      await vscode.commands.executeCommand(COPY_WRAPPER);
+      await waitFor(() => notificationMessages.length > 0);
+
+      const notification = notificationMessages[0];
+      assert.ok(
+        notification && notification.includes('(editor.action.clipboardCopyAction)'),
+        `Expected command name in notification, got: "${notification}"`,
+      );
+    });
+  });
+
   suite('Extension Deactivation', () => {
     test('should have deactivation method callable without error', () => {
       const ext = vscode.extensions.getExtension('VijayGangatharan.keypress-notifications');
@@ -194,6 +261,10 @@ suite('Keypress Notifications E2E Tests', () => {
   });
 
   suite('Extension Management', () => {
+    teardown(async () => {
+      await ensureEnabled();
+    });
+
     test('should execute show output command without error', async () => {
       await vscode.commands.executeCommand('keypress-notifications.showOutputChannel');
       assert.ok(true, 'Show output command should execute without error');

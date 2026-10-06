@@ -35,11 +35,9 @@ const mockLogger = {
 
 const mockKeypressService = {
   initialize: vi.fn(async () => {}),
-  enable: vi.fn(async () => {}),
-  disable: vi.fn(async () => {}),
   dispose: vi.fn(),
   detectKeyPress: vi.fn(),
-  getState: vi.fn(() => ({ enabled: true, actionBufferLength: 0, lastActionTime: 0 })),
+  getState: vi.fn(() => ({ actionBufferLength: 0, lastActionTime: 0 })),
 };
 
 let configChangedHandler: (() => void) | undefined;
@@ -146,7 +144,7 @@ describe('ExtensionManager', () => {
     expect(mockLogger.info).toHaveBeenCalledWith(expect.stringContaining('Deactivating'));
   });
 
-  it('should call keypressService.enable() on config change when isEnabled is true', async () => {
+  it('should set the enabled context on activation', async () => {
     const { ExtensionManager } = await import('../../src/managers/ExtensionManager');
     const manager = new ExtensionManager(
       mockLogger,
@@ -154,15 +152,16 @@ describe('ExtensionManager', () => {
       mockKeypressService,
       mockAccessibilityService,
     );
-    await manager.activate(context);
     mockConfigService.isEnabled.mockReturnValue(true);
-    expect(configChangedHandler).toBeDefined();
-    configChangedHandler!();
-    await new Promise((r) => setTimeout(r, 10));
-    expect(mockKeypressService.enable).toHaveBeenCalled();
+    await manager.activate(context);
+    expect(mockExecuteCommand).toHaveBeenCalledWith(
+      'setContext',
+      'keypress-notifications.enabled',
+      true,
+    );
   });
 
-  it('should call keypressService.disable() on config change when isEnabled is false', async () => {
+  it('should update the enabled context on config change', async () => {
     const { ExtensionManager } = await import('../../src/managers/ExtensionManager');
     const manager = new ExtensionManager(
       mockLogger,
@@ -172,10 +171,14 @@ describe('ExtensionManager', () => {
     );
     await manager.activate(context);
     mockConfigService.isEnabled.mockReturnValue(false);
-    expect(configChangedHandler).toBeDefined();
+    mockExecuteCommand.mockClear();
     configChangedHandler!();
     await new Promise((r) => setTimeout(r, 10));
-    expect(mockKeypressService.disable).toHaveBeenCalled();
+    expect(mockExecuteCommand).toHaveBeenCalledWith(
+      'setContext',
+      'keypress-notifications.enabled',
+      false,
+    );
   });
 
   it('should show error message and rethrow when keypressService.initialize() throws', async () => {

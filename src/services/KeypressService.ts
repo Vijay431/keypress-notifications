@@ -4,89 +4,79 @@ import { type IAccessibilityService } from '../di/interfaces/IAccessibilityServi
 import { type IConfigurationService } from '../di/interfaces/IConfigurationService';
 import { type IKeypressService } from '../di/interfaces/IKeypressService';
 import { type ILogger } from '../di/interfaces/ILogger';
-import { Logger } from '../utils/logger';
 
-import { AccessibilityService } from './AccessibilityService';
-import { ConfigurationService } from './ConfigurationService';
+type KeyLabel = string | { default: string; mac: string };
+
+/**
+ * Maps wrapped command IDs to human-readable key labels. String labels are
+ * platform-adjusted (Ctrl->Cmd, Alt->Option on macOS); object labels are explicit.
+ */
+export const COMMAND_KEY_MAP: Readonly<Record<string, KeyLabel>> = {
+  // Original 19
+  'editor.action.clipboardCopyAction': 'Ctrl+C',
+  'editor.action.clipboardCutAction': 'Ctrl+X',
+  'editor.action.clipboardPasteAction': 'Ctrl+V',
+  'workbench.action.showCommands': 'Ctrl+Shift+P',
+  'workbench.action.quickOpen': 'Ctrl+P',
+  'workbench.action.files.save': 'Ctrl+S',
+  'workbench.action.files.saveAll': { default: 'Ctrl+K S', mac: 'Option+Cmd+S' },
+  'workbench.action.files.newUntitledFile': 'Ctrl+N',
+  'workbench.action.files.openFile': 'Ctrl+O',
+  'workbench.action.findInFiles': 'Ctrl+Shift+F',
+  'workbench.action.gotoLine': 'Ctrl+G',
+  'workbench.action.toggleSidebarVisibility': 'Ctrl+B',
+  'workbench.action.terminal.toggleTerminal': 'Ctrl+`',
+  'workbench.action.togglePanel': 'Ctrl+J',
+  'workbench.action.closeActiveEditor': 'Ctrl+W',
+  'workbench.action.newWindow': 'Ctrl+Shift+N',
+  'editor.action.formatDocument': 'Shift+Alt+F',
+  'editor.action.commentLine': 'Ctrl+/',
+  'editor.action.addSelectionToNextFindMatch': 'Ctrl+D',
+  // Explorer
+  'filesExplorer.copy': 'Ctrl+C',
+  'filesExplorer.cut': 'Ctrl+X',
+  'filesExplorer.paste': 'Ctrl+V',
+  // Editing
+  undo: 'Ctrl+Z',
+  redo: { default: 'Ctrl+Y', mac: 'Cmd+Shift+Z' },
+  'editor.action.selectAll': 'Ctrl+A',
+  'actions.find': 'Ctrl+F',
+  'editor.action.startFindReplaceAction': 'Ctrl+H',
+  'editor.action.moveLinesUpAction': 'Alt+Up',
+  'editor.action.moveLinesDownAction': 'Alt+Down',
+  'editor.action.copyLinesUpAction': 'Shift+Alt+Up',
+  'editor.action.copyLinesDownAction': 'Shift+Alt+Down',
+  'editor.action.deleteLines': 'Ctrl+Shift+K',
+  'editor.action.quickFix': 'Ctrl+.',
+  // Workbench / navigation
+  'workbench.action.splitEditor': 'Ctrl+\\',
+  'workbench.action.reopenClosedEditor': 'Ctrl+Shift+T',
+  'workbench.action.gotoSymbol': 'Ctrl+Shift+O',
+  'workbench.action.openSettings': 'Ctrl+,',
+  'workbench.view.scm': 'Ctrl+Shift+G',
+  'workbench.view.extensions': 'Ctrl+Shift+X',
+  'workbench.view.debug': 'Ctrl+Shift+D',
+  'workbench.actions.view.problems': 'Ctrl+Shift+M',
+  // Terminal
+  'workbench.action.terminal.new': 'Ctrl+Shift+`',
+};
 
 /**
  * KeypressService class that dynamically detects multi-key combinations
  * without hardcoding specific shortcuts. Shows notifications like "You've pressed Ctrl+C".
  */
 export class KeypressService implements IKeypressService {
-  private static instance: KeypressService | undefined;
   private lastActionTime = 0;
-  private actionBuffer: string[] = [];
+  private actionBuffer: { label: string; id: string }[] = [];
   private readonly MULTI_KEY_THRESHOLD = 150; // ms between keys to consider multi-key sequence
-  private enabled = true;
   private readonly disposables: vscode.Disposable[] = [];
   private readonly pendingTimers = new Set<ReturnType<typeof setTimeout>>();
-
-  private static readonly COMMAND_KEY_MAP: Record<string, string> = {
-    // Original 19
-    'editor.action.clipboardCopyAction': 'Ctrl+C',
-    'editor.action.clipboardCutAction': 'Ctrl+X',
-    'editor.action.clipboardPasteAction': 'Ctrl+V',
-    'workbench.action.showCommands': 'Ctrl+Shift+P',
-    'workbench.action.quickOpen': 'Ctrl+P',
-    'workbench.action.files.save': 'Ctrl+S',
-    'workbench.action.files.saveAll': 'Ctrl+K S',
-    'workbench.action.files.newUntitledFile': 'Ctrl+N',
-    'workbench.action.files.openFile': 'Ctrl+O',
-    'workbench.action.findInFiles': 'Ctrl+Shift+F',
-    'workbench.action.gotoLine': 'Ctrl+G',
-    'workbench.action.toggleSidebarVisibility': 'Ctrl+B',
-    'workbench.action.terminal.toggleTerminal': 'Ctrl+`',
-    'workbench.action.togglePanel': 'Ctrl+J',
-    'workbench.action.closeActiveEditor': 'Ctrl+W',
-    'workbench.action.newWindow': 'Ctrl+Shift+N',
-    'editor.action.formatDocument': 'Shift+Alt+F',
-    'editor.action.commentLine': 'Ctrl+/',
-    'editor.action.addSelectionToNextFindMatch': 'Ctrl+D',
-    // Explorer
-    'filesExplorer.copy': 'Ctrl+C',
-    'filesExplorer.cut': 'Ctrl+X',
-    'filesExplorer.paste': 'Ctrl+V',
-    // Editing
-    undo: 'Ctrl+Z',
-    redo: 'Ctrl+Y',
-    'editor.action.selectAll': 'Ctrl+A',
-    'actions.find': 'Ctrl+F',
-    'editor.action.startFindReplaceAction': 'Ctrl+H',
-    'editor.action.moveLinesUpAction': 'Alt+Up',
-    'editor.action.moveLinesDownAction': 'Alt+Down',
-    'editor.action.copyLinesUpAction': 'Shift+Alt+Up',
-    'editor.action.copyLinesDownAction': 'Shift+Alt+Down',
-    'editor.action.deleteLines': 'Ctrl+Shift+K',
-    'editor.action.quickFix': 'Ctrl+.',
-    // Workbench / navigation
-    'workbench.action.splitEditor': 'Ctrl+\\',
-    'workbench.action.reopenClosedEditor': 'Ctrl+Shift+T',
-    'workbench.action.gotoSymbol': 'Ctrl+Shift+O',
-    'workbench.action.openSettings': 'Ctrl+,',
-    'workbench.view.scm': 'Ctrl+Shift+G',
-    'workbench.view.extensions': 'Ctrl+Shift+X',
-    'workbench.view.debug': 'Ctrl+Shift+D',
-    'workbench.actions.view.problems': 'Ctrl+Shift+M',
-    // Terminal
-    'workbench.action.terminal.new': 'Ctrl+Shift+`',
-  };
 
   private constructor(
     private readonly logger: ILogger,
     private readonly configService: IConfigurationService,
     private readonly accessibilityService: IAccessibilityService,
   ) {}
-
-  /** @deprecated Use DI injection instead */
-  public static getInstance(): KeypressService {
-    KeypressService.instance ??= new KeypressService(
-      Logger.getInstance(),
-      ConfigurationService.getInstance(),
-      AccessibilityService.getInstance(),
-    );
-    return KeypressService.instance;
-  }
 
   public static create(
     logger: ILogger,
@@ -105,26 +95,10 @@ export class KeypressService implements IKeypressService {
   }
 
   /**
-   * Enable keypress detection
-   */
-  public async enable(): Promise<void> {
-    this.enabled = true;
-    this.logger.info('KeypressService enabled');
-  }
-
-  /**
-   * Disable keypress detection
-   */
-  public async disable(): Promise<void> {
-    this.enabled = false;
-    this.logger.info('KeypressService disabled');
-  }
-
-  /**
    * Discover VS Code commands and create dynamic wrappers
    */
   private async discoverAndWrapCommands(): Promise<void> {
-    const knownCommands = Object.keys(KeypressService.COMMAND_KEY_MAP);
+    const knownCommands = Object.keys(COMMAND_KEY_MAP);
 
     this.logger.debug(`Registering wrappers for ${knownCommands.length} known shortcut commands`);
 
@@ -136,7 +110,7 @@ export class KeypressService implements IKeypressService {
       const disposable = vscode.commands.registerCommand(
         wrapperCommand,
         async (...args: unknown[]) => {
-          if (this.enabled && this.configService.isEnabled()) {
+          if (this.configService.isEnabled()) {
             this.detectKeyPress(originalCommand);
           }
           // Execute the original command
@@ -166,10 +140,10 @@ export class KeypressService implements IKeypressService {
 
     // If quick succession, likely multi-key combination
     if (timeSinceLastAction < this.MULTI_KEY_THRESHOLD && this.actionBuffer.length > 0) {
-      this.actionBuffer.push(keyCombo);
+      this.actionBuffer.push({ label: keyCombo, id: commandId });
       this.showMultiKeyNotification();
     } else {
-      this.actionBuffer = [keyCombo];
+      this.actionBuffer = [{ label: keyCombo, id: commandId }];
       // Show notification for any key combination (2+ keys)
       if (this.isMultiKeyCombo(keyCombo)) {
         const timer = setTimeout(() => {
@@ -188,7 +162,7 @@ export class KeypressService implements IKeypressService {
    */
   private isMultiKeyCombo(keyCombo: string): boolean {
     const minimumKeys = this.configService.getMinimumKeys();
-    const keyParts = keyCombo.split('+');
+    const keyParts = keyCombo.split(/[+\s]+/);
     return keyParts.length >= minimumKeys;
   }
 
@@ -198,9 +172,9 @@ export class KeypressService implements IKeypressService {
   private inferKeysFromCommand(commandId: string): string {
     // Check if we have a direct mapping
     // eslint-disable-next-line security/detect-object-injection
-    const mapping = KeypressService.COMMAND_KEY_MAP[commandId];
+    const mapping = COMMAND_KEY_MAP[commandId];
     if (mapping) {
-      return this.adjustForPlatform(mapping);
+      return this.resolveLabel(mapping);
     }
 
     // Try to infer from command name patterns
@@ -218,27 +192,29 @@ export class KeypressService implements IKeypressService {
   }
 
   /**
-   * Adjust key combination for platform (Mac uses Cmd instead of Ctrl)
+   * Resolve a label for the current platform. Object labels pick explicitly;
+   * string labels are adjusted (Mac uses Cmd instead of Ctrl, Option instead of Alt).
    */
-  private adjustForPlatform(keyCombo: string): string {
-    if (process.platform === 'darwin') {
-      return keyCombo.replace(/Ctrl/g, 'Cmd');
+  private resolveLabel(label: KeyLabel): string {
+    const isMac = process.platform === 'darwin';
+    if (typeof label !== 'string') {
+      return isMac ? label.mac : label.default;
     }
-    return keyCombo;
+    return isMac ? label.replace(/\bCtrl\b/g, 'Cmd').replace(/\bAlt\b/g, 'Option') : label;
   }
 
   /**
    * Show notification with detected key combination
    */
   private showMultiKeyNotification(): void {
+    this.clearPendingTimers();
     if (this.actionBuffer.length > 0) {
-      const keySequence = this.actionBuffer.join(' → ');
+      const keySequence = this.actionBuffer.map((entry) => entry.label).join(' → ');
       let message = `You've pressed ${keySequence}`;
 
-      // Optionally show command name if configured
-      if (this.configService.shouldShowCommandName() && this.actionBuffer.length === 1) {
-        // For single commands, we could add more context
-        message += ' (keyboard shortcut detected)';
+      if (this.configService.shouldShowCommandName()) {
+        const commandNames = this.actionBuffer.map((entry) => entry.id).join(' → ');
+        message += ` (${commandNames})`;
       }
 
       vscode.window.showInformationMessage(message);
@@ -252,17 +228,20 @@ export class KeypressService implements IKeypressService {
   /**
    * Get current state for testing or debugging
    */
-  public getState(): { enabled: boolean; actionBufferLength: number; lastActionTime: number } {
+  public getState(): { actionBufferLength: number; lastActionTime: number } {
     return {
-      enabled: this.enabled,
       actionBufferLength: this.actionBuffer.length,
       lastActionTime: this.lastActionTime,
     };
   }
 
-  public dispose(): void {
+  private clearPendingTimers(): void {
     this.pendingTimers.forEach(clearTimeout);
     this.pendingTimers.clear();
+  }
+
+  public dispose(): void {
+    this.clearPendingTimers();
     this.disposables.forEach((d) => {
       try {
         d.dispose();

@@ -15,7 +15,7 @@ This file is the single source of truth for the **Keypress Notifications** VS Co
 - **Node.js:** >=22 runtime (22, 24, 26 supported); dev uses Node 24 LTS (`lts/jod`)
 - **Package manager:** pnpm (`pnpm-workspace.yaml` owns `overrides` and `allowBuilds`; do not put them in `package.json`)
 - **Language:** TypeScript (strict mode)
-- **Bundle tool:** esbuild (via `esbuild.config.ts`)
+- **Bundle tool:** esbuild (via `esbuild.config.ts`, target `node22`)
 - **Published to:** VS Code Marketplace and Open VSX Registry
 - **Runtime dependencies:** none (devDependencies only)
 
@@ -78,8 +78,6 @@ src/
     index.ts
   utils/
     logger.ts
-    config-validator.ts
-    config-migrator.ts
     index.ts
 public/                         # packaged extension assets (images, screenshots)
 test/
@@ -161,29 +159,29 @@ The core feature: `KeypressService` registers wrapper commands for a curated set
 
 **Workbench / navigation**
 
-| Shortcut         | Wrapped Command                            |
-| ---------------- | ------------------------------------------ |
-| Ctrl+Shift+P     | `workbench.action.showCommands`            |
-| Ctrl+P / Cmd+P   | `workbench.action.quickOpen`               |
-| Ctrl+S / Cmd+S   | `workbench.action.files.save`              |
-| Ctrl+K Ctrl+S    | `workbench.action.files.saveAll`           |
-| Ctrl+N / Cmd+N   | `workbench.action.files.newUntitledFile`   |
-| Ctrl+O / Cmd+O   | `workbench.action.files.openFile`          |
-| Ctrl+Shift+F     | `workbench.action.findInFiles`             |
-| Ctrl+G / Cmd+G   | `workbench.action.gotoLine`                |
-| Ctrl+B / Cmd+B   | `workbench.action.toggleSidebarVisibility` |
-| Ctrl+`           | `workbench.action.terminal.toggleTerminal` |
-| Ctrl+J / Cmd+J   | `workbench.action.togglePanel`             |
-| Ctrl+W / Cmd+W   | `workbench.action.closeActiveEditor`       |
-| Ctrl+Shift+N     | `workbench.action.newWindow`               |
-| Ctrl+\\ / Cmd+\\ | `workbench.action.splitEditor`             |
-| Ctrl+Shift+T     | `workbench.action.reopenClosedEditor`      |
-| Ctrl+Shift+O     | `workbench.action.gotoSymbol`              |
-| Ctrl+, / Cmd+,   | `workbench.action.openSettings`            |
-| Ctrl+Shift+G     | `workbench.view.scm`                       |
-| Ctrl+Shift+X     | `workbench.view.extensions`                |
-| Ctrl+Shift+D     | `workbench.view.debug`                     |
-| Ctrl+Shift+M     | `workbench.actions.view.problems`          |
+| Shortcut                     | Wrapped Command                            |
+| ---------------------------- | ------------------------------------------ |
+| Ctrl+Shift+P                 | `workbench.action.showCommands`            |
+| Ctrl+P / Cmd+P               | `workbench.action.quickOpen`               |
+| Ctrl+S / Cmd+S               | `workbench.action.files.save`              |
+| Ctrl+K S (Mac: Option+Cmd+S) | `workbench.action.files.saveAll`           |
+| Ctrl+N / Cmd+N               | `workbench.action.files.newUntitledFile`   |
+| Ctrl+O / Cmd+O               | `workbench.action.files.openFile`          |
+| Ctrl+Shift+F                 | `workbench.action.findInFiles`             |
+| Ctrl+G / Cmd+G               | `workbench.action.gotoLine`                |
+| Ctrl+B / Cmd+B               | `workbench.action.toggleSidebarVisibility` |
+| Ctrl+`                       | `workbench.action.terminal.toggleTerminal` |
+| Ctrl+J / Cmd+J               | `workbench.action.togglePanel`             |
+| Ctrl+W / Cmd+W               | `workbench.action.closeActiveEditor`       |
+| Ctrl+Shift+N                 | `workbench.action.newWindow`               |
+| Ctrl+\\ / Cmd+\\             | `workbench.action.splitEditor`             |
+| Ctrl+Shift+T                 | `workbench.action.reopenClosedEditor`      |
+| Ctrl+Shift+O                 | `workbench.action.gotoSymbol`              |
+| Ctrl+, / Cmd+,               | `workbench.action.openSettings`            |
+| Ctrl+Shift+G                 | `workbench.view.scm`                       |
+| Ctrl+Shift+X                 | `workbench.view.extensions`                |
+| Ctrl+Shift+D                 | `workbench.view.debug`                     |
+| Ctrl+Shift+M                 | `workbench.actions.view.problems`          |
 
 **Terminal**
 
@@ -201,13 +199,14 @@ The core feature: `KeypressService` registers wrapper commands for a curated set
 
 1. A `keypress-notifications.wrapper.<command_id_with_dots_replaced_by_underscores>` command is registered.
 2. When triggered, it executes the original command via `vscode.commands.executeCommand`.
-3. It then shows a `vscode.window.showInformationMessage` notification with the shortcut key label (derived from `COMMAND_KEY_MAP`).
-4. Registration is bounded to this curated set — not all VS Code commands. To add coverage: add an entry to `COMMAND_KEY_MAP` in `KeypressService.ts` and a matching entry in `package.json` `contributes.keybindings`.
+3. It then shows a `vscode.window.showInformationMessage` notification with the shortcut key label (derived from `COMMAND_KEY_MAP`). On Mac, Alt is shown as Option and redo shows Cmd+Shift+Z. Chord labels count every key toward `minimumKeys` (Ctrl+K S counts as 3 keys). When `showCommandName` is enabled, the command ID is appended in parentheses, e.g. `You've pressed Ctrl+C (editor.action.clipboardCopyAction)`.
+   Every wrapper keybinding in `package.json` includes `keypress-notifications.enabled` in its `when` clause, so when the extension is disabled the native VS Code binding applies and no wrapper runs.
+4. Registration is bounded to this curated set — not all VS Code commands. To add coverage: add an entry to the exported module-level `COMMAND_KEY_MAP` const in `KeypressService.ts` and a matching entry in `package.json` `contributes.keybindings` (with `keypress-notifications.enabled` in its `when` clause). `test/unit/Manifest.test.ts` fails if the keybindings and the map drift out of sync.
 
 ### DI Container Pattern
 
 - All services are singletons, registered in `src/di/container.ts` via `container.registerSingleton(TYPES.Token, factory)`.
-- Services are instantiated via static factory methods (`ServiceName.create(...)`) or `ServiceName.getInstance()` — not `new ServiceName()`.
+- Services are instantiated via static factory methods (`ServiceName.create(...)`) — not `new ServiceName()`. Only `Logger` keeps a singleton accessor (`Logger.getInstance()`). The `getInstance()` methods on `KeypressService`, `ConfigurationService`, and `AccessibilityService` were removed.
 - DI tokens are `symbol` constants defined in `src/di/types.ts`; interfaces live in `src/di/interfaces/`.
 - Child containers (`container.createChild()`) are supported for test isolation.
 - **`ExtensionManager`** receives its 4 service dependencies (`ILogger`, `IConfigurationService`, `IKeypressService`, `IAccessibilityService`) via constructor injection. `extension.ts` resolves them from the container using `getService<T>(TYPES.X)` after `initializeContainer()`. Do not use lazy getters (`get serviceName()`) that call `getService` inside the class.
@@ -313,6 +312,8 @@ Branch naming: `feature/`, `fix/`, `docs/`, or `refactor/` prefix from `main`.
 - **Unit tests** (`test/unit/`, run with `pnpm run test:unit`): infrastructure utilities and services where VS Code API is mocked. No live VS Code instance required.
 - **Coverage** (`pnpm run test:unit:coverage`): Vitest coverage output is written to `coverage/lcov.info`.
 - **Integration tests** (`test/suite/`, run with `pnpm run test:integration`): feature-level tests that exercise commands end-to-end in a real VS Code Extension Development Host.
+- `test/unit/Manifest.test.ts` guards that `package.json` `contributes.keybindings` and `COMMAND_KEY_MAP` stay in sync (command IDs, `enabled` gating, and `key`/`mac` vs label).
+- The integration suite covers all 42 wrapper commands, the disabled state (no notification), and `showCommandName`.
 - **No separate E2E layer**: The integration suite already drives a real VS Code Extension Development Host. Do not add a separate e2e folder.
 - Integration test build output goes to `out-test/` (not `dist/`). The script is `pnpm run test:integration`. Compile errors fail the build.
 - Never add VS Code API-dependent logic to unit tests; never add pure-logic tests to the integration suite.
@@ -331,3 +332,7 @@ Default to **caveman mode** (terse: drop articles/filler/pleasantries; fragments
 ### Shell commands
 
 Prepend `rtk` to all shell invocations when available — 60-90% token savings on dev ops. Examples: `rtk git status`, `rtk pnpm test`, `rtk ls`. Fallback to direct command if `rtk` unavailable, or for compound predicates (`find -not`, `find -exec`) which rtk does not support.
+
+## Knowledge vault
+
+Before exploring from scratch, check the knowledge vault with qmd (collection `vault`, root `~/Programmer/knowledge-vault`). This project's notes live in `02 - Projects/Opensource/keypress-notifications/`; cross-project notes in `03 - Cross-Project/`. Run `qmd search "<terms>" -c vault` (keyword, instant) or `qmd vsearch "<terms>" -c vault` (semantic, ~10s) for prior decisions, architecture and related work. Avoid `qmd query`: it hangs on LLM query expansion. Vault notes may be stale — verify against the code.

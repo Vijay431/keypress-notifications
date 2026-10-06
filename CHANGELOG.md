@@ -1,5 +1,29 @@
 # 📝 Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- **Save All:** the shortcut is now `Ctrl+K S` (Mac: `Option+Cmd+S`), matching VS Code's default. It was previously bound to `Ctrl+K Ctrl+S`, which is VS Code's Open Keyboard Shortcuts.
+- **Disabled state:** all wrapper keybindings now include `keypress-notifications.enabled` in their `when` clause, so when the extension is disabled the native VS Code bindings apply and no wrapper runs.
+- **Mac labels:** Alt is shown as Option and redo shows Cmd+Shift+Z. Chord labels count every key toward `minimumKeys` (Ctrl+K S counts as 3 keys).
+
+### Changed
+
+- **showCommandName:** now appends the command ID in parentheses, e.g. `You've pressed Ctrl+C (editor.action.clipboardCopyAction)`; the old "(keyboard shortcut detected)" text is removed.
+- **KeypressService:** `COMMAND_KEY_MAP` is now an exported module-level const. New unit test `test/unit/Manifest.test.ts` keeps `package.json` keybindings and the map in sync.
+- **KeypressService:** removed redundant `enable()`/`disable()` and `enabled` state; enabled state is owned by the `keypress-notifications.enabled` setting and context key. Pending notification timer is cleared when a sequence flushes. Mac label swap matches whole `Ctrl`/`Alt` tokens only.
+- **Tests:** `Manifest.test.ts` now also verifies each binding's `key`/`mac` matches its `COMMAND_KEY_MAP` label; `ExtensionManager` tests cover the `setContext` call.
+- **Build:** esbuild target is now `node22`; bundle size budget warning raised from 50 KB to 1 MB.
+- **Tests:** the integration suite now covers all 42 wrapper commands, the disabled state (no notification), and `showCommandName`.
+
+### Removed
+
+- `src/utils/config-validator.ts` and `src/utils/config-migrator.ts` (dead code).
+- Duplicate `ILogger` in `src/types/extension.ts`.
+- Deprecated `getInstance()` on `KeypressService`, `ConfigurationService`, and `AccessibilityService` (`Logger` keeps its singleton).
+- Unused DI tokens `CommandRegistry` and `ExtensionManager`.
+
 ## [2.0.0]
 
 ### Added
@@ -79,8 +103,6 @@
 ### Security
 
 - pnpm workspace overrides added for serialize-javascript, diff, tmp, fast-uri, postcss, brace-expansion — reduces pnpm audit to 0 vulnerabilities
-
----
 
 <details>
 <summary><h2>[1.0.0]</h2></summary>
