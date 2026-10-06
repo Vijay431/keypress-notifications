@@ -312,7 +312,7 @@ Branch naming: `feature/`, `fix/`, `docs/`, or `refactor/` prefix from `main`.
 - **Unit tests** (`test/unit/`, run with `pnpm run test:unit`): infrastructure utilities and services where VS Code API is mocked. No live VS Code instance required.
 - **Coverage** (`pnpm run test:unit:coverage`): Vitest coverage output is written to `coverage/lcov.info`.
 - **Integration tests** (`test/suite/`, run with `pnpm run test:integration`): feature-level tests that exercise commands end-to-end in a real VS Code Extension Development Host.
-- `test/unit/Manifest.test.ts` guards that `package.json` `contributes.keybindings` and `COMMAND_KEY_MAP` stay in sync.
+- `test/unit/Manifest.test.ts` guards that `package.json` `contributes.keybindings` and `COMMAND_KEY_MAP` stay in sync (command IDs, `enabled` gating, and `key`/`mac` vs label).
 - The integration suite covers all 42 wrapper commands, the disabled state (no notification), and `showCommandName`.
 - **No separate E2E layer**: The integration suite already drives a real VS Code Extension Development Host. Do not add a separate e2e folder.
 - Integration test build output goes to `out-test/` (not `dist/`). The script is `pnpm run test:integration`. Compile errors fail the build.

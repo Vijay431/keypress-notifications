@@ -112,19 +112,10 @@ describe('KeypressService — inferKeysFromCommand', () => {
 
   it('should return expected shape from getState()', () => {
     const state = service.getState();
-    expect(state).toHaveProperty('enabled');
     expect(state).toHaveProperty('actionBufferLength');
     expect(state).toHaveProperty('lastActionTime');
-    expect(typeof state.enabled).toBe('boolean');
     expect(typeof state.actionBufferLength).toBe('number');
     expect(typeof state.lastActionTime).toBe('number');
-  });
-
-  it('should set enabled to true on enable()', async () => {
-    await service.disable();
-    expect(service.getState().enabled).toBe(false);
-    await service.enable();
-    expect(service.getState().enabled).toBe(true);
   });
 });
 
@@ -420,5 +411,14 @@ describe('KeypressService — platform labels, chords, command names', () => {
     vi.advanceTimersByTime(10);
     svc.detectKeyPress('editor.action.clipboardPasteAction');
     expect(showInfoMock).toHaveBeenCalledWith("You've pressed Ctrl+C → Ctrl+V");
+  });
+
+  it('should clear the pending timer when a merged sequence is flushed', async () => {
+    setPlatform('linux');
+    const svc = await build(2, false);
+    svc.detectKeyPress('editor.action.clipboardCopyAction');
+    expect(vi.getTimerCount()).toBe(1);
+    svc.detectKeyPress('editor.action.clipboardPasteAction');
+    expect(vi.getTimerCount()).toBe(0);
   });
 });
