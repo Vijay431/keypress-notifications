@@ -366,6 +366,11 @@
     "baseImageUrl": "./logo.png",
     "dependencies": false
   },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "all-contributors": {
     "projectName": "keypress-notifications",
     "projectOwner": "Vijay431",
