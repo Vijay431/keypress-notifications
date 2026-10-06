@@ -7,6 +7,7 @@ import { COMMAND_KEY_MAP } from '../../src/services/KeypressService';
 
 interface Keybinding {
   key: string;
+  mac?: string;
   command: string;
   when?: string;
 }
@@ -47,5 +48,22 @@ describe('package.json manifest vs COMMAND_KEY_MAP', () => {
       (b) => b.command === `${PREFIX}workbench_action_files_saveAll`,
     );
     expect(binding?.key).toBe('ctrl+k s');
+  });
+
+  it('should match every binding key and mac key to its COMMAND_KEY_MAP label', () => {
+    const norm = (label: string): string => label.toLowerCase().replace(/option/g, 'alt');
+    const byCommand = new Map(
+      Object.entries(COMMAND_KEY_MAP).map(([id, l]) => [id.replace(/\./g, '_'), l]),
+    );
+    for (const binding of wrapperBindings) {
+      const label = byCommand.get(binding.command.slice(PREFIX.length));
+      expect(label, binding.command).toBeDefined();
+      const defaultLabel = typeof label === 'string' ? label : label!.default;
+      expect(binding.key, binding.command).toBe(norm(defaultLabel));
+      if (binding.mac) {
+        const macLabel = typeof label === 'string' ? label.replace(/\bCtrl\b/g, 'Cmd') : label!.mac;
+        expect(binding.mac, binding.command).toBe(norm(macLabel));
+      }
+    }
   });
 });

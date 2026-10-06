@@ -12,7 +12,9 @@
 
 - **showCommandName:** now appends the command ID in parentheses, e.g. `You've pressed Ctrl+C (editor.action.clipboardCopyAction)`; the old "(keyboard shortcut detected)" text is removed.
 - **KeypressService:** `COMMAND_KEY_MAP` is now an exported module-level const. New unit test `test/unit/Manifest.test.ts` keeps `package.json` keybindings and the map in sync.
-- **Build:** esbuild target is now `node22`.
+- **KeypressService:** removed redundant `enable()`/`disable()` and `enabled` state; enabled state is owned by the `keypress-notifications.enabled` setting and context key. Pending notification timer is cleared when a sequence flushes. Mac label swap matches whole `Ctrl`/`Alt` tokens only.
+- **Tests:** `Manifest.test.ts` now also verifies each binding's `key`/`mac` matches its `COMMAND_KEY_MAP` label; `ExtensionManager` tests cover the `setContext` call.
+- **Build:** esbuild target is now `node22`; bundle size budget warning raised from 50 KB to 1 MB.
 - **Tests:** the integration suite now covers all 42 wrapper commands, the disabled state (no notification), and `showCommandName`.
 
 ### Removed

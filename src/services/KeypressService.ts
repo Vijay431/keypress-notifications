@@ -69,7 +69,6 @@ export class KeypressService implements IKeypressService {
   private lastActionTime = 0;
   private actionBuffer: { label: string; id: string }[] = [];
   private readonly MULTI_KEY_THRESHOLD = 150; // ms between keys to consider multi-key sequence
-  private enabled = true;
   private readonly disposables: vscode.Disposable[] = [];
   private readonly pendingTimers = new Set<ReturnType<typeof setTimeout>>();
 
@@ -96,22 +95,6 @@ export class KeypressService implements IKeypressService {
   }
 
   /**
-   * Enable keypress detection
-   */
-  public async enable(): Promise<void> {
-    this.enabled = true;
-    this.logger.info('KeypressService enabled');
-  }
-
-  /**
-   * Disable keypress detection
-   */
-  public async disable(): Promise<void> {
-    this.enabled = false;
-    this.logger.info('KeypressService disabled');
-  }
-
-  /**
    * Discover VS Code commands and create dynamic wrappers
    */
   private async discoverAndWrapCommands(): Promise<void> {
@@ -127,7 +110,7 @@ export class KeypressService implements IKeypressService {
       const disposable = vscode.commands.registerCommand(
         wrapperCommand,
         async (...args: unknown[]) => {
-          if (this.enabled && this.configService.isEnabled()) {
+          if (this.configService.isEnabled()) {
             this.detectKeyPress(originalCommand);
           }
           // Execute the original command
@@ -217,13 +200,14 @@ export class KeypressService implements IKeypressService {
     if (typeof label !== 'string') {
       return isMac ? label.mac : label.default;
     }
-    return isMac ? label.replace(/Ctrl/g, 'Cmd').replace(/Alt/g, 'Option') : label;
+    return isMac ? label.replace(/\bCtrl\b/g, 'Cmd').replace(/\bAlt\b/g, 'Option') : label;
   }
 
   /**
    * Show notification with detected key combination
    */
   private showMultiKeyNotification(): void {
+    this.clearPendingTimers();
     if (this.actionBuffer.length > 0) {
       const keySequence = this.actionBuffer.map((entry) => entry.label).join(' → ');
       let message = `You've pressed ${keySequence}`;
@@ -244,17 +228,20 @@ export class KeypressService implements IKeypressService {
   /**
    * Get current state for testing or debugging
    */
-  public getState(): { enabled: boolean; actionBufferLength: number; lastActionTime: number } {
+  public getState(): { actionBufferLength: number; lastActionTime: number } {
     return {
-      enabled: this.enabled,
       actionBufferLength: this.actionBuffer.length,
       lastActionTime: this.lastActionTime,
     };
   }
 
-  public dispose(): void {
+  private clearPendingTimers(): void {
     this.pendingTimers.forEach(clearTimeout);
     this.pendingTimers.clear();
+  }
+
+  public dispose(): void {
+    this.clearPendingTimers();
     this.disposables.forEach((d) => {
       try {
         d.dispose();
