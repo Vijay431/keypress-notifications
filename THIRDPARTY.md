@@ -9,17 +9,15 @@ Keypress Notifications has **no runtime dependencies**. All packages listed belo
 | Package               | License    | Notes                                           |
 | --------------------- | ---------- | ----------------------------------------------- |
 | @vitest/coverage-v8   | MIT        | Code coverage via V8                            |
-| @vscode/test-electron | MIT        | VS Code extension test runner                   |
+| @biomejs/biome        | MIT        | Linter and formatter                            |
+| @vscode/test-cli      | MIT        | Integration test runner (bundles Mocha)         |
+| @vscode/test-electron | MIT        | VS Code download for the test runner            |
 | @vscode/vsce          | MIT        | VS Code extension packaging tool                |
 | all-contributors-cli  | MIT        | Contributors table generator                    |
 | esbuild               | MIT        | TypeScript/JavaScript bundler                   |
-| eslint                | MIT        | JavaScript/TypeScript linter                    |
-| glob                  | ISC        | File pattern matching                           |
 | husky                 | MIT        | Git hook manager                                |
 | lint-staged           | MIT        | Run linters on staged files                     |
-| mocha                 | MIT        | Test framework (used via @vscode/test-electron) |
 | ovsx                  | EPL-2.0    | Open VSX Registry publishing tool               |
-| prettier              | MIT        | Code formatter                                  |
 | rimraf                | ISC        | Cross-platform `rm -rf`                         |
 | tsx                   | MIT        | TypeScript execution engine                     |
 | typescript            | Apache-2.0 | TypeScript compiler                             |
@@ -31,9 +29,9 @@ The following licenses appear among transitive development dependencies:
 
 | License                   | Representative packages                                                                  |
 | ------------------------- | ---------------------------------------------------------------------------------------- |
-| Apache-2.0                | `@ampproject/remapping`, `@eslint/*`, `detect-libc`, `eslint-visitor-keys`, `typescript` |
+| Apache-2.0                | `@ampproject/remapping`, `detect-libc`, `typescript` |
 | BSD-2-Clause              | `rc` (also MIT or Apache-2.0)                                                            |
-| ISC                       | `glob`, `rimraf`                                                                         |
+| ISC                       | `rimraf`                                                                         |
 | MIT                       | Majority of the dependency graph                                                         |
 | 0BSD                      | `tslib`                                                                                  |
 | (MIT AND Zlib)            | `pako`                                                                                   |

@@ -3,10 +3,10 @@ import * as vscode from 'vscode';
 import { DisableCommand } from '../commands/DisableCommand';
 import { EnableCommand } from '../commands/EnableCommand';
 import { ShowOutputChannelCommand } from '../commands/ShowOutputChannelCommand';
-import { type IAccessibilityService } from '../di/interfaces/IAccessibilityService';
-import { type IConfigurationService } from '../di/interfaces/IConfigurationService';
-import { type IKeypressService } from '../di/interfaces/IKeypressService';
-import { type ILogger } from '../di/interfaces/ILogger';
+import type { IAccessibilityService } from '../di/interfaces/IAccessibilityService';
+import type { IConfigurationService } from '../di/interfaces/IConfigurationService';
+import type { IKeypressService } from '../di/interfaces/IKeypressService';
+import type { ILogger } from '../di/interfaces/ILogger';
 
 import { CommandRegistry } from './CommandRegistry';
 
@@ -81,7 +81,9 @@ export class ExtensionManager {
 
       // Push all disposables to context
       this.disposables.push({ dispose: () => this.commandRegistry?.dispose() });
-      this.disposables.forEach((d) => context.subscriptions.push(d));
+      for (const d of this.disposables) {
+        context.subscriptions.push(d);
+      }
 
       // Set initial enabled context
       await this.updateEnabledContext();

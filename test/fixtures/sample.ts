@@ -145,14 +145,14 @@ class TestService {
 
 // Export everything for module testing
 export {
-  User,
-  UserPreferences,
-  UserService,
-  Status,
+  type ApiResponse,
   createPair,
-  ApiResponse,
-  Utils,
-  TestService,
-  sampleUser,
+  Status,
   sampleResponse,
+  sampleUser,
+  TestService,
+  type User,
+  type UserPreferences,
+  UserService,
+  Utils,
 };

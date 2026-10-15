@@ -120,15 +120,14 @@ The project enforces high code quality through rigorous automated testing and li
 
 ### Integration Testing
 
-- **Tool**: Mocha + `@vscode/test-electron`
+- **Tool**: Mocha through `@vscode/test-cli` (`.vscode-test.mjs`)
 - **Command**: `pnpm run test:integration` (Compiles TS tests and launches them in a live Extension Host).
 - **Scope**: Feature-level End-to-End verification. Requires a GUI or `xvfb-run -a` on headless Linux CI environments.
 
 ### Linting & Formatting
 
-- **Lint**: `pnpm run lint` leverages ESLint to enforce strict rules and prevent usage of `any`.
-- **Format**: `pnpm run format` runs Prettier across the codebase.
-- **Types**: `pnpm run check-types` executes a strict TypeScript compilation check with `--noEmit`.
+- **Lint and format**: `pnpm run lint` runs Biome; `pnpm run format` applies Biome formatting. `pnpm run lint:md` runs markdownlint.
+- **Types**: `pnpm run typecheck` executes a strict TypeScript compilation check with `--noEmit`.
 
 ## 7. Deployment & CI/CD Pipeline
 
@@ -140,7 +139,8 @@ Runs on every PR and commit to `main`. It executes linting, unit tests with cove
 
 ### Security Pipeline
 
-- **`security-pr.yml`**: Runs `pnpm audit` on high/critical levels and `actions/dependency-review-action` to gate dependency additions.
+- **`ci.yml`**: Runs `pnpm audit` and `actions/dependency-review-action` on PRs to gate dependency additions.
+- **`codeql.yml`** and **`scorecard.yml`**: Static analysis and OpenSSF supply-chain scoring.
 - **`security-daily.yml`**: Cron job running `pnpm audit` every day at 02:00 UTC.
 
 ### Deployment (`release.yml`)

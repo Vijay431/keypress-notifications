@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mockGet = vi.fn(<T>(_key: string, defaultValue?: T): T => defaultValue as T);
 const mockUpdate = vi.fn(async () => {});

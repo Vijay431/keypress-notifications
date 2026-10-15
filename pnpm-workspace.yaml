@@ -4,12 +4,11 @@ allowBuilds:
   keytar: true
 
 overrides:
+  katex: '>=0.18.2'
+  linkify-it: '>=5.0.2'
+  smol-toml: '>=1.9.0'
   fast-uri: '>=3.1.2'
   serialize-javascript: '>=7.0.5'
   postcss: '>=8.5.10'
   diff: '>=8.0.3'
   tmp: '>=0.2.4'
-
-peerDependencyRules:
-  allowedVersions:
-    'eslint-plugin-import>eslint': '10'

@@ -33,6 +33,7 @@ reviews:
         - Prefer `unknown` over `any` in catch blocks (`useUnknownInCatchVariables` is enabled).
         - Unused locals and parameters are compile errors — flag any that would break the build.
         - Do not suggest npm or yarn commands — this project uses pnpm exclusively.
+        - Biome is the only linter and formatter. Do not suggest ESLint or Prettier.
         - This extension has zero runtime dependencies by design — flag any new runtime dependency additions.
 
     - path: 'package.json'

@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 
+import { readFileSync, writeFileSync } from 'node:fs';
 import * as esbuild from 'esbuild';
-import { readFileSync, writeFileSync } from 'fs';
 
 const createConfig = (isProduction = false): esbuild.BuildOptions => ({
   entryPoints: ['./src/extension.ts'],

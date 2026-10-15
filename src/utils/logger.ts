@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { ILogger, LogLevel } from '../types/extension';
+import { type ILogger, LogLevel } from '../types/extension';
 
 export class Logger implements ILogger {
   private static instance: Logger | undefined;
@@ -12,7 +12,8 @@ export class Logger implements ILogger {
   }
 
   public static getInstance(): Logger {
-    return (this.instance ??= new Logger());
+    this.instance ??= new Logger();
+    return this.instance;
   }
 
   public static create(): Logger {

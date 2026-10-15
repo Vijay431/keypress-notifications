@@ -1,6 +1,5 @@
-import * as assert from 'assert';
+import * as assert from 'node:assert';
 import * as vscode from 'vscode';
-import { suite, test, suiteSetup, suiteTeardown, setup } from 'mocha';
 
 async function waitFor(predicate: () => boolean, timeoutMs = 3000): Promise<void> {
   const start = Date.now();
@@ -81,11 +80,11 @@ suite('Keypress Notifications E2E Tests', () => {
       const notification = notificationMessages[0];
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+C' : 'Ctrl+C';
       assert.ok(
-        notification && notification.includes(expectedKeys),
+        notification?.includes(expectedKeys),
         `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith("You've pressed"),
+        notification?.startsWith("You've pressed"),
         `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
@@ -99,11 +98,11 @@ suite('Keypress Notifications E2E Tests', () => {
       const notification = notificationMessages[0];
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+V' : 'Ctrl+V';
       assert.ok(
-        notification && notification.includes(expectedKeys),
+        notification?.includes(expectedKeys),
         `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith("You've pressed"),
+        notification?.startsWith("You've pressed"),
         `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
@@ -117,11 +116,11 @@ suite('Keypress Notifications E2E Tests', () => {
       const notification = notificationMessages[0];
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+X' : 'Ctrl+X';
       assert.ok(
-        notification && notification.includes(expectedKeys),
+        notification?.includes(expectedKeys),
         `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith("You've pressed"),
+        notification?.startsWith("You've pressed"),
         `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
@@ -135,11 +134,11 @@ suite('Keypress Notifications E2E Tests', () => {
       const notification = notificationMessages[0];
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+P' : 'Ctrl+P';
       assert.ok(
-        notification && notification.includes(expectedKeys),
+        notification?.includes(expectedKeys),
         `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith("You've pressed"),
+        notification?.startsWith("You've pressed"),
         `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
@@ -153,11 +152,11 @@ suite('Keypress Notifications E2E Tests', () => {
       const notification = notificationMessages[0];
       const expectedKeys = process.platform === 'darwin' ? 'Cmd+Shift+P' : 'Ctrl+Shift+P';
       assert.ok(
-        notification && notification.includes(expectedKeys),
+        notification?.includes(expectedKeys),
         `Expected notification with "${expectedKeys}", got: "${notification}"`,
       );
       assert.ok(
-        notification && notification.startsWith("You've pressed"),
+        notification?.startsWith("You've pressed"),
         `Expected notification to start with "You've pressed", got: "${notification}"`,
       );
     });
@@ -173,12 +172,12 @@ suite('Keypress Notifications E2E Tests', () => {
       const notification = notificationMessages[0];
       if (isMac) {
         assert.ok(
-          notification && notification.includes('Cmd+C'),
+          notification?.includes('Cmd+C'),
           `On Mac, should show Cmd+C, got: "${notification}"`,
         );
       } else {
         assert.ok(
-          notification && notification.includes('Ctrl+C'),
+          notification?.includes('Ctrl+C'),
           `On non-Mac, should show Ctrl+C, got: "${notification}"`,
         );
       }

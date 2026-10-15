@@ -88,7 +88,7 @@ Test copying different types of links:
 
 - Inline link: [VS Code Extension API](https://code.visualstudio.com/api)
 - Reference link: [Extension Testing Guide][testing-guide]
-- Direct URL: https://github.com/microsoft/vscode
+- Direct URL: <https://github.com/microsoft/vscode>
 
 [testing-guide]: https://code.visualstudio.com/api/working-with-extensions/testing-extension
 

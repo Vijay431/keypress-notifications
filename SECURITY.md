@@ -15,7 +15,7 @@ We provide security updates for the following versions of Keypress Notifications
 We take the security of the Keypress Notifications VS Code extension seriously. If you believe you have found a security vulnerability, please follow these steps:
 
 1. **DO NOT** disclose the vulnerability publicly.
-2. Send a detailed description of the vulnerability to vijayanand431@gmail.com.
+2. Send a detailed description of the vulnerability to <vijayanand431@gmail.com>.
 3. You should receive a response within 48 hours.
 4. Please provide sufficient information to reproduce the vulnerability.
 
