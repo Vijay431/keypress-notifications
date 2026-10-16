@@ -10,6 +10,7 @@
 
 ### Changed
 
+- `.vscodeignore` is now an allowlist, so the published package no longer includes tooling, planning or config files (`graphify-out/`, `openspec/`, `biome.json`, and similar). The release verifier fails on any file outside the allowlist or on shipped JS that references a source map.
 - **BREAKING (tests):** Integration tests run through `vscode-test` (`@vscode/test-cli`, `.vscode-test.mjs`); `out-test/test/runTests.js` is gone.
 - `release.yml` is gated by `.github/scripts/release-gate.sh` and can be re-run for an existing tag by actors in `RELEASE_WHITELIST_ACTORS`; re-runs skip versions already published.
 - Every workflow action is pinned to a commit SHA, and the CI build matrix covers Node 22, 24, and 26.
