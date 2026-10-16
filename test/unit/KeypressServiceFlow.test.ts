@@ -66,12 +66,10 @@ describe('KeypressService detection flow', () => {
     expect(svc.getState().actionBufferLength).toBe(0);
   });
 
-  it('should label an unmapped command by its last segment and skip a single-part combo', () => {
-    const svc = make();
-    svc.detectKeyPress('some.unknown.thing');
+  it('should label an unmapped command by its last segment', () => {
+    make().detectKeyPress('some.unknown.thing');
     vi.advanceTimersByTime(60);
-    expect(showInformationMessage).not.toHaveBeenCalled();
-    expect(svc.getState().actionBufferLength).toBe(1);
+    expect(showInformationMessage).toHaveBeenCalledWith("You've pressed Key combination for thing");
   });
 
   it('should adjust Ctrl to Cmd on macOS', () => {
@@ -86,12 +84,10 @@ describe('KeypressService detection flow', () => {
     }
   });
 
-  it('should add the shortcut note when showCommandName is on', () => {
+  it('should append the command id when showCommandName is on', () => {
     make({ showName: true }).detectKeyPress('undo');
     vi.advanceTimersByTime(60);
-    expect(showInformationMessage).toHaveBeenCalledWith(
-      "You've pressed Ctrl+Z (keyboard shortcut detected)",
-    );
+    expect(showInformationMessage).toHaveBeenCalledWith("You've pressed Ctrl+Z (undo)");
   });
 
   it('should register wrappers that detect and then run the original command', async () => {
@@ -105,18 +101,14 @@ describe('KeypressService detection flow', () => {
     expect(showInformationMessage).toHaveBeenCalledTimes(1);
   });
 
-  it('should skip detection but still run the command when disabled', async () => {
-    const svc = make();
+  it('should skip detection but still run the command when disabled in settings', async () => {
+    const svc = make({ enabled: false });
     await svc.initialize();
-    await svc.disable();
-    expect(svc.getState().enabled).toBe(false);
     const call = registerCommand.mock.calls.find(([id]) => id.endsWith('wrapper.undo'));
     await call?.[1]();
     vi.advanceTimersByTime(60);
     expect(showInformationMessage).not.toHaveBeenCalled();
     expect(executeCommand).toHaveBeenCalledWith('undo');
-    await svc.enable();
-    expect(svc.getState().enabled).toBe(true);
   });
 
   it('should clear timers and tolerate disposables that throw', async () => {

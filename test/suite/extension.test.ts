@@ -245,7 +245,7 @@ suite('Keypress Notifications E2E Tests', () => {
 
       const notification = notificationMessages[0];
       assert.ok(
-        notification && notification.includes('(editor.action.clipboardCopyAction)'),
+        notification?.includes('(editor.action.clipboardCopyAction)'),
         `Expected command name in notification, got: "${notification}"`,
       );
     });

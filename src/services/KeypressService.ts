@@ -4,7 +4,6 @@ import type { IAccessibilityService } from '../di/interfaces/IAccessibilityServi
 import type { IConfigurationService } from '../di/interfaces/IConfigurationService';
 import type { IKeypressService } from '../di/interfaces/IKeypressService';
 import type { ILogger } from '../di/interfaces/ILogger';
-import { Logger } from '../utils/logger';
 
 type KeyLabel = string | { default: string; mac: string };
 

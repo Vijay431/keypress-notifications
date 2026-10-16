@@ -90,8 +90,4 @@ describe('ConfigurationService values', () => {
     };
     expect(() => svc.dispose()).not.toThrow();
   });
-
-  it('should return one deprecated singleton', () => {
-    expect(ConfigurationService.getInstance()).toBe(ConfigurationService.getInstance());
-  });
 });

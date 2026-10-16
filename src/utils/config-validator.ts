@@ -1,4 +1,5 @@
-import { type ExtensionConfig, type ILogger, LogLevel } from '../types/extension';
+import type { ILogger } from '../di/interfaces/ILogger';
+import { type ExtensionConfig, LogLevel } from '../types/extension';
 
 export class ConfigValidator {
   public static validate(config: ExtensionConfig, logger: ILogger): ExtensionConfig {

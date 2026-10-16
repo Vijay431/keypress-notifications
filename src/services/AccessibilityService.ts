@@ -1,6 +1,5 @@
 import type { IAccessibilityService, VerbosityLevel } from '../di/interfaces/IAccessibilityService';
 import type { ILogger } from '../di/interfaces/ILogger';
-import { Logger } from '../utils/logger';
 
 export class AccessibilityService implements IAccessibilityService {
   private constructor(private readonly logger: ILogger) {}
