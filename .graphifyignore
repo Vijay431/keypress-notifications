@@ -1,0 +1,5 @@
+# graphify: exclude build output, config keys and tests from the knowledge vault
+package.json
+tsconfig*.json
+test/
+*.test.*

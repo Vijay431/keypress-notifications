@@ -10,7 +10,7 @@ const createConfig = (isProduction = false): esbuild.BuildOptions => ({
   external: ['vscode'],
   format: 'cjs',
   platform: 'node',
-  target: 'node16',
+  target: 'node22',
   sourcemap: isProduction ? false : 'inline',
   minify: isProduction,
   treeShaking: true,
@@ -42,7 +42,7 @@ async function build(production = false): Promise<void> {
       // Calculate bundle metrics
       const stats = readFileSync('./dist/extension.js');
       const sizeKB = (stats.length / 1024).toFixed(2);
-      const targetKB = 50;
+      const targetKB = 1024;
 
       console.log('✅ Build completed successfully!');
       console.log(`📦 Bundle size: ${sizeKB} KB (budget: ${targetKB} KB)`);

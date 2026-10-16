@@ -1,17 +1,8 @@
 import type { IAccessibilityService, VerbosityLevel } from '../di/interfaces/IAccessibilityService';
 import type { ILogger } from '../di/interfaces/ILogger';
-import { Logger } from '../utils/logger';
 
 export class AccessibilityService implements IAccessibilityService {
-  private static instance: AccessibilityService | undefined;
-
   private constructor(private readonly logger: ILogger) {}
-
-  /** @deprecated Use DI injection instead */
-  public static getInstance(): AccessibilityService {
-    AccessibilityService.instance ??= new AccessibilityService(Logger.getInstance());
-    return AccessibilityService.instance;
-  }
 
   public static create(logger: ILogger): AccessibilityService {
     return new AccessibilityService(logger);
