@@ -23,9 +23,12 @@ assignees: ''
 - [ ] README.md
 - [ ] CHANGELOG.md
 - [ ] CONTRIBUTING.md
-- [ ] Extension settings documentation
+- [ ] Features documentation
+- [ ] Service documentation
+- [ ] Installation guide
 - [ ] Troubleshooting guide
-- [ ] Other: **\_\_**
+- [ ] API Reference
+- [ ] Other: **\*\***\_\_\_\_**\*\***
 
 **Specific Section:**
 Link or describe the exact section that needs attention.
@@ -56,8 +59,17 @@ Why would this improvement help users?
 ## Additional Context
 
 - **Screenshots:** If relevant, attach screenshots of the documentation issue
+- **Code Examples:** If suggesting code examples, provide the code
 - **Related Issues:** Link to related GitHub issues or PRs
 - **User Impact:** How does this affect users?
+
+## Testing Documentation
+
+If this is about user-facing features:
+
+- [ ] I tested the feature to verify the documentation
+- [ ] The documentation matches the actual behavior
+- [ ] I can provide a test case/example
 
 ## Priority
 
@@ -67,3 +79,7 @@ How urgent is this documentation fix?
 - [ ] High - Major confusion or missing important info
 - [ ] Medium - Quality improvement, not urgent
 - [ ] Low - Minor corrections or enhancements
+
+---
+
+**Thank you for helping improve the documentation!** 📚

@@ -1,3 +1,3 @@
-export { TYPES, type DiToken } from './types';
-export { container, initializeContainer, getService, hasService, DIContainer } from './container';
+export { container, DIContainer, getService, hasService, initializeContainer } from './container';
 export * from './interfaces';
+export { type DiToken, TYPES } from './types';

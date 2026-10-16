@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('vscode', () => ({
   window: {
@@ -108,8 +108,9 @@ describe('ShowOutputChannelCommand', () => {
   });
 
   it('execute() returns success', async () => {
-    const { ShowOutputChannelCommand } =
-      await import('../../src/commands/ShowOutputChannelCommand');
+    const { ShowOutputChannelCommand } = await import(
+      '../../src/commands/ShowOutputChannelCommand'
+    );
     const cmd = new ShowOutputChannelCommand(makeLogger(), makeA11y(), makeConfig());
     const result = await cmd.execute();
     expect(result.success).toBe(true);

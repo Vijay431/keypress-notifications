@@ -128,9 +128,9 @@ docs/short-description
 ### Before Submitting
 
 ```bash
-pnpm run check-types     # TypeScript must compile clean
-pnpm run lint            # ESLint must pass
-pnpm run format:check    # Prettier must pass
+pnpm run typecheck       # TypeScript must compile clean
+pnpm run lint            # Biome must pass
+pnpm run lint:md         # markdownlint must pass
 pnpm run test:unit       # All unit tests must pass
 pnpm run build           # Extension must build
 ```
@@ -145,7 +145,7 @@ pnpm run build           # Extension must build
 
 ### Workflow Automation
 
-CI and release workflows use GitHub Actions cache for pnpm package storage and `node_modules` warm starts. The cache cleanup workflow removes repository cache entries tied to deleted branches or closed pull requests; age-based cleanup is handled by repository settings. The PR security workflow (`.github/workflows/security-pr.yml`) runs on every PR and push to `main`/`v2`: `pnpm audit --audit-level=high` blocks high/critical CVEs, and `actions/dependency-review-action` gates PR dependency changes. The daily security workflow (`.github/workflows/security-daily.yml`) runs at 02:00 UTC and on `pnpm-lock.yaml`/`package.json` changes on `main`; it creates a GitHub issue only when high or critical vulnerabilities are detected and respects `pnpm-workspace.yaml` overrides so patched transitive dependencies do not produce false alerts. Update these workflows and maintainer docs together when changing schedules, cache keys, retention rules, or audit behavior.
+CI and release workflows are described in [AGENTS.md](AGENTS.md) and [ARCHITECTURE.md](ARCHITECTURE.md). Releases start from a `v*` tag push.
 
 ### Commit Messages
 

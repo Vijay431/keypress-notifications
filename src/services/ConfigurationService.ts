@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 
-import { type IConfigurationService } from '../di/interfaces/IConfigurationService';
-import { type ILogger } from '../di/interfaces/ILogger';
-import { ExtensionConfig, LogLevel } from '../types/extension';
+import type { IConfigurationService } from '../di/interfaces/IConfigurationService';
+import type { ILogger } from '../di/interfaces/ILogger';
+import { type ExtensionConfig, LogLevel } from '../types/extension';
 import { Logger } from '../utils/logger';
 
 const LOG_LEVEL_MAP: Readonly<Record<string, LogLevel>> = {

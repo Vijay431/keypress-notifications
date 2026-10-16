@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
-import { ConfigValidator } from '../../src/utils/config-validator';
+import { describe, expect, it, vi } from 'vitest';
 import { LogLevel } from '../../src/types/extension';
+import { ConfigValidator } from '../../src/utils/config-validator';
 
 const logger = {
   debug: vi.fn(),

@@ -39,7 +39,11 @@ export class Disposable {
     this.callOnDispose();
   }
   static from(...disposables: { dispose(): void }[]): Disposable {
-    return new Disposable(() => disposables.forEach((d) => d.dispose()));
+    return new Disposable(() => {
+      for (const d of disposables) {
+        d.dispose();
+      }
+    });
   }
 }
 
@@ -54,7 +58,9 @@ export class EventEmitter<T = void> {
     };
   };
   fire(data: T): void {
-    this.listeners.forEach((l) => l(data));
+    for (const l of this.listeners) {
+      l(data);
+    }
   }
   dispose(): void {
     this.listeners = [];

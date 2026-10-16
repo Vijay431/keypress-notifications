@@ -67,7 +67,7 @@ Or search **"Keypress Notifications"** in the Extensions view (`Ctrl+Shift+X`).
 **Open VSX** (VS Codium / other open-source VS Code builds):
 [open-vsx.org/extension/VijayGangatharan/keypress-notifications](https://open-vsx.org/extension/VijayGangatharan/keypress-notifications)
 
-**Command line:**
+#### Command line
 
 ```bash
 code --install-extension VijayGangatharan.keypress-notifications
@@ -115,7 +115,8 @@ The extension covers 42 common commands across the Editor, Explorer, Workbench, 
 <details>
 <summary>Click to view all supported shortcuts</summary>
 
-**Editor**
+#### Editor
+
 | Shortcut | Action |
 |---|---|
 | Ctrl+C | Copy |
@@ -136,14 +137,16 @@ The extension covers 42 common commands across the Editor, Explorer, Workbench, 
 | Ctrl+/ | Toggle Line Comment |
 | Ctrl+D | Add Selection to Next Match |
 
-**Explorer**
+#### Explorer
+
 | Shortcut | Action |
 |---|---|
 | Ctrl+C | Copy File/Folder |
 | Ctrl+X | Cut File/Folder |
 | Ctrl+V | Paste File/Folder |
 
-**Workbench / Navigation**
+#### Workbench / Navigation
+
 | Shortcut | Action |
 |---|---|
 | Ctrl+S | Save |
@@ -168,7 +171,8 @@ The extension covers 42 common commands across the Editor, Explorer, Workbench, 
 | Ctrl+Shift+D | Debug |
 | Ctrl+Shift+M | Problems |
 
-**Terminal**
+#### Terminal
+
 | Shortcut | Action |
 |---|---|
 | Ctrl+Shift+\` | New Terminal |
@@ -189,6 +193,7 @@ The extension covers 42 common commands across the Editor, Explorer, Workbench, 
 3. **Check `minimumKeys`**: default is `2`, so single-key presses won't fire. Lower it in settings if needed.
 4. **Check `excludedCommands`**: the command may be in your exclusion list.
 5. **Unsupported shortcut**: notifications only fire for the 42 curated keybindings above — arbitrary shortcuts are not wrapped.
+
 </details>
 
 <details>
@@ -201,6 +206,7 @@ The extension wraps a curated set of 42 common commands. To request coverage for
 
 - Add commands to `keypress-notifications.excludedCommands` (use the VS Code command ID, e.g. `editor.action.clipboardCopyAction`).
 - Raise `keypress-notifications.minimumKeys` to suppress shorter combos.
+
 </details>
 
 ### Contribution Guidelines
@@ -209,7 +215,7 @@ Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for full guide
 
 ### Contact
 
-**Vijay Gangatharan**
+Vijay Gangatharan
 
 - 📧 Email: <vijayanand431@gmail.com>
 - 🐙 [GitHub Repository](https://github.com/Vijay431/keypress-notifications)

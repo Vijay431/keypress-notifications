@@ -45,6 +45,21 @@ flowchart TD
     E --> F
 ```
 
+### Activation
+
+`activate()` in `src/extension.ts` runs these steps in order:
+
+1. `initializeContainer(context)` registers the services in the DI container.
+2. It resolves the logger, configuration, keypress, and accessibility services and passes them to `new ExtensionManager(...)`.
+3. `ExtensionManager.activate(context)` calls `KeypressService.initialize()`.
+4. It applies the configured log level.
+5. It creates a `CommandRegistry` and registers the `showOutputChannel`, `enable`, and `disable` commands.
+6. It subscribes to configuration changes.
+7. It collects the service and registry disposables and pushes them onto `context.subscriptions`.
+8. It sets the `keypress-notifications.enabled` context key from the configuration.
+
+If any step throws, `activate()` shows the error in an output channel, displays an error message, and rethrows. `deactivate()` runs the manager's deactivate.
+
 ## 2. Codebase Structure & Modules
 
 The repository is organized to separate concerns, primarily living inside `/src`:
@@ -120,15 +135,14 @@ The project enforces high code quality through rigorous automated testing and li
 
 ### Integration Testing
 
-- **Tool**: Mocha + `@vscode/test-electron`
+- **Tool**: Mocha through `@vscode/test-cli` (`.vscode-test.mjs`)
 - **Command**: `pnpm run test:integration` (Compiles TS tests and launches them in a live Extension Host).
 - **Scope**: Feature-level End-to-End verification. Requires a GUI or `xvfb-run -a` on headless Linux CI environments.
 
 ### Linting & Formatting
 
-- **Lint**: `pnpm run lint` leverages ESLint to enforce strict rules and prevent usage of `any`.
-- **Format**: `pnpm run format` runs Prettier across the codebase.
-- **Types**: `pnpm run check-types` executes a strict TypeScript compilation check with `--noEmit`.
+- **Lint and format**: `pnpm run lint` runs Biome; `pnpm run format` applies Biome formatting. `pnpm run lint:md` runs markdownlint.
+- **Types**: `pnpm run typecheck` executes a strict TypeScript compilation check with `--noEmit`.
 
 ## 7. Deployment & CI/CD Pipeline
 
@@ -140,7 +154,8 @@ Runs on every PR and commit to `main`. It executes linting, unit tests with cove
 
 ### Security Pipeline
 
-- **`security-pr.yml`**: Runs `pnpm audit` on high/critical levels and `actions/dependency-review-action` to gate dependency additions.
+- **`ci.yml`**: Runs `pnpm audit` and `actions/dependency-review-action` on PRs to gate dependency additions.
+- **`codeql.yml`** and **`scorecard.yml`**: Static analysis and OpenSSF supply-chain scoring.
 - **`security-daily.yml`**: Cron job running `pnpm audit` every day at 02:00 UTC.
 
 ### Deployment (`release.yml`)

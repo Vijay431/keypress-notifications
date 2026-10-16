@@ -11,7 +11,6 @@ body:
     attributes:
       label: Summary
       description: What went wrong?
-      placeholder: The notification does not appear when I press Ctrl+C...
     validations:
       required: true
   - type: textarea
@@ -20,9 +19,9 @@ body:
       label: Reproduction steps
       description: List the exact steps to reproduce the problem.
       placeholder: |
-        1. Open any file in VS Code
-        2. Press Ctrl+C (or another multi-key combo)
-        3. Expected notification does not appear
+        1. Open ...
+        2. Run the command ...
+        3. See the error
     validations:
       required: true
   - type: textarea
@@ -39,32 +38,18 @@ body:
       description: What happened instead? Include errors from the Keypress Notifications output channel when available.
     validations:
       required: true
-  - type: dropdown
-    id: area
-    attributes:
-      label: Feature area
-      options:
-        - Notification display
-        - Key-combo detection
-        - Configuration
-        - Commands (Enable/Disable/Show Status)
-        - Output channel
-        - Accessibility
-        - Other
-    validations:
-      required: true
   - type: input
     id: extension-version
     attributes:
       label: Extension version
-      placeholder: 1.1.0
+      placeholder: 0.0.1
     validations:
       required: true
   - type: input
     id: vscode-version
     attributes:
       label: VS Code version
-      placeholder: 1.102.0
+      placeholder: 1.111.0
     validations:
       required: true
   - type: dropdown
@@ -81,4 +66,4 @@ body:
     id: context
     attributes:
       label: Additional context
-      description: Screenshots, key-combo used, settings, logs, or related issues.
+      description: Screenshots, sample code, settings, logs, or related issues.

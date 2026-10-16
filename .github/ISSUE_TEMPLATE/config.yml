@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: GitHub Discussions
-    url: https://github.com/Vijay431/keypress-notifications/discussions
-    about: Ask questions and discuss ideas with the community
-  - name: Repository
-    url: https://github.com/Vijay431/keypress-notifications
-    about: Source code, README, and contributing guide
+  - name: Support
+    url: https://github.com/Vijay431/keypress-notifications/blob/main/SUPPORT.md
+    about: Find out where to ask questions and get help
+  - name: Report a security vulnerability
+    url: https://github.com/Vijay431/keypress-notifications/security/advisories/new
+    about: Report vulnerabilities privately, not in a public issue

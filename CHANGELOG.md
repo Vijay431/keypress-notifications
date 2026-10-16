@@ -1,5 +1,25 @@
 # 📝 Changelog
 
+## [Unreleased]
+
+### Added
+
+- Biome (lint and format), markdownlint, commitlint with husky `commit-msg`, `.gitattributes`, `.all-contributorsrc`, `scripts/check-prerelease.cjs`, `scripts/smoke-bundle.cjs`, `.github/VULNERABILITY_REPORT.yml`, `SUPPORT.md`, and `codecov.yml`, synced from the template baseline.
+- `codeql.yml` and `scorecard.yml` workflows, and issue forms for bug reports and feature requests.
+- Build-provenance attestation for the released `.vsix`; verify with `gh attestation verify`.
+
+### Changed
+
+- **BREAKING (tests):** Integration tests run through `vscode-test` (`@vscode/test-cli`, `.vscode-test.mjs`); `out-test/test/runTests.js` is gone.
+- `release.yml` is gated by `.github/scripts/release-gate.sh` and can be re-run for an existing tag by actors in `RELEASE_WHITELIST_ACTORS`; re-runs skip versions already published.
+- Every workflow action is pinned to a commit SHA, and the CI build matrix covers Node 22, 24, and 26.
+- Integration tests no longer import `mocha` explicitly; the runner provides the TDD globals.
+
+### Removed
+
+- ESLint, Prettier, `eslint-plugin-mocha`, `@stylistic/eslint-plugin`, and the `glob` and `mocha` dev dependencies.
+- `pr-commit-size`, `stale`, `security-pr`, and `cache-cleanup` workflows, the `size/override` label, `CONTRIBUTORS.md`, `CLAUDE.md`, `.github/copilot-instructions.md`, and the `.github` copies of `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, and `SECURITY.md`.
+
 ## [2.0.0]
 
 ### Added

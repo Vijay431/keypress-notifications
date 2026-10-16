@@ -1,5 +1,5 @@
+import path from 'node:path';
 import { defineConfig } from 'vitest/config';
-import path from 'path';
 
 export default defineConfig({
   resolve: {
@@ -20,7 +20,7 @@ export default defineConfig({
         'src/commands/ICommandHandler.ts', // pure interface — no runtime code
       ],
       thresholds: {
-        lines: 75, // integration tests cover remaining paths (container, service internals)
+        lines: 75,
         functions: 80,
         branches: 70,
       },
