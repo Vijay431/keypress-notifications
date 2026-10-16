@@ -35,7 +35,7 @@
   },
   "qna": "marketplace",
   "engines": {
-    "node": ">=22.22.1",
+    "node": ">=24 <25",
     "vscode": ">=1.111.0",
     "pnpm": ">=10"
   },
@@ -442,7 +442,7 @@
     "@commitlint/cli": "^21.2.3",
     "@commitlint/config-conventional": "^21.0.2",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^26",
+    "@types/node": "^24.19.2",
     "@types/vscode": "^1.111.0",
     "@vitest/coverage-v8": "^4.1.11",
     "@vscode/test-cli": "0.0.15",
