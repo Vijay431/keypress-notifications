@@ -21,7 +21,7 @@ This is a TypeScript VS Code extension. Source code lives in `src/`: command han
 - `pnpm run smoke:bundle`: load the production bundle outside VS Code.
 - `pnpm run package`: create a `.vsix` package.
 
-Use Node.js 22+ and pnpm. Development uses Node 24 LTS (`.nvmrc` = `lts/jod`). For manual testing, open the repo in VS Code and press `F5`.
+Use Node.js 24 (strictly; `.nvmrc` = `lts/krypton`) and pnpm. For manual testing, open the repo in VS Code and press `F5`.
 
 ## Coding Style & Naming Conventions
 

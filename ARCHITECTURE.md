@@ -109,7 +109,7 @@ The `KeypressService` dynamically generates wrapper commands for 42 native VS Co
 
 ### Prerequisites
 
-- **Node.js**: >=22 runtime (Development strictly uses Node 24 LTS via `.nvmrc`).
+- **Node.js**: 24 only (`>=24 <25`; `.nvmrc` = `lts/krypton`).
 - **Package Manager**: pnpm (`>=10`).
 - **VS Code**: Version `1.111.0` or later.
 

@@ -6,7 +6,7 @@ We provide security updates for the following versions of Keypress Notifications
 
 | Version | Supported          | Node.js Compatibility               |
 | ------- | ------------------ | ----------------------------------- |
-| 2.0.x   | :white_check_mark: | Node.js 22, 24, 26 — VS Code 1.111+ |
+| 2.0.x   | :white_check_mark: | Node.js 24 — VS Code 1.111+         |
 | 1.1.x   | :x:                | —                                   |
 | 1.0.x   | :x:                | —                                   |
 
@@ -67,6 +67,6 @@ Security updates will be released through:
 
 ## Node.js Compatibility and Security
 
-This extension supports Node.js 22, 24, and 26, and VS Code 1.111 and later. Security updates maintain compatibility across this range. If you are using an unsupported version, please upgrade to receive security updates.
+This extension supports Node.js 24, and VS Code 1.111 and later. Security updates maintain compatibility across this range. If you are using an unsupported version, please upgrade to receive security updates.
 
 Thank you for helping keep Keypress Notifications and its users safe!
