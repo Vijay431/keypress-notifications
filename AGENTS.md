@@ -29,7 +29,7 @@ Write TypeScript and keep modules focused by responsibility. Use PascalCase for 
 
 ## Testing Guidelines
 
-Add unit tests in `test/unit/*.test.ts` for services, utilities, and validators. Add integration tests in `test/suite/*.test.ts` when changes touch VS Code commands, keybindings, notifications, or editor interactions. Use `test/fixtures/` when possible. Run integration tests before user-facing behavior changes.
+Add unit tests in `test/unit/*.test.ts` for services, utilities, and validators. Add integration tests in `test/suite/*.test.ts` when changes touch VS Code commands, keybindings, notifications, or editor interactions. Use `test/fixtures/` when possible. Run integration tests before user-facing behavior changes. Debug a test from the Test Explorer (Extension Test Runner, reads `.vscode-test.mjs`); there is no launch entry for it.
 
 ## Commit & Pull Request Guidelines
 

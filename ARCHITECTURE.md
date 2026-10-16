@@ -45,6 +45,21 @@ flowchart TD
     E --> F
 ```
 
+### Activation
+
+`activate()` in `src/extension.ts` runs these steps in order:
+
+1. `initializeContainer(context)` registers the services in the DI container.
+2. It resolves the logger, configuration, keypress, and accessibility services and passes them to `new ExtensionManager(...)`.
+3. `ExtensionManager.activate(context)` calls `KeypressService.initialize()`.
+4. It applies the configured log level.
+5. It creates a `CommandRegistry` and registers the `showOutputChannel`, `enable`, and `disable` commands.
+6. It subscribes to configuration changes.
+7. It collects the service and registry disposables and pushes them onto `context.subscriptions`.
+8. It sets the `keypress-notifications.enabled` context key from the configuration.
+
+If any step throws, `activate()` shows the error in an output channel, displays an error message, and rethrows. `deactivate()` runs the manager's deactivate.
+
 ## 2. Codebase Structure & Modules
 
 The repository is organized to separate concerns, primarily living inside `/src`:
