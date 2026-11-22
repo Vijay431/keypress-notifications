@@ -451,7 +451,7 @@
     "all-contributors-cli": "^6.26.1",
     "esbuild": "^0.28.2",
     "husky": "^9.0.0",
-    "lint-staged": "^17.0.5",
+    "lint-staged": "^17.6.1",
     "markdownlint-cli2": "0.23.3",
     "ovsx": "^1.2.0",
     "rimraf": "^6.0.0",
