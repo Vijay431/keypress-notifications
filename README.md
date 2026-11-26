@@ -52,7 +52,7 @@ Keypress Notifications plugs that gap. Every time you trigger one of **42 common
 
 ### Prerequisites
 
-- **VS Code**: Version `1.111.0` or later.
+- **VS Code**: Version `1.146.0` or later.
 
 ### Install Commands
 

@@ -111,7 +111,7 @@ The `KeypressService` dynamically generates wrapper commands for 42 native VS Co
 
 - **Node.js**: 24 only (`>=24 <25`; `.nvmrc` = `lts/krypton`).
 - **Package Manager**: pnpm (`>=10`).
-- **VS Code**: Version `1.111.0` or later.
+- **VS Code**: Version `1.146.0` or later.
 
 ### Setup Instructions
 
@@ -174,7 +174,7 @@ Triggered strictly by pushing a `v*` tag.
    - **Recovery/Handling:** The extension's architecture is explicitly bounded to known commands. Users must either revert to supported commands or open an issue to request coverage for the new command ID.
 
 2. **Older VS Code Engine Incompatibility**
-   - **Failure Point:** Attempting to install the extension on a VS Code version older than `1.111.0`.
+   - **Failure Point:** Attempting to install the extension on a VS Code version older than `1.146.0`.
    - **Recovery/Handling:** Handled by the engine bounds in `package.json`. VS Code will natively block the installation, preventing API incompatibility crashes at runtime.
 
 3. **Conflicting Extension Keybindings**

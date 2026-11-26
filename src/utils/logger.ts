@@ -13,8 +13,8 @@ export class Logger implements ILogger {
   }
 
   public static getInstance(): Logger {
-    this.instance ??= new Logger();
-    return this.instance;
+    Logger.instance ??= new Logger();
+    return Logger.instance;
   }
 
   public static create(): Logger {

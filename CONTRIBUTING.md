@@ -23,7 +23,7 @@ By participating in this project, you are expected to uphold our [Code of Conduc
 
 - [Node.js](https://nodejs.org/) (version 24 required)
 - [PNPM](https://pnpm.io/) (install with `npm install -g pnpm`)
-- [Visual Studio Code](https://code.visualstudio.com/) (version 1.111+ for development and testing)
+- [Visual Studio Code](https://code.visualstudio.com/) (version 1.146+ for development and testing)
 - [Git](https://git-scm.com/)
 - Run `pnpm run system:verify` after install to set up Husky git hooks
 
