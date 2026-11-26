@@ -4,7 +4,7 @@
 
 ### Added
 
-- Biome (lint and format), markdownlint, commitlint with husky `commit-msg`, `.gitattributes`, `.all-contributorsrc`, `scripts/check-prerelease.cjs`, `scripts/smoke-bundle.cjs`, `.github/VULNERABILITY_REPORT.yml`, `SUPPORT.md`, and `codecov.yml`, synced from the template baseline.
+- Biome (lint and format), markdownlint, commitlint with husky `commit-msg`, `.gitattributes`, `.all-contributorsrc`, `scripts/check-prerelease.cjs`, `scripts/smoke-bundle.cjs`, `.github/VULNERABILITY_REPORT.yml`, and `SUPPORT.md`, synced from the template baseline.
 - `codeql.yml` and `scorecard.yml` workflows, and issue forms for bug reports and feature requests.
 - Build-provenance attestation for the released `.vsix`; verify with `gh attestation verify`.
 
@@ -15,11 +15,15 @@
 - `release.yml` is gated by `.github/scripts/release-gate.sh` and can be re-run for an existing tag by actors in `RELEASE_WHITELIST_ACTORS`; re-runs skip versions already published.
 - Every workflow action is pinned to a commit SHA, and the CI build matrix covers Node 22, 24, and 26.
 - Integration tests no longer import `mocha` explicitly; the runner provides the TDD globals.
+- **BREAKING:** The minimum VS Code version is now 1.146.0 (`engines.vscode` and `@types/vscode` 1.146).
+- Biome 2.6 now formats YAML files too; YAML keeps single quotes.
+- `pnpm-workspace.yaml` overrides now pin `markdown-it` to 15.0.3 or later, `undici` to 8.12.2 or later, and `@azure/msal-node` to 7.1.0 or later. These clear the high-severity audit findings in publish tooling.
 
 ### Removed
 
 - ESLint, Prettier, `eslint-plugin-mocha`, `@stylistic/eslint-plugin`, and the `glob` and `mocha` dev dependencies.
 - `pr-commit-size`, `stale`, `security-pr`, and `cache-cleanup` workflows, the `size/override` label, `CONTRIBUTORS.md`, `CLAUDE.md`, `.github/copilot-instructions.md`, and the `.github` copies of `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, and `SECURITY.md`.
+- Codecov upload step and `codecov.yml`; coverage still runs in CI through `test:unit:coverage`.
 
 ## [2.0.0]
 
